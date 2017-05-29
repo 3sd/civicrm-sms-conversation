@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/SmsConversation</base>
+  <class>SmsConversationQuestion</class>
+  <name>civicrm_sms_conversation_question</name>
+  <comment>SMS Conversation Question</comment>
+  <add>4.7</add>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique SmsConversationQuestion ID</comment>
+    <add>4.7</add>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>text</name>
+    <title>Question Text</title>
+    <type>longtext</type>
+    <comment>Question Text.</comment>
+    <html>
+      <type>Text</type>
+    </html>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>timeout</name>
+    <type>int unsigned</type>
+    <comment>Timeout in seconds</comment>
+    <default>0</default>
+    <add>4.7</add>
+  </field>
+
+</table>

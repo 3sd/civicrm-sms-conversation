@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<CustomData>
+  <OptionGroups>
+    <OptionGroup>
+      <name>sms_conversation_action_type</name>
+      <title>SMS Conversation Action Type</title>
+      <data_type>String</data_type>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
+    <OptionGroup>
+      <name>sms_conversation_status_type</name>
+      <title>SMS Conversation Status Type</title>
+      <data_type>String</data_type>
+      <is_reserved>1</is_reserved>
+      <is_active>1</is_active>
+    </OptionGroup>
+  </OptionGroups>
+  <OptionValues>
+    <OptionValue>
+      <label>Ask another question</label>
+      <value>1</value>
+      <name>question</name>
+      <is_default>0</is_default>
+      <weight>1</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_action_type</option_group_name>
+    </OptionValue>
+    <OptionValue>
+      <label>Add contact to group</label>
+      <value>2</value>
+      <name>add_to_group</name>
+      <is_default>0</is_default>
+      <weight>2</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_action_type</option_group_name>
+    </OptionValue>
+    <OptionValue>
+      <label>Record answer in custom field</label>
+      <value>3</value>
+      <name>record_custom_field</name>
+      <is_default>0</is_default>
+      <weight>3</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_action_type</option_group_name>
+    </OptionValue>
+    <OptionValue>
+      <label>Trigger CiviRule</label>
+      <value>4</value>
+      <name>trigger_civirule</name>
+      <is_default>0</is_default>
+      <weight>4</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_action_type</option_group_name>
+    </OptionValue>
+    <OptionValue>
+      <label>Pending</label>
+      <value>1</value>
+      <name>pending</name>
+      <is_default>0</is_default>
+      <weight>1</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_status_type</option_group_name>
+    </OptionValue>
+    <OptionValue>
+      <label>Sent</label>
+      <value>2</value>
+      <name>sent</name>
+      <is_default>0</is_default>
+      <weight>2</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_status_type</option_group_name>
+    </OptionValue>
+    <OptionValue>
+      <label>Failed</label>
+      <value>3</value>
+      <name>failed</name>
+      <is_default>0</is_default>
+      <weight>3</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_status_type</option_group_name>
+    </OptionValue>
+  </OptionValues>
+</CustomData>

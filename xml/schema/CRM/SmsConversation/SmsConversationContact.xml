@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/SmsConversation</base>
+  <class>SmsConversationContact</class>
+  <name>civicrm_sms_conversation_contact</name>
+  <comment>SMS Conversation to contact mapping</comment>
+  <add>4.7</add>
+  <log>true</log>
+
+  <field>
+    <name>conversation_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>SmsConversation ID</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>contact_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Contact</comment>
+    <add>4.7</add>
+  </field>
+  <foreignKey>
+    <name>contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>status_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Conversation Status ID</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>current_question_id</name>
+    <type>int unsigned</type>
+    <comment>FK to sms_conversation_question.id</comment>
+    <add>4.7</add>
+  </field>
+  <foreignKey>
+    <name>current_question_id</name>
+    <table>civicrm_sms_conversation_question</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>source_contact_id</name>
+    <type>int unsigned</type>
+    <comment>Id of contact that started the conversation</comment>
+    <add>4.7</add>
+  </field>
+  <foreignKey>
+    <name>source_contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+</table>
