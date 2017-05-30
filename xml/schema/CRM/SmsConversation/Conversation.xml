@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/SmsConversation</base>
+  <class>Conversation</class>
+  <name>civicrm_sms_conversation</name>
+  <comment>SMS Conversation</comment>
+  <add>4.7</add>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique SmsConversation ID</comment>
+    <add>4.7</add>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>is_active</name>
+    <type>boolean</type>
+    <title>Conversation Is Active?</title>
+    <length>4</length>
+    <comment>Is this conversation enabled?</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>start_question_id</name>
+    <type>int unsigned</type>
+    <comment>FK to sms_conversation_question.id</comment>
+    <add>4.7</add>
+  </field>
+  <foreignKey>
+    <name>start_question_id</name>
+    <table>civicrm_sms_conversation_question</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+</table>
