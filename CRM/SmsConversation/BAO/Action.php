@@ -20,6 +20,6 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
 
     return $instance;
-  } */
+  }
 
 }

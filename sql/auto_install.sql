@@ -57,7 +57,7 @@ CREATE TABLE `civicrm_sms_conversation_action` (
      `question_id` int unsigned    COMMENT 'FK to sms_conversation_question.id',
      `answer_pattern` varchar(255)    COMMENT 'Regex pattern for answer.',
      `action_type` int unsigned    COMMENT 'FK to sms_conversation_action_type option group',
-     `action_data` varchar(0)    COMMENT 'eg. group Id, custom field Id etc',
+     `action_data` varchar(10)    COMMENT 'eg. group Id, custom field Id etc',
      `invalid_text` longtext    COMMENT 'Invalid answer Text.'
 ,
         PRIMARY KEY (`id`)
@@ -76,8 +76,8 @@ CREATE TABLE `civicrm_sms_conversation_action` (
 CREATE TABLE `civicrm_sms_conversation_contact` (
 
 
+     `id` int unsigned NOT NULL  COMMENT 'Unique FK to civicrm_contact',
      `conversation_id` int unsigned NOT NULL   COMMENT 'SmsConversation ID',
-     `contact_id` int unsigned    COMMENT 'FK to Contact',
      `status_id` int unsigned NOT NULL   COMMENT 'Conversation Status ID',
      `current_question_id` int unsigned    COMMENT 'FK to sms_conversation_question.id',
      `source_contact_id` int unsigned    COMMENT 'Id of contact that started the conversation'

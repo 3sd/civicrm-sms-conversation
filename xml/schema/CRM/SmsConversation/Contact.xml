@@ -9,26 +9,31 @@
   <log>true</log>
 
   <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique FK to civicrm_contact</comment>
+    <add>4.7</add>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+  <foreignKey>
+    <name>id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
     <name>conversation_id</name>
     <type>int unsigned</type>
     <required>true</required>
     <comment>SmsConversation ID</comment>
     <add>4.7</add>
   </field>
-
-  <field>
-    <name>contact_id</name>
-    <type>int unsigned</type>
-    <comment>FK to Contact</comment>
-    <add>4.7</add>
-  </field>
-  <foreignKey>
-    <name>contact_id</name>
-    <table>civicrm_contact</table>
-    <key>id</key>
-    <add>4.7</add>
-    <onDelete>CASCADE</onDelete>
-  </foreignKey>
 
   <field>
     <name>status_id</name>
