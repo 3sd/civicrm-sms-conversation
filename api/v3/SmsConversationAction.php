@@ -9,7 +9,37 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
-  // $spec['some_parameter']['api.required'] = 1;
+  $spec['question_id'] = array (
+    'api_required' => 1,
+    'title' => 'ID of question',
+    'description' => 'FK to SmsConversationQuestion.id',
+    'type' => CRM_Utils_Type::T_INT,
+    // FIXME: This should lookup FK to sms_conversation_question.id
+  );
+  $spec['answer_pattern'] = array (
+    'api_required' => 1,
+    'title' => 'Answer Pattern',
+    'description' => 'Regex',
+    'type' => CRM_Utils_Type::T_STRING,
+  );
+  $spec['action_type'] = array (
+    'api_required' => 1,
+    'title' => 'Action Type',
+    'description' => 'sms_conversation_action_type',
+    'type' => CRM_Utils_Type::T_INT,
+    // FIXME: This should lookup optiongroup: sms_conversation_action_type
+  );
+  $spec['action_data'] = array (
+    'api_required' => 1,
+    'title' => 'Action Data',
+    'description' => 'Depends on the action_type',
+    'type' => CRM_Utils_Type::T_STRING,
+  );
+  $spec['invalid_text'] = array (
+    'title' => 'Invalid Text',
+    'description' => 'If left blank no SMS will be sent on invalid and the conversation will end.',
+    'type' => CRM_Utils_Type::T_STRING,
+  );
 }
 
 /**
@@ -20,7 +50,7 @@ function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_action_create($params) {
-  return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Action', $params);
 }
 
 /**
@@ -31,7 +61,7 @@ function civicrm_api3_sms_conversation_action_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_action_delete($params) {
-  return _civicrm_api3_basic_delete(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_delete('CRM_SmsConversation_BAO_Action', $params);
 }
 
 /**
@@ -42,5 +72,5 @@ function civicrm_api3_sms_conversation_action_delete($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_action_get($params) {
-  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Action', $params);
 }

@@ -6,10 +6,10 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    * Create a new SmsConversationContact based on array-data
    *
    * @param array $params key-value pairs
-   * @return CRM_Conversations_DAO_SmsConversationContact|NULL
-   *
+   * @return CRM_SmsConversation_DAO_Contact|NULL
+   */
   public static function create($params) {
-    $className = 'CRM_Conversations_DAO_SmsConversationContact';
+    $className = 'CRM_SmsConversation_DAO_Contact';
     $entityName = 'SmsConversationContact';
     $hook = empty($params['id']) ? 'create' : 'edit';
 
@@ -20,6 +20,6 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
 
     return $instance;
-  } */
+  }
 
 }

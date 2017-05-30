@@ -9,7 +9,11 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_create_spec(&$spec) {
-  // $spec['some_parameter']['api.required'] = 1;
+  $spec['is_active']['title'] = 'Enabled?';
+  $spec['is_active']['type'] = CRM_Utils_Type::T_BOOLEAN;
+  $spec['start_question_id']['api_required'] = 1;
+  $spec['start_question_id']['title'] = 'ID of first question';
+  $spec['start_question_id']['type'] = CRM_Utils_Type::T_INT;
 }
 
 /**
@@ -20,7 +24,7 @@ function _civicrm_api3_sms_conversation_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_create($params) {
-  return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Conversation', $params);
 }
 
 /**
@@ -31,7 +35,7 @@ function civicrm_api3_sms_conversation_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_delete($params) {
-  return _civicrm_api3_basic_delete(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_delete('CRM_SmsConversation_BAO_Conversation', $params);
 }
 
 /**
@@ -42,5 +46,5 @@ function civicrm_api3_sms_conversation_delete($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_get($params) {
-  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Conversation', $params);
 }

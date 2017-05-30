@@ -9,7 +9,10 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_question_create_spec(&$spec) {
-  // $spec['some_parameter']['api.required'] = 1;
+  $spec['text']['api.required'] = 1;
+  $spec['text']['title'] = 'Question Text';
+  $spec['timeout']['title'] = 'Timeout';
+  $spec['timeout']['description'] = 'Optional (default 0)';
 }
 
 /**
@@ -20,7 +23,7 @@ function _civicrm_api3_sms_conversation_question_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_question_create($params) {
-  return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Question', $params);
 }
 
 /**
@@ -31,7 +34,7 @@ function civicrm_api3_sms_conversation_question_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_question_delete($params) {
-  return _civicrm_api3_basic_delete(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_delete('CRM_SmsConversation_BAO_Question', $params);
 }
 
 /**
@@ -42,5 +45,5 @@ function civicrm_api3_sms_conversation_question_delete($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_question_get($params) {
-  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  return _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Question', $params);
 }

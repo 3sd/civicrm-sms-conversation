@@ -7,9 +7,9 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
    *
    * @param array $params key-value pairs
    * @return CRM_Conversations_DAO_SmsConversationQuestion|NULL
-   *
+   */
   public static function create($params) {
-    $className = 'CRM_Conversations_DAO_SmsConversationQuestion';
+    $className = 'CRM_SmsConversation_DAO_Question';
     $entityName = 'SmsConversationQuestion';
     $hook = empty($params['id']) ? 'create' : 'edit';
 
@@ -20,6 +20,6 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
     CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
 
     return $instance;
-  } */
+  }
 
 }

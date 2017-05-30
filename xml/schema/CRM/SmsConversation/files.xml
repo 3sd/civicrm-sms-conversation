@@ -2,9 +2,9 @@
 
 <tables xmlns:xi="http://www.w3.org/2001/XInclude">
 
-<xi:include href="SmsConversation.xml" parse="xml" />
-<xi:include href="SmsConversationAction.xml" parse="xml" />
-<xi:include href="SmsConversationContact.xml" parse="xml" />
-<xi:include href="SmsConversationQuestion.xml" parse="xml" />
+<xi:include href="Conversation.xml" parse="xml" />
+<xi:include href="Action.xml" parse="xml" />
+<xi:include href="Contact.xml" parse="xml" />
+<xi:include href="Question.xml" parse="xml" />
 
 </tables>

@@ -122,30 +122,43 @@ function smsconversation_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) 
   _smsconversation_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
-// --- Functions below this ship commented out. Uncomment as required. ---
+function smsconversation_civicrm_post( $op, $objectName, $objectId, &$objectRef ){
+  //try and return as quickly as possible
+  if($objectName=='Activity' && $objectRef->activity_type_id == CRM_Core_OptionGroup::getValue('activity_type', 'Inbound SMS', 'name')){
+    // process inbound SMS
+    $activity = civicrm_api('Activity', 'getsingle', array('version'=>'3','id' => $objectId));
+    $p = new CRM_SmsConversation_Action($activity);
+    if ($p) {
+      $p->process();
+    }
+  }
+}
 
 /**
- * Implements hook_civicrm_preProcess().
+ * Implements hook_civicrm_entityTypes.
  *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
- *
-function smsconversation_civicrm_preProcess($formName, &$form) {
-
-} // */
-
-/**
- * Implements hook_civicrm_navigationMenu().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
- *
-function smsconversation_civicrm_navigationMenu(&$menu) {
-  _smsconversation_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => ts('The Page', array('domain' => 'civicrm.sms.conversations')),
-    'name' => 'the_page',
-    'url' => 'civicrm/the-page',
-    'permission' => 'access CiviReport,access CiviContribute',
-    'operator' => 'OR',
-    'separator' => 0,
-  ));
-  _smsconversation_civix_navigationMenu($menu);
-} // */
+ * @param array $entityTypes
+ *   Registered entity types.
+ */
+function smsconversation_civicrm_entityTypes(&$entityTypes) {
+  $entityTypes['CRM_SmsConversation_DAO_Action'] = array (
+    'name' => 'SmsConversationAction',
+    'class' => 'CRM_SmsConversation_DAO_Action',
+    'table' => 'civicrm_sms_conversation_action',
+  );
+  $entityTypes['CRM_SmsConversation_DAO_Contact'] = array (
+    'name' => 'SmsConversationContact',
+    'class' => 'CRM_SmsConversation_DAO_Contact',
+    'table' => 'civicrm_sms_conversation_contact',
+  );
+  $entityTypes['CRM_SmsConversation_DAO_Conversation'] = array (
+    'name' => 'SmsConversationConversation',
+    'class' => 'CRM_SmsConversation_DAO_Conversation',
+    'table' => 'civicrm_sms_conversation',
+  );
+  $entityTypes['CRM_SmsConversation_DAO_Question'] = array (
+    'name' => 'SmsConversationQuestion',
+    'class' => 'CRM_SmsConversation_DAO_Question',
+    'table' => 'civicrm_sms_conversation_question',
+  );
+}
