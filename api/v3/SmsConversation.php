@@ -14,7 +14,7 @@ function _civicrm_api3_sms_conversation_create_spec(&$spec) {
     'type' => CRM_Utils_Type::T_BOOLEAN,
   );
   $spec['start_question_id'] = array(
-    'api_required' => 1,
+    'api.required' => 1,
     'title' => 'ID of first question',
     'type' => CRM_Utils_Type::T_INT,
   );
@@ -89,10 +89,12 @@ function civicrm_api3_sms_conversation_start($params) {
  */
 function _civicrm_api3_sms_conversation_start_spec(&$spec) {
   $spec['contact_id'] = array(
+    'api.required' => 1,
     'title' => 'Contact ID',
     'api.aliases' => array('contact_id'),
   );
   $spec['conversation_id'] = array(
+    'api.required' => 1,
     'title' => 'Conversation ID',
     'api.aliases' => array('civicrm_sms_conversation.id'),
   );

@@ -96,12 +96,12 @@ function civicrm_api3_contact_sms($params) {
 function _civicrm_api3_contact_sms_spec(&$spec) {
   $spec['id'] = array(
     'title' => 'Contact ID',
-    'api_required' => 1,
+    'api.required' => 1,
     'api.aliases' => array('contact_id'),
   );
   $spec['text'] = array(
     'title' => "Text body of SMS",
-    'api_required' => 1,
+    'api.required' => 1,
     'type' => CRM_Utils_Type::T_STRING,
   );
 }

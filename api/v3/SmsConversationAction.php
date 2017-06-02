@@ -10,27 +10,27 @@
  */
 function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
   $spec['question_id'] = array (
-    'api_required' => 1,
+    'api.required' => 1,
     'title' => 'ID of question',
     'description' => 'FK to SmsConversationQuestion.id',
     'type' => CRM_Utils_Type::T_INT,
     // FIXME: This should lookup FK to sms_conversation_question.id
   );
   $spec['answer_pattern'] = array (
-    'api_required' => 1,
+    'api.required' => 1,
     'title' => 'Answer Pattern',
     'description' => 'Regex or simple text',
     'type' => CRM_Utils_Type::T_STRING,
   );
   $spec['action_type'] = array (
-    'api_required' => 1,
+    'api.required' => 1,
     'title' => 'Action Type',
     'description' => 'sms_conversation_action_type',
     'type' => CRM_Utils_Type::T_INT,
     // FIXME: This should lookup optiongroup: sms_conversation_action_type
   );
   $spec['action_data'] = array (
-    'api_required' => 1,
+    'api.required' => 1,
     'title' => 'Action Data',
     'description' => 'Depends on the action_type',
     'type' => CRM_Utils_Type::T_STRING,
