@@ -39,4 +39,15 @@
     <add>4.7</add>
   </field>
 
+  <field>
+    <name>text_invalid</name>
+    <title>Question Text when answer invalid</title>
+    <type>longtext</type>
+    <comment>Question Text when the answer is invalid</comment>
+    <html>
+      <type>Text</type>
+    </html>
+    <add>4.7</add>
+  </field>
+
 </table>

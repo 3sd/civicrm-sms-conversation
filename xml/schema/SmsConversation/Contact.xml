@@ -12,15 +12,23 @@
     <name>id</name>
     <type>int unsigned</type>
     <required>true</required>
-    <comment>Unique FK to civicrm_contact</comment>
+    <comment>Unique SmsConversationContact ID</comment>
     <add>4.7</add>
   </field>
   <primaryKey>
     <name>id</name>
     <autoincrement>true</autoincrement>
   </primaryKey>
+
+  <field>
+    <name>contact_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to civicrm_contact</comment>
+    <add>4.7</add>
+  </field>
   <foreignKey>
-    <name>id</name>
+    <name>contact_id</name>
     <table>civicrm_contact</table>
     <key>id</key>
     <add>4.7</add>
@@ -31,9 +39,16 @@
     <name>conversation_id</name>
     <type>int unsigned</type>
     <required>true</required>
-    <comment>SmsConversation ID</comment>
+    <comment>FK to SmsConversation ID</comment>
     <add>4.7</add>
   </field>
+  <foreignKey>
+    <name>conversation_id</name>
+    <table>civicrm_sms_conversation</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
 
   <field>
     <name>status_id</name>
@@ -70,5 +85,16 @@
     <add>4.7</add>
     <onDelete>CASCADE</onDelete>
   </foreignKey>
+
+  <field>
+    <name>conversation_record</name>
+    <title>Record of conversation</title>
+    <type>longtext</type>
+    <comment>Record of all questions, answers</comment>
+    <html>
+      <type>Text</type>
+    </html>
+    <add>4.7</add>
+  </field>
 
 </table>

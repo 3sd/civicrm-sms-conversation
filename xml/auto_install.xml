@@ -74,7 +74,7 @@
       <option_group_name>sms_conversation_status_type</option_group_name>
     </OptionValue>
     <OptionValue>
-      <label>Sent</label>
+      <label>In Progress</label>
       <value>2</value>
       <name>sent</name>
       <is_default>0</is_default>
@@ -90,6 +90,28 @@
       <name>failed</name>
       <is_default>0</is_default>
       <weight>3</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_status_type</option_group_name>
+    </OptionValue>
+    <OptionValue>
+      <label>Cancelled</label>
+      <value>4</value>
+      <name>failed</name>
+      <is_default>0</is_default>
+      <weight>4</weight>
+      <is_optgroup>0</is_optgroup>
+      <is_reserved>0</is_reserved>
+      <is_active>1</is_active>
+      <option_group_name>sms_conversation_status_type</option_group_name>
+    </OptionValue>
+    <OptionValue>
+      <label>Completed</label>
+      <value>5</value>
+      <name>failed</name>
+      <is_default>0</is_default>
+      <weight>5</weight>
       <is_optgroup>0</is_optgroup>
       <is_reserved>0</is_reserved>
       <is_active>1</is_active>

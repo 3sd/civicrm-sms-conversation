@@ -56,18 +56,8 @@
   <field>
     <name>action_data</name>
     <type>varchar</type>
+    <length>255</length>
     <comment>eg. group Id, custom field Id etc</comment>
-    <add>4.7</add>
-  </field>
-
-  <field>
-    <name>invalid_text</name>
-    <title>Invalid answer Text</title>
-    <type>longtext</type>
-    <comment>Invalid answer Text.</comment>
-    <html>
-      <type>Text</type>
-    </html>
     <add>4.7</add>
   </field>
 

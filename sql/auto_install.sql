@@ -15,7 +15,8 @@ CREATE TABLE `civicrm_sms_conversation_question` (
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique SmsConversationQuestion ID',
      `text` longtext    COMMENT 'Question Text.',
-     `timeout` int unsigned   DEFAULT 0 COMMENT 'Timeout in seconds'
+     `timeout` int unsigned   DEFAULT 0 COMMENT 'Timeout in seconds',
+     `text_invalid` longtext    COMMENT 'Question Text when the answer is invalid'
 ,
         PRIMARY KEY (`id`)
 
@@ -57,8 +58,7 @@ CREATE TABLE `civicrm_sms_conversation_action` (
      `question_id` int unsigned    COMMENT 'FK to sms_conversation_question.id',
      `answer_pattern` varchar(255)    COMMENT 'Regex pattern for answer.',
      `action_type` int unsigned    COMMENT 'FK to sms_conversation_action_type option group',
-     `action_data` varchar(10)    COMMENT 'eg. group Id, custom field Id etc',
-     `invalid_text` longtext    COMMENT 'Invalid answer Text.'
+     `action_data` varchar(255)    COMMENT 'eg. group Id, custom field Id etc'
 ,
         PRIMARY KEY (`id`)
 
@@ -76,12 +76,16 @@ CREATE TABLE `civicrm_sms_conversation_action` (
 CREATE TABLE `civicrm_sms_conversation_contact` (
 
 
-     `id` int unsigned NOT NULL  COMMENT 'Unique FK to civicrm_contact',
-     `conversation_id` int unsigned NOT NULL   COMMENT 'SmsConversation ID',
+     `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique SmsConversationContact ID',
+     `contact_id` int unsigned NOT NULL   COMMENT 'FK to civicrm_contact',
+     `conversation_id` int unsigned NOT NULL   COMMENT 'FK to SmsConversation ID',
      `status_id` int unsigned NOT NULL   COMMENT 'Conversation Status ID',
      `current_question_id` int unsigned    COMMENT 'FK to sms_conversation_question.id',
-     `source_contact_id` int unsigned    COMMENT 'Id of contact that started the conversation'
+     `source_contact_id` int unsigned    COMMENT 'Id of contact that started the conversation',
+     `conversation_record` longtext    COMMENT 'Record of all questions, answers'
+,
+        PRIMARY KEY (`id`)
 
 
-,          CONSTRAINT FK_civicrm_sms_conversation_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_current_question_id FOREIGN KEY (`current_question_id`) REFERENCES `civicrm_sms_conversation_question`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_source_contact_id FOREIGN KEY (`source_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
+,          CONSTRAINT FK_civicrm_sms_conversation_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_conversation_id FOREIGN KEY (`conversation_id`) REFERENCES `civicrm_sms_conversation`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_current_question_id FOREIGN KEY (`current_question_id`) REFERENCES `civicrm_sms_conversation_question`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_source_contact_id FOREIGN KEY (`source_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
