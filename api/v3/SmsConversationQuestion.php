@@ -13,6 +13,11 @@ function _civicrm_api3_sms_conversation_question_create_spec(&$spec) {
   $spec['text']['title'] = 'Question Text';
   $spec['timeout']['title'] = 'Timeout';
   $spec['timeout']['description'] = 'Optional (default 0)';
+  $spec['invalid_text'] = array (
+    'title' => 'Invalid Text',
+    'description' => 'If left blank no SMS will be sent on invalid and the conversation will end.',
+    'type' => CRM_Utils_Type::T_STRING,
+  );
 }
 
 /**

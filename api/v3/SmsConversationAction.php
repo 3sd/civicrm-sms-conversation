@@ -19,7 +19,7 @@ function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
   $spec['answer_pattern'] = array (
     'api_required' => 1,
     'title' => 'Answer Pattern',
-    'description' => 'Regex',
+    'description' => 'Regex or simple text',
     'type' => CRM_Utils_Type::T_STRING,
   );
   $spec['action_type'] = array (
@@ -33,11 +33,6 @@ function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
     'api_required' => 1,
     'title' => 'Action Data',
     'description' => 'Depends on the action_type',
-    'type' => CRM_Utils_Type::T_STRING,
-  );
-  $spec['invalid_text'] = array (
-    'title' => 'Invalid Text',
-    'description' => 'If left blank no SMS will be sent on invalid and the conversation will end.',
     'type' => CRM_Utils_Type::T_STRING,
   );
 }

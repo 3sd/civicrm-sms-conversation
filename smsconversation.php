@@ -127,9 +127,9 @@ function smsconversation_civicrm_post( $op, $objectName, $objectId, &$objectRef 
   if($objectName=='Activity' && $objectRef->activity_type_id == CRM_Core_OptionGroup::getValue('activity_type', 'Inbound SMS', 'name')){
     // process inbound SMS
     $activity = civicrm_api('Activity', 'getsingle', array('version'=>'3','id' => $objectId));
-    $p = new CRM_SmsConversation_Action($activity);
+    $p = new CRM_SmsConversation_Processor($activity);
     if ($p) {
-      $p->process();
+      $p->inbound();
     }
   }
 }

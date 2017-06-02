@@ -2,84 +2,86 @@
 
 class CRM_SmsConversation_Action {
 
-  function __construct($activity) {
-    if (!isset($activity['source_contact_id'])) {
-      Civi::log('SmsConversation_Action::_construct: Missing parameters!');
-      return FALSE;
+  /**
+   * Check if the SMS is a valid answer for the action
+   * @param $action
+   * @param $sms
+   *
+   * @return bool
+   */
+  static function validAnswer($action, $sms) {
+    // answer_pattern will be in regex format: eg /abc/i
+    // If this is extended to support alternative matching (eg. optionvalue) we would add a switch statement matching on the first character.
+    if (preg_match($action['answer_pattern'], $sms)) {
+      return $action;
     }
-    $this->inboundSMSActivityTypeId = CRM_Core_OptionGroup::getValue('activity_type', 'Inbound SMS', 'name');
-    $this->sourceContactId = $activity['source_contact_id'];
-    $this->activityDateTime = $activity['activity_date_time'];
-    $this->sms = $activity['details'];
+    return FALSE;
   }
 
-  function process() {
-    // Is contact in a conversation? Get the question ID
-    try {
-      $convContact = civicrm_api3('SmsConversationContact', 'getsingle', array(
-        'contact_id' => $this->sourceContactId,
-      ));
-    }
-    catch (Exception $e) {
+  /**
+   * Get all actions for question ID
+   * @param $questionId
+   *
+   * @return bool
+   */
+  static function get($questionId) {
+    // Contact is having a conversation, get the possible actions for the question
+    $convActions = civicrm_api3('SmsConversationAction', 'get', array(
+        'question_id' => $questionId,
+      )
+    );
+
+    if (!empty($convActions['is_error']) || !isset($convActions['values'])) {
+      // Something went wrong getting actions
       return FALSE;
     }
-
-    // Store conversation Id
-    $this->conversationId = $convContact['conversation_id'];
-
-    // Contact is having a conversation, get the action for question ID
-    try {
-      $convAction = civicrm_api3('SmsConversationAction', 'getsingle', array(
-        'question_id' => $convContact->question_id,
-      ));
-    }
-    catch (Exception $e) {
-      Civi::log('CRM_SmsConversation_Action::process No action found for question id: '. $convContact->question_id);
-      return FALSE;
-    }
-
-    // parse Answer
-    $answer = $this->parseAnswer();
-    if ($answer) {
-      // Valid answer
-      $this->doAction();
-    }
-    else {
-      // Invalid answer
-      $this->invalidAnswer($convAction);
-    }
-
+    return $convActions['values'];
   }
 
-  function parseAnswer() {
-    $answer = $this->answer;
-    if (!empty($answer)) {
-      // Valid answer, return parsed answer.
-      // TODO
-      return $answer;
-    }
-    else {
-      // Invalid answer
-      return FALSE;
-    }
-  }
-
-  function invalidAnswer($convAction) {
-    // Send invalid_text as new SMS to contact
-    // TODO Send SMS
-    if (!empty($convAction['invalid_text'])) {
-      Civi::log('Send invalid answer SMS'); // FIXME: debug log
-    }
-    else {
-      Civi::log('End conversation'); // FIXME: debug log
-      // TODO: End conversation
-    }
-  }
-
-  function doAction() {
+  /**
+   * Process action
+   * @param $action
+   *
+   * @return bool
+   */
+  static function processAction($action, $contactId, $conversationId) {
     // Perform action based on action_type, action_data and answer
-    // TODO doAction
-    Civi::log('doAction'); // FIXME: debug log
+    // TODO processAction
+    Civi::log('processAction');
+    if (!isset($action['action_type'])) {
+      return FALSE;
+    }
+
+    switch ($action['action_type']) {
+      case 1: // Ask another question
+        return CRM_SmsConversation_Action::actionAskQuestion($action, $contactId);
+        Civi::log('Ask another question not implemented');
+        break;
+      case 2: // Add contact to group
+        Civi::log('Add contact to group not implemented');
+        break;
+      case 3: // Record answer in custom field
+        Civi::log('Record answer in custom field not implemented');
+        break;
+      case 4: // Trigger CiviRule
+        Civi::log('Trigger CiviRule not implemented');
+        break;
+      default:
+        Civi::log('SmsConversationAction::processAction: '.$action['action_type'].' not implemented');
+        CRM_SmsConversation::end($contactId, $conversationId);
+
+    }
+  }
+
+  /**
+   * Process the ask question action
+   * @param $action
+   */
+  static function actionAskQuestion($action, $contactId) {
+    // Trigger another question
+    // action_date = next question_id
+    // Trigger the question
+    CRM_SmsConversation_Question::ask($action['question_id'], $contactId);
   }
 
 }
