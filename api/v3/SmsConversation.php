@@ -76,7 +76,7 @@ function _civicrm_api3_sms_conversation_get_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_start($params) {
-  return CRM_SmsConversation::start($params['contact_id'], $params['conversation_id']);
+  return CRM_SmsConversation_BAO_Conversation::start($params['contact_id'], $params['conversation_id']);
 }
 
 /**

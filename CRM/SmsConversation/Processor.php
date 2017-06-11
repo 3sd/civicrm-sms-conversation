@@ -18,20 +18,20 @@ class CRM_SmsConversation_Processor {
   function inbound() {
     // Is contact in a conversation? Get the question ID
 
-    $convContact = CRM_SmsConversation_Contact::getCurrentConversation($this->sourceContactId);
+    $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($this->sourceContactId);
     if (!$convContact) {
       // No conversation
       return FALSE;
     }
 
     // Get the question
-    $convQuestion = CRM_SmsConversation_Question::get($convContact['current_question_id']);
+    $convQuestion = CRM_SmsConversation_BAO_Question::getQuestion($convContact['current_question_id']);
 
     // Store conversation Id
     $this->conversationId = $convContact['conversation_id'];
 
     // Get actions for current question
-    $convActions = CRM_SmsConversation_Action::get($convContact['current_question_id']);
+    $convActions = CRM_SmsConversation_BAO_Action::getAction($convContact['current_question_id']);
     if (!$convActions) {
       return FALSE;
     }
@@ -44,7 +44,7 @@ class CRM_SmsConversation_Processor {
     }
     // Get an array of valid actions
     foreach ($convActions as $action) {
-      $validAction = CRM_SmsConversation_Action::validAnswer($action, $this->sms);
+      $validAction = CRM_SmsConversation_BAO_Action::validAnswer($action, $this->sms);
       if ($validAction) {
         $validActions[] = $validAction;
       }
@@ -53,7 +53,7 @@ class CRM_SmsConversation_Processor {
     $isValidAnswer = count($validActions);
 
     // Record the conversation
-    CRM_SmsConversation_Contact::recordConversation($convContact, $convQuestion, $this->sms, $isValidAnswer);
+    CRM_SmsConversation_BAO_Contact::recordConversation($convContact, $convQuestion, $this->sms, $isValidAnswer);
 
     if (!$isValidAnswer) {
       // Send the invalid message
@@ -62,7 +62,7 @@ class CRM_SmsConversation_Processor {
     else {
       // Got valid actions, process them
       foreach ($validActions as $action) {
-        CRM_SmsConversation_Action::processAction($action, $this->sourceContactId, $this->conversationId);
+        CRM_SmsConversation_BAO_Action::processAction($action, $this->sourceContactId, $this->conversationId);
       }
     }
   }
