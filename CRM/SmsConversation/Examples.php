@@ -2,11 +2,17 @@
 
 class CRM_SmsConversation_Examples {
 
-  function addExampleConversation1() {
+  static function addExampleConversation1() {
     // Add question
     $question = civicrm_api3('SmsConversationQuestion', 'create', array(
       'text' => "Can you tell us what you are up to at the moment, are you working, in education or doing something else?",
       'text_invalid' => "Sorry I didn't understand, please reply a for working or b for education",
+      'timeout' => 0,
+    ));
+
+    $question2 = civicrm_api3('SmsConversationQuestion', 'create', array(
+      'text' => "Thankyou for your time",
+      'text_invalid' => "",
       'timeout' => 0,
     ));
 
@@ -23,7 +29,7 @@ class CRM_SmsConversation_Examples {
       'question_id' => $question['id'],
       'answer_pattern' => "/working|a\s/i",
       'action_type' => 1, // Ask another question
-      'action_data' => "", // FIXME
+      'action_data' => $question2['id'],
     ));
 
     // Action for answer b|education
@@ -34,9 +40,10 @@ class CRM_SmsConversation_Examples {
       'action_data' => "5", // Group ID 5 (education)
     ));
 
+    return TRUE;
   }
 
-  function addExampleConversation2() {
+  static function addExampleConversation2() {
     // Add question
     $question = civicrm_api3('SmsConversationQuestion', 'create', array(
       'text' => "What is your favourite colour?",
@@ -59,7 +66,7 @@ class CRM_SmsConversation_Examples {
     // Action for question 1
     $action = civicrm_api3('SmsConversationAction', 'create', array(
       'question_id' => $question['id'],
-      'answer_pattern' => "",
+      'answer_pattern' => "/.*/",
       'action_type' => 3, // Record in a customfield
       'action_data' => 8, // Custom field with ID 8 (probably shouldn't be hardcoded)
     ));
@@ -67,7 +74,7 @@ class CRM_SmsConversation_Examples {
     // Action for question 1
     $action = civicrm_api3('SmsConversationAction', 'create', array(
       'question_id' => $question['id'],
-      'answer_pattern' => "",
+      'answer_pattern' => "/.*/",
       'action_type' => 1, // Ask another question
       'action_data' => $question2['id'], // Custom field with ID 7 (probably shouldn't be hardcoded)
     ));
@@ -75,7 +82,7 @@ class CRM_SmsConversation_Examples {
     // Action for question 2
     $action = civicrm_api3('SmsConversationAction', 'create', array(
       'question_id' => $question2['id'],
-      'answer_pattern' => "",
+      'answer_pattern' => "/.*/",
       'action_type' => 3, // Record in a customfield
       'action_data' => 9, // Custom field with ID 8 (probably shouldn't be hardcoded)
     ));
@@ -83,9 +90,11 @@ class CRM_SmsConversation_Examples {
     // Action for question 2
     $action = civicrm_api3('SmsConversationAction', 'create', array(
       'question_id' => $question2['id'],
-      'answer_pattern' => "",
+      'answer_pattern' => "/.*/",
       'action_type' => 1, // Ask another question
       'action_data' => $question3['id'], // Custom field with ID 7 (probably shouldn't be hardcoded)
     ));
+
+    return TRUE;
   }
 }

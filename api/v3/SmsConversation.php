@@ -100,3 +100,10 @@ function _civicrm_api3_sms_conversation_start_spec(&$spec) {
   );
 }
 
+function civicrm_api3_sms_conversation_example1($params) {
+  return CRM_SmsConversation_Examples::addExampleConversation1();
+}
+
+function civicrm_api3_sms_conversation_example2($params) {
+  return CRM_SmsConversation_Examples::addExampleConversation2();
+}
