@@ -40,6 +40,11 @@ class CRM_SmsConversation_Examples {
       'action_data' => "5", // Group ID 5 (education)
     ));
 
+    $conversation = civicrm_api3('SmsConversation', 'create', array(
+      'start_question_id' => $question['id'],
+      'is_active' => 1,
+    ));
+
     return TRUE;
   }
 
@@ -93,6 +98,11 @@ class CRM_SmsConversation_Examples {
       'answer_pattern' => "/.*/",
       'action_type' => 1, // Ask another question
       'action_data' => $question3['id'], // Custom field with ID 7 (probably shouldn't be hardcoded)
+    ));
+
+    $conversation = civicrm_api3('SmsConversation', 'create', array(
+      'start_question_id' => $question['id'],
+      'is_active' => 1,
     ));
 
     return TRUE;
