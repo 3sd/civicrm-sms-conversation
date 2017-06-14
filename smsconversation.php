@@ -45,6 +45,26 @@ function smsconversation_civicrm_postInstall() {
  */
 function smsconversation_civicrm_uninstall() {
   _smsconversation_civix_civicrm_uninstall();
+
+  // Delete action_type option group
+  $result = civicrm_api3('OptionGroup', 'get', array(
+    'name' => "sms_conversation_action_type",
+  ));
+  if (!empty($result['id'])) {
+    $result = civicrm_api3('OptionGroup', 'delete', array(
+      'id' => $result['id'],
+    ));
+  }
+
+  // Delete status_type option group
+  $result = civicrm_api3('OptionGroup', 'get', array(
+    'name' => "sms_conversation_status_type",
+  ));
+  if (!empty($result['id'])) {
+    $result = civicrm_api3('OptionGroup', 'delete', array(
+      'id' => $result['id'],
+    ));
+  }
 }
 
 /**
