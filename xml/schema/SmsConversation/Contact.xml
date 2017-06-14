@@ -56,6 +56,9 @@
     <required>true</required>
     <comment>Conversation Status ID</comment>
     <add>4.7</add>
+    <pseudoconstant>
+      <optionGroupName>sms_conversation_status_type</optionGroupName>
+    </pseudoconstant>
   </field>
 
   <field>

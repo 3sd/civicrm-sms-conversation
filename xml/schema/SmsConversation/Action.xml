@@ -51,6 +51,9 @@
     <type>int unsigned</type>
     <comment>FK to sms_conversation_action_type option group</comment>
     <add>4.7</add>
+    <pseudoconstant>
+      <optionGroupName>sms_conversation_status_type</optionGroupName>
+    </pseudoconstant>
   </field>
 
   <field>
