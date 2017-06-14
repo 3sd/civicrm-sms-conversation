@@ -13,6 +13,14 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     $entityName = 'SmsConversationContact';
     $hook = empty($params['id']) ? 'create' : 'edit';
 
+    $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'In Progress');
+
+    if (isset($params['status_id'])) {
+      if ($params['status_id'] == $inProgressId) {
+        // TODO: Check if we have an existing conversation in progress, return false if we do.
+      }
+    }
+
     CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
     $instance = new $className();
     $instance->copyValues($params);

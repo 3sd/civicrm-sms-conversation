@@ -54,6 +54,11 @@ function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_contact_create($params) {
+  $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'In Progress');
+  // Force status to "In Progress" if not specified.
+  if (!isset($params['status_id'])) {
+    $params['status_id'] = $inProgressId;
+  }
   return _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Contact', $params);
 }
 

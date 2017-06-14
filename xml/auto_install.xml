@@ -64,8 +64,8 @@
     </OptionValue>
     <OptionValue>
       <label>Pending</label>
+      <name>Pending</name>
       <value>1</value>
-      <name>pending</name>
       <is_default>0</is_default>
       <weight>1</weight>
       <is_optgroup>0</is_optgroup>
@@ -75,8 +75,8 @@
     </OptionValue>
     <OptionValue>
       <label>In Progress</label>
+      <name>In Progress</name>
       <value>2</value>
-      <name>sent</name>
       <is_default>0</is_default>
       <weight>2</weight>
       <is_optgroup>0</is_optgroup>
@@ -86,8 +86,8 @@
     </OptionValue>
     <OptionValue>
       <label>Failed</label>
+      <name>Failed</name>
       <value>3</value>
-      <name>failed</name>
       <is_default>0</is_default>
       <weight>3</weight>
       <is_optgroup>0</is_optgroup>
@@ -97,8 +97,8 @@
     </OptionValue>
     <OptionValue>
       <label>Cancelled</label>
+      <name>Cancelled</name>
       <value>4</value>
-      <name>failed</name>
       <is_default>0</is_default>
       <weight>4</weight>
       <is_optgroup>0</is_optgroup>
@@ -108,8 +108,8 @@
     </OptionValue>
     <OptionValue>
       <label>Completed</label>
+      <name>Completed</name>
       <value>5</value>
-      <name>failed</name>
       <is_default>0</is_default>
       <weight>5</weight>
       <is_optgroup>0</is_optgroup>
