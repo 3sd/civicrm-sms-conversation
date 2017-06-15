@@ -28,7 +28,10 @@
             </p>
           {/foreach}
       {/if}
-      <a href="{crmURL p='civicrm/sms/conversation/action/add' q="question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"></i></a>
+      <!-- add http://jsfiddle.net/LxauG/606/ here for nice form controls -->
+      <a href="{crmURL p='civicrm/sms/conversation/action/add' q="action_type=3&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> record in field</i></a>
+      <a href="{crmURL p='civicrm/sms/conversation/action/add' q="action_type=2&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> add to group</i></a>
+      <a href="{crmURL p='civicrm/sms/conversation/action/add' q="action_type=1&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> go to question</i></a>
       </td>
     </tr>
   {/foreach}
