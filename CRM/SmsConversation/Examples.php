@@ -110,12 +110,6 @@ class CRM_SmsConversation_Examples {
       'sequential' => 1,
       'name' => "Mother_s_Maiden_Name",
     ));
-    $action = civicrm_api3('SmsConversationAction', 'create', array(
-      'question_id' => $question2['id'],
-      'answer_pattern' => "/.*/",
-      'action_type' => 1, // Ask another question
-      'action_data' => $maidenNameCustomField['id'], // Custom field ID
-    ));
 
     // Action for question 2 (ask another question)
     $action = civicrm_api3('SmsConversationAction', 'create', array(
