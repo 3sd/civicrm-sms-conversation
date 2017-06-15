@@ -13,6 +13,7 @@ class CRM_SmsConversation_Examples {
       'text' => "Can you tell us what you are up to at the moment, are you working, in education or doing something else?",
       'text_invalid' => "Sorry I didn't understand, please reply a for working or b for education",
       'timeout' => 0,
+      'conversation_id' => $conversation['id'],
     ));
 
     $convParams = $conversation['values'][$conversation['id']];
@@ -23,6 +24,7 @@ class CRM_SmsConversation_Examples {
       'text' => "Thankyou for your time",
       'text_invalid' => "",
       'timeout' => 0,
+      'conversation_id' => $conversation['id'],
     ));
 
     // Action for any valid answer
@@ -63,6 +65,7 @@ class CRM_SmsConversation_Examples {
       'text' => "What is your favourite colour?",
       'text_invalid' => "",
       'timeout' => 0,
+      'conversation_id' => $conversation['id'],
     ));
 
     $convParams = $conversation['values'][$conversation['id']];
@@ -73,12 +76,14 @@ class CRM_SmsConversation_Examples {
       'text' => "What is your mother's maiden name?",
       'text_invalid' => "",
       'timeout' => 0,
+      'conversation_id' => $conversation['id'],
     ));
 
     $question3 = civicrm_api3('SmsConversationQuestion', 'create', array(
       'text' => "Thankyou for your time",
       'text_invalid' => "",
       'timeout' => 0,
+      'conversation_id' => $conversation['id'],
     ));
 
     // Action for question 1
@@ -103,7 +108,6 @@ class CRM_SmsConversation_Examples {
       'action_type' => 1, // Ask another question
       'action_data' => $maidenNameCustomField['id'], // Custom field ID
     ));
-
 
     return TRUE;
   }

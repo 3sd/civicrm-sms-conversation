@@ -3,7 +3,6 @@ DROP TABLE IF EXISTS `civicrm_sms_conversation_action`;
 DROP TABLE IF EXISTS `civicrm_sms_conversation_contact`;
 DROP TABLE IF EXISTS `civicrm_sms_conversation`;
 DROP TABLE IF EXISTS `civicrm_sms_conversation_question`;
-SET foreign_key_checks = 1;
 
 -- /*******************************************************
 -- *
@@ -94,3 +93,5 @@ CREATE TABLE `civicrm_sms_conversation_contact` (
 
      ,          CONSTRAINT FK_civicrm_sms_conversation_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_conversation_id FOREIGN KEY (`conversation_id`) REFERENCES `civicrm_sms_conversation`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_current_question_id FOREIGN KEY (`current_question_id`) REFERENCES `civicrm_sms_conversation_question`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_source_contact_id FOREIGN KEY (`source_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
+
+SET foreign_key_checks = 1;
