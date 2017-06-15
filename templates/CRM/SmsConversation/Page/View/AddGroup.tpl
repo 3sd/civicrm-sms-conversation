@@ -1,1 +1,1 @@
-<p>Add to group #</p>
+Add to group <i>'{$groups[$action.action_data]}'</i>

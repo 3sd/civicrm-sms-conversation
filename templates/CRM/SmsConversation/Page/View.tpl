@@ -1,17 +1,15 @@
 
 <table class="layout display">
   <tr>
-    <th>
-      <p>Question</p>
+    <th>Question
     </th>
-    <th>
-      <p>Match <i class="crm-i fa-arrow-right"></i> Action</p>
+    <th>Match <i class="crm-i fa-arrow-right"></i> Action
     </th>
   </tr>
   {foreach from=$orderedQuestions item=question}
     <tr class="{cycle values='odd,even'}-row crm-report">
       <td>
-        <p><b>[{$question.number}] {$question.text}</b>
+        <p><b>{$question.number}. {$question.text}</b>
         <a href="{crmURL p='civicrm/sms/conversation/question/edit' q="id=`$question.id`"}" title="edit question"><i class="crm-i fa-pencil"></i></a>
         </p>
       </td>

@@ -39,20 +39,17 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
     $fieldIds = [];
 
     foreach($this->actions as $action){
-      if($action['action_type'] == 1){ //
+      // Get the next question so we can order questions appropriatley
+      if($action['action_type'] == 1){
         $this->nextQuestionsMap[$action['question_id']][]=$action['action_data'];
       }
+      // Get the group id so we can retreive the group title
       if($action['action_type'] == 2){
         $groupIds[] = $action['action_data'];
       }
-      if($action['action_type'] == 3){
-        $fieldIds[] = $action['action_data'];
-      }
     }
 
-    var_dump($groupIds);
-    var_dump($fieldIds);
-
+    $this->contactFieldTitles = array_column(civicrm_api3('Contact', 'getfields')['values'], 'title', 'name');
 
     // ...order the questions appropriatley
     $this->questionNumber = 1;
@@ -70,6 +67,12 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
     $this->assign('conversation', $this->conversation);
     $this->assign('orderedQuestions', $this->orderedQuestions);
     $this->assign('unorderedQuestions', $this->unorderedQuestions);
+    $this->assign('contactFieldTitles', $this->contactFieldTitles);
+
+    if($groupIds){
+      $groups = array_column(civicrm_api3('Group', 'get', ['id' => ['IN' => $groupIds]])['values'], 'title', 'id');
+      $this->assign('groups', $groups);
+    }
 
 
     // Get the questions
@@ -96,6 +99,7 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
     if($pattern == '/.*/'){
       return 'anything';
     }
+    return $pattern;
 
   }
 }

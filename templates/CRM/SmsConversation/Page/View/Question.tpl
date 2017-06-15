@@ -1,1 +1,1 @@
-Go to question [{$unorderedQuestions[$action.action_data].number}]
+Go to question {$unorderedQuestions[$action.action_data].number}

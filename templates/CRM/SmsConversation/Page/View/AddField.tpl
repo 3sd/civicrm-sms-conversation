@@ -1,1 +1,1 @@
-Add to field {$action.action_data}
+Add to field <i>'{$contactFieldTitles[$action.action_data]}'</i>

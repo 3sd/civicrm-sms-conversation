@@ -21,8 +21,8 @@ class CRM_SmsConversation_Examples {
     $conversation = civicrm_api3('SmsConversation', 'create', $convParams);
 
     $question2 = civicrm_api3('SmsConversationQuestion', 'create', array(
-      'text' => "Do you want to be asked questions by SMS in future (answer Yes or No)?",
-      'text_invalid' => "Please respond with Yes or No",
+      'text' => "What is your post code?",
+      'text_invalid' => "Sorry. I couldn't understand your post code. Please try again.",
       'timeout' => 0,
       'conversation_id' => $conversation['id'],
     ));
@@ -42,7 +42,7 @@ class CRM_SmsConversation_Examples {
       'question_id' => $question['id'],
       'answer_pattern' => "/working|education|a\s|b\s/i",
       'action_type' => 3, // Record in a custom field
-      'action_data' => "custom_$uptoCustomField", // Custom field ID (eg. custom_7)
+      'action_data' => "custom_".$uptoCustomField['id'],
     ));
 
     // Action for answer a|working
@@ -64,9 +64,9 @@ class CRM_SmsConversation_Examples {
     // Action for any valid answer
     $action = civicrm_api3('SmsConversationAction', 'create', array(
       'question_id' => $question2['id'],
-      'answer_pattern' => "/yes|no|0|1|true|false\s/i",
+      'answer_pattern' => "/.*/",
       'action_type' => 3, // Record in a custom field
-      'action_data' => "do_not_sms", // Field ID
+      'action_data' => "postal_code", // Field ID
     ));
 
     return TRUE;
