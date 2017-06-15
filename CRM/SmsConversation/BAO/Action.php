@@ -104,4 +104,30 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
 
     CRM_SmsConversation_BAO_Question::ask($action['question_id'], $contactId, $convContact['source_contact_id']);
   }
+
+  /**
+   * Add contact to group specified by ID in action_data
+   * @param $action
+   * @param $contactId
+   */
+  static function actionAddContactToGroup($action, $contactId) {
+    $groupResult = civicrm_api3('GroupContact', 'create', array(
+      'group_id' => $action['action_data'],
+      'contact_id' => $contactId,
+    ));
+    if (empty($groupResult['is_error'])) {
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Record answer in custom field specified by ID in action_data
+   * @param $action
+   * @param $contactId
+   */
+  static function actionRecordInCustomField($action, $contactId) {
+
+  }
+
 }
