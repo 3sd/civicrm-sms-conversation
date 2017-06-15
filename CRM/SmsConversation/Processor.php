@@ -57,7 +57,7 @@ class CRM_SmsConversation_Processor {
 
     if (!$isValidAnswer) {
       // Send the invalid message
-      CRM_SmsConversation_Processor::sendSMS($this->sourceContactId, $convQuestion['text_invalid']);
+      CRM_SmsConversation_Processor::sendSMS($this->sourceContactId, $convQuestion['text_invalid'], $convContact['source_contact_id']);
     }
     else {
       // Got valid actions, process them
@@ -74,9 +74,10 @@ class CRM_SmsConversation_Processor {
    *
    * @return bool
    */
-  static function sendSMS($contactId, $text) {
+  static function sendSMS($contactId, $text, $sourceContactId = NULL) {
     $result = civicrm_api3('Contact', 'sms', array(
-      'id' => $contactId,
+      'contact_id' => $contactId,
+      'source_contact_id' => $sourceContactId,
       'text' => $text,
     ));
 

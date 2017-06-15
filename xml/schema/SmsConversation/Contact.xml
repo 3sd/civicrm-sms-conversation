@@ -100,4 +100,18 @@
     <add>4.7</add>
   </field>
 
+  <field>
+    <name>scheduled_date</name>
+    <type>timestamp</type>
+    <default>CURRENT_TIMESTAMP</default>
+    <required>false</required>
+    <title>SMS Conversation Scheduled Date</title>
+    <comment>Date and time this SMS Conversation was scheduled.</comment>
+    <add>4.7</add>
+    <html>
+      <type>Select Date</type>
+      <formatType>activityDateTime</formatType>
+    </html>
+  </field>
+
 </table>

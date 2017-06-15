@@ -22,49 +22,6 @@ class CRM_SmsConversation_BAO_Conversation extends CRM_SmsConversation_DAO_Conve
     return $instance;
   }
 
-  static function start($contactId, $conversationId, $sourceContactId) {
-    // Don't allow another conversation to start
-    if (CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId)) {
-      throw Exception('SmsConversation Conversation already in progress');
-    }
-
-    // Create a new conversation
-    CRM_SmsConversation_BAO_Contact::startConversation($contactId, $conversationId, $sourceContactId);
-  }
-
-  /**
-   * End the conversation
-   * @param $contactId
-   * @param $conversationId
-   * @param string $status
-   *
-   * @return bool
-   */
-  static function end($contactId, $conversationId, $status = 'Completed') {
-    return CRM_SmsConversation_BAO_Conversation::updateStatus($contactId, $conversationId, $status);
-  }
-
-  /**
-   * Update the conversation status
-   * @param $contactId
-   * @param $conversationId
-   * @param $status (crm_smsconversation_status_type)
-   *
-   * @return bool
-   */
-  static function updateStatus($contactId, $conversationId, $status) {
-    // Mark the conversation as $status
-    $convContact = civicrm_api3('SmsConversationContact', 'create', array(
-      'conversation_id' => $conversationId,
-      'contact_id' => $contactId,
-      'status_id' => $status,
-    ));
-    if (empty($convContact['is_error'])) {
-      return TRUE;
-    }
-    return FALSE;
-  }
-
   /**
    * Get the conversation
    * @param $conversationId
@@ -76,7 +33,7 @@ class CRM_SmsConversation_BAO_Conversation extends CRM_SmsConversation_DAO_Conve
       'id' => $conversationId,
     ));
     if (empty($conversation['is_error'])) {
-      return $conversation;
+      return $conversation['values'][$conversationId];
     }
     return FALSE;
   }

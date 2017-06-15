@@ -63,8 +63,8 @@
       <option_group_name>sms_conversation_action_type</option_group_name>
     </OptionValue>
     <OptionValue>
-      <label>Pending</label>
-      <name>Pending</name>
+      <label>Scheduled</label>
+      <name>Scheduled</name>
       <value>1</value>
       <is_default>0</is_default>
       <weight>1</weight>

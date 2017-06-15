@@ -13,14 +13,6 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     $entityName = 'SmsConversationContact';
     $hook = empty($params['id']) ? 'create' : 'edit';
 
-    $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'In Progress');
-
-    if (isset($params['status_id'])) {
-      if ($params['status_id'] == $inProgressId) {
-        // TODO: Check if we have an existing conversation in progress, return false if we do.
-      }
-    }
-
     CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
     $instance = new $className();
     $instance->copyValues($params);
@@ -39,11 +31,37 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
   static function getCurrentConversation($contactId) {
     // Get "In Progress" conversation for contact
     // FIXME: There should not be more than one, if there is we are getting the oldest one.  This behaviour may need to change.
+    $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'In Progress');
     $convContact = civicrm_api3('SmsConversationContact', 'get', array(
       'sequential' => 1,
       'contact_id' => $contactId,
-      'status_id' => 2, // In Progress
+      'status_id' => $inProgressId,
       'options' => array('limit' => 1, 'sort' => "id ASC"),
+    ));
+
+    if (empty($convContact['is_error']) && !empty($convContact['count'])) {
+      return $convContact['values'][0];
+    }
+    else {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Get the next scheduled conversation for a contact
+   * @param $contactId
+   *
+   * @return array|bool
+   */
+  static function getNextScheduledConversation($contactId) {
+    // Get next "Scheduled" conversation for contact
+    // We select the earliest by scheduled date, then earliest by Id and select the first one
+    $scheduledId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'Scheduled');
+    $convContact = civicrm_api3('SmsConversationContact', 'get', array(
+      'sequential' => 1,
+      'contact_id' => $contactId,
+      'status_id' => $scheduledId,
+      'options' => array('limit' => 1, 'sort' => "scheduled_date ASC,id ASC"),
     ));
 
     if (empty($convContact['is_error']) && !empty($convContact['count'])) {
@@ -61,27 +79,68 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    *
    * @return bool
    */
-  static function startConversation($contactId, $conversationId, $sourceContactId) {
-    $convContact = civicrm_api3('SmsConversationContact', 'create', array(
-      'conversation_id' => $conversationId,
-      'contact_id' => $contactId,
-      'source_contact_id' => $sourceContactId,
-      'status_id' => 'In Progress',
-    ));
+  static function startConversation($contactId, $id = NULL) {
+    // Don't allow another conversation to start
+    if (CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId)) {
+      throw new CRM_Core_Exception('This contact already has a conversation in progress');
+    }
+
+    $convContact = CRM_SmsConversation_BAO_Contact::getNextScheduledConversation($contactId);
+
+    CRM_SmsConversation_BAO_Contact::updateStatus($convContact['id'], 'In Progress');
+
+    if (empty($convContact)) {
+      throw new CRM_Core_Exception('No scheduled conversations found');
+    }
+
     if (!empty($convContact['is_error'])) {
       return FALSE;
     }
 
     // Ask the first question
-    $conversation = CRM_SmsConversation_BAO_Conversation::get($conversationId);
+    $conversation = CRM_SmsConversation_BAO_Conversation::getConversation($convContact['conversation_id']);
     if (!$conversation['is_active']) {
       return FALSE;
     }
 
     // Get the question
-    $question = CRM_SmsConversation_BAO_Question::get($conversation['start_question_id']);
+    $question = CRM_SmsConversation_BAO_Question::getQuestion($conversation['start_question_id']);
     // Ask the question
-    return CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId);
+    return CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, $convContact['source_contact_id']);
+  }
+
+  /**
+   * End the conversation
+   * @param $id
+   * @param string $status
+   *
+   * @return bool
+   */
+  static function endConversation($id, $status = 'Completed') {
+    return CRM_SmsConversation_BAO_Contact::updateStatus($id, $status);
+  }
+
+  /**
+   * Update the conversation status
+   * @param $id
+   * @param $status (crm_smsconversation_status_type)
+   *
+   * @return bool
+   */
+  static function updateStatus($id, $status) {
+    // Mark the conversation as $status
+    $statusId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', $status);
+    if (empty($statusId)) {
+      return FALSE;
+    }
+    $convContact = civicrm_api3('SmsConversationContact', 'create', array(
+      'id' => $id,
+      'status_id' => $statusId,
+    ));
+    if (empty($convContact['is_error'])) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
