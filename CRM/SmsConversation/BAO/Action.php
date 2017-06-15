@@ -64,7 +64,7 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
    *
    * @return bool
    */
-  static function processAction($action, $contactId, $conversationId) {
+  static function processAction($action, $contactId, $conversationId, $sms) {
     // Perform action based on action_type, action_data and answer
     // TODO processAction
     Civi::log('processAction');
@@ -77,10 +77,10 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
         return self::actionAskQuestion($action, $contactId);
         break;
       case 2: // Add contact to group
-        Civi::log('Add contact to group not implemented');
+        return self::actionAddContactToGroup($action, $contactId);
         break;
       case 3: // Record answer in custom field
-        Civi::log('Record answer in custom field not implemented');
+        return self::actionRecordInCustomField($action, $contactId, $sms);
         break;
       case 4: // Trigger CiviRule
         Civi::log('Trigger CiviRule not implemented');
@@ -126,8 +126,20 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
    * @param $action
    * @param $contactId
    */
-  static function actionRecordInCustomField($action, $contactId) {
+  static function actionRecordInCustomField($action, $contactId, $sms) {
+    // Get contact and then create with additional custom field as parameter
+    $contact = civicrm_api3('Contact', 'get', array(
+      'id' => $contactId,
+    ));
+    $params = $contact['values'][$contactId];
 
+    $customFieldName = 'custom_' . $action['action_data'];
+    $params[$customFieldName] = $sms;
+    $contactResult = civicrm_api3('Contact', 'create', $params);
+    if (empty($contactResult['is_error'])) {
+      return FALSE;
+    }
+    return TRUE;
   }
 
 }

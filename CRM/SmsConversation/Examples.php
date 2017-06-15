@@ -70,35 +70,26 @@ class CRM_SmsConversation_Examples {
     ));
 
     // Action for question 1
+    $favColourCustomField = civicrm_api3('CustomField', 'get', array(
+      'name' => "favourite_colour",
+    ));
     $action = civicrm_api3('SmsConversationAction', 'create', array(
       'question_id' => $question['id'],
       'answer_pattern' => "/.*/",
       'action_type' => 3, // Record in a customfield
-      'action_data' => 8, // Custom field with ID 8 (probably shouldn't be hardcoded)
+      'action_data' => $favColourCustomField['id'], // Custom field ID
     ));
 
-    // Action for question 1
+    // Action for question 2
+    $maidenNameCustomField = civicrm_api3('CustomField', 'get', array(
+      'sequential' => 1,
+      'name' => "Mother_s_Maiden_Name",
+    ));
     $action = civicrm_api3('SmsConversationAction', 'create', array(
       'question_id' => $question['id'],
       'answer_pattern' => "/.*/",
       'action_type' => 1, // Ask another question
-      'action_data' => $question2['id'], // Custom field with ID 7 (probably shouldn't be hardcoded)
-    ));
-
-    // Action for question 2
-    $action = civicrm_api3('SmsConversationAction', 'create', array(
-      'question_id' => $question2['id'],
-      'answer_pattern' => "/.*/",
-      'action_type' => 3, // Record in a customfield
-      'action_data' => 9, // Custom field with ID 8 (probably shouldn't be hardcoded)
-    ));
-
-    // Action for question 2
-    $action = civicrm_api3('SmsConversationAction', 'create', array(
-      'question_id' => $question2['id'],
-      'answer_pattern' => "/.*/",
-      'action_type' => 1, // Ask another question
-      'action_data' => $question3['id'], // Custom field with ID 7 (probably shouldn't be hardcoded)
+      'action_data' => $maidenNameCustomField['id'], // Custom field ID
     ));
 
     $conversation = civicrm_api3('SmsConversation', 'create', array(

@@ -62,7 +62,7 @@ class CRM_SmsConversation_Processor {
     else {
       // Got valid actions, process them
       foreach ($validActions as $action) {
-        CRM_SmsConversation_BAO_Action::processAction($action, $this->sourceContactId, $this->conversationId);
+        CRM_SmsConversation_BAO_Action::processAction($action, $this->sourceContactId, $this->conversationId, $this->sms);
       }
     }
   }
