@@ -6,4 +6,16 @@
     <title>Start an SMS conversation</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/sms/conversation</path>
+    <page_callback>CRM_SmsConversation_Page_Conversations</page_callback>
+    <title>SMS conversations</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/sms/conversation/view</path>
+    <page_callback>CRM_SmsConversation_Page_View</page_callback>
+    <title>SMS conversation</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
