@@ -9,6 +9,11 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
+  $spec['id'] = array (
+    'title' => 'Action ID',
+    'description' => 'Action ID',
+    'type' => CRM_Utils_Type::T_INT,
+  );
   $spec['question_id'] = array (
     'api.required' => 1,
     'title' => 'ID of question',
