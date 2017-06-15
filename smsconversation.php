@@ -182,3 +182,18 @@ function smsconversation_civicrm_entityTypes(&$entityTypes) {
     'table' => 'civicrm_sms_conversation_question',
   );
 }
+
+function smsconversation_civicrm_summaryActions(&$actions, $contactId){
+
+  // If the contact has a mobile phone, start a conversation with them
+  $count = civicrm_api3('Phone', 'getcount', ['contact_id' => $contactId, 'phone_type_id' => 'Mobile']);
+  if($count){
+      $actions['smsconversation'] = [
+      'title' => 'Start SMS conversation',
+      'weight' => 999,
+      'ref' => 'sms-conversation',
+      'key' => 'sms-conversation',
+      'href' => '/civicrm/sms/conversation/start'
+    ];
+  }
+}
