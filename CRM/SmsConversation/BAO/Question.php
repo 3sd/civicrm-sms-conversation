@@ -31,7 +31,6 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
    */
   static function getQuestion($questionId) {
     $question = civicrm_api3('SmsConversationQuestion', 'get', [
-      'sequential' => 1,
       'id' => $questionId,
     ]);
 
@@ -39,7 +38,7 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
       return FALSE;
     }
     else {
-      return $question['values'][0];
+      return $question['values'][$questionId];
     }
   }
 
@@ -50,11 +49,10 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
    *
    * @return bool
    */
-  static function ask($questionId, $contactId) {
-    $question = CRM_SmsConversation_BAO_Question::get($questionId);
-    $actions = CRM_SmsConversation_BAO_Action::get($questionId);
+  static function ask($questionId, $contactId, $sourceContactId) {
+    $question = CRM_SmsConversation_BAO_Question::getQuestion($questionId);
     if ($question) {
-      CRM_SmsConversation_Processor::sendSMS($contactId, $question['text']);
+      CRM_SmsConversation_Processor::sendSMS($contactId, $question['text'], $sourceContactId);
     }
     return FALSE;
   }

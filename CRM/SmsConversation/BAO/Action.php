@@ -100,6 +100,8 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     // Trigger another question
     // action_date = next question_id
     // Trigger the question
-    CRM_SmsConversation_BAO_Question::ask($action['question_id'], $contactId);
+    $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
+
+    CRM_SmsConversation_BAO_Question::ask($action['question_id'], $contactId, $convContact['source_contact_id']);
   }
 }
