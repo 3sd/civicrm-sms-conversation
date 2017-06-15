@@ -42,6 +42,7 @@ class CRM_SmsConversation_Examples {
 
     $conversation = civicrm_api3('SmsConversation', 'create', array(
       'start_question_id' => $question['id'],
+      'name' => 'Example 1: What are you up to?',
       'is_active' => 1,
     ));
 
@@ -102,6 +103,7 @@ class CRM_SmsConversation_Examples {
 
     $conversation = civicrm_api3('SmsConversation', 'create', array(
       'start_question_id' => $question['id'],
+      'name' => 'Example 2: Collect information',
       'is_active' => 1,
     ));
 

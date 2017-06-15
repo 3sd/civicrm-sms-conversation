@@ -26,7 +26,7 @@ class CRM_SmsConversation_Form_Start extends CRM_Core_Form {
     // Conversation selector
     $this->addEntityRef('conversation_id', ts('Conversation'), [
       'entity' => 'SmsConversation',
-      'api' => ['label_field' => 'id'],
+      'api' => ['label_field' => 'name'],
       'placeholder' => ts('- Select conversation -'),
       'select' => ['minimumInputLength' => 0]
     ], TRUE);
