@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <menu>
   <item>
-    <path>civicrm/sms/conversation/start</path>
-    <page_callback>CRM_SmsConversation_Form_Start</page_callback>
+    <path>civicrm/sms/conversation/schedule</path>
+    <page_callback>CRM_SmsConversation_Form_Schedule</page_callback>
     <title>Start an SMS conversation</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
