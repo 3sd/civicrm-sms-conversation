@@ -58,7 +58,8 @@ class CRM_SmsConversation_Form_Start extends CRM_Core_Form {
     $params['conversation_id'] = $values['conversation_id'];
     $session = CRM_Core_Session::singleton();
     $params['source_contact_id'] = $session->get('userID');
-    $result = civicrm_api3('SmsConversation', 'start', $params);
+    $result = civicrm_api3('SmsConversation', 'create', $params);
+    $result = civicrm_api3('SmsConversation', 'process', ['contact_id' => $this->contactId]);
     CRM_Core_Session::setStatus($result);
     parent::postProcess();
   }
