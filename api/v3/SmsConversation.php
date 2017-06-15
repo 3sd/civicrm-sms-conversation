@@ -18,6 +18,11 @@ function _civicrm_api3_sms_conversation_create_spec(&$spec) {
     'title' => 'ID of first question',
     'type' => CRM_Utils_Type::T_INT,
   );
+  $spec['name'] = array(
+    'api.required' => 1,
+    'title' => 'Name of Conversation',
+    'type' => CRM_Utils_Type::T_STRING,
+  );
 }
 
 /**
