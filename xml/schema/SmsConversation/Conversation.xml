@@ -21,6 +21,18 @@
   </primaryKey>
 
   <field>
+    <name>name</name>
+    <title>Name</title>
+    <type>varchar</type>
+    <length>255</length>
+    <comment>Name of conversation.</comment>
+    <html>
+      <type>Text</type>
+    </html>
+    <add>4.7</add>
+  </field>
+
+  <field>
     <name>is_active</name>
     <type>boolean</type>
     <title>Conversation Is Active?</title>

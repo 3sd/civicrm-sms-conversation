@@ -1,7 +1,7 @@
+DROP TABLE IF EXISTS `civicrm_sms_conversation_action`;
+DROP TABLE IF EXISTS `civicrm_sms_conversation_contact`;
 DROP TABLE IF EXISTS `civicrm_sms_conversation`;
 DROP TABLE IF EXISTS `civicrm_sms_conversation_question`;
-DROP TABLE IF EXISTS `civicrm_sms_conversation_contact`;
-DROP TABLE IF EXISTS `civicrm_sms_conversation_action`;
 
 -- /*******************************************************
 -- *
@@ -35,6 +35,7 @@ CREATE TABLE `civicrm_sms_conversation` (
 
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique SmsConversation ID',
+     `name` varchar(255)    COMMENT 'Name of conversation.',
      `is_active` tinyint    COMMENT 'Is this conversation enabled?',
      `start_question_id` int unsigned    COMMENT 'FK to sms_conversation_question.id'
 ,
