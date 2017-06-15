@@ -24,14 +24,12 @@ function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
     // FIXME: This should lookup FK to civicrm_contact.id
   );
   $spec['status_id'] = array (
-    'api.required' => 1,
     'title' => 'Conversation Status',
     'description' => 'From option group sms_conversation_status_type',
     'type' => CRM_Utils_Type::T_INT,
     // FIXME: This should lookup option group to sms_conversation_status_type
   );
   $spec['current_question_id'] = array (
-    'api.required' => 1,
     'title' => 'ID of current question',
     'description' => 'FK to sms_conversation_question.id',
     'type' => CRM_Utils_Type::T_INT,

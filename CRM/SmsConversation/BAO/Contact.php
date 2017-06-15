@@ -61,10 +61,11 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    *
    * @return bool
    */
-  static function startConversation($contactId, $conversationId) {
+  static function startConversation($contactId, $conversationId, $sourceContactId) {
     $convContact = civicrm_api3('SmsConversationContact', 'create', array(
       'conversation_id' => $conversationId,
       'contact_id' => $contactId,
+      'source_contact_id' => $sourceContactId,
       'status_id' => 'In Progress',
     ));
     if (!empty($convContact['is_error'])) {

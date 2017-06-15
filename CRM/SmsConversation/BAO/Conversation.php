@@ -22,14 +22,14 @@ class CRM_SmsConversation_BAO_Conversation extends CRM_SmsConversation_DAO_Conve
     return $instance;
   }
 
-  static function start($contactId, $conversationId) {
+  static function start($contactId, $conversationId, $sourceContactId) {
     // Don't allow another conversation to start
     if (CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId)) {
       throw Exception('SmsConversation Conversation already in progress');
     }
 
     // Create a new conversation
-    CRM_SmsConversation_BAO_Contact::startConversation($contactId, $conversationId);
+    CRM_SmsConversation_BAO_Contact::startConversation($contactId, $conversationId, $sourceContactId);
   }
 
   /**
