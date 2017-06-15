@@ -193,7 +193,7 @@ function smsconversation_civicrm_summaryActions(&$actions, $contactId){
       'weight' => 999,
       'ref' => 'sms-conversation',
       'key' => 'sms-conversation',
-      'href' => '/civicrm/sms/conversation/start'
+      'href' => CRM_Utils_System::url('civicrm/sms/conversation/start', "cid=$contactId"),
     ];
   }
 }
