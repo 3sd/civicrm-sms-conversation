@@ -5,7 +5,7 @@
  *
  * @see https://wiki.civicrm.org/confluence/display/CRMDOC/QuickForm+Reference
  */
-class CRM_SmsConversation_Form_Start extends CRM_Core_Form {
+class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
 
   public function preProcess(){
     $this->contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this);
@@ -14,11 +14,6 @@ class CRM_SmsConversation_Form_Start extends CRM_Core_Form {
 
   }
 
-  public function setDefaultValues() {
-    list($defaults['send_at'], $defaults['send_at_time']) = CRM_Utils_Date::setDateDefaults(date('Y-m-d H:i:s'), 'activityDateTime');
-
-    return $defaults;
-  }
 
 
   public function buildQuickForm() {
@@ -32,7 +27,7 @@ class CRM_SmsConversation_Form_Start extends CRM_Core_Form {
     ], TRUE);
 
     // Choose a time for this
-    $this->addDateTime('send_at', ts('Send at'), TRUE);
+    $this->addDateTime('scheduled_date', ts('Send at'), TRUE);
 
     $this->addButtons(array(
       array(
@@ -51,11 +46,20 @@ class CRM_SmsConversation_Form_Start extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
+  public function setDefaultValues() {
+    list($defaults['scheduled_date'], $defaults['scheduled_date_time']) = CRM_Utils_Date::setDateDefaults(date('Y-m-d H:i:s'), 'activityDateTime');
+
+    return $defaults;
+  }
+
   public function postProcess() {
+
     $values = $this->exportValues();
+    $session = CRM_Core_Session::singleton();
+
     $params['contact_id'] = $this->contactId;
     $params['conversation_id'] = $values['conversation_id'];
-    $session = CRM_Core_Session::singleton();
+    $params['scheduled_date'] = CRM_Utils_Date::processDate($values['scheduled_date'], $values['scheduled_date_time']);
     $params['source_contact_id'] = $session->get('userID');
     // Create new conversation for contact
     $result = civicrm_api3('SmsConversationContact', 'create', $params);

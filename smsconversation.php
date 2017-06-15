@@ -193,7 +193,16 @@ function smsconversation_civicrm_summaryActions(&$actions, $contactId){
       'weight' => 999,
       'ref' => 'sms-conversation',
       'key' => 'sms-conversation',
-      'href' => CRM_Utils_System::url('civicrm/sms/conversation/start', "cid=$contactId"),
+      'href' => CRM_Utils_System::url('civicrm/sms/conversation/schedule', "cid=$contactId"),
+    ];
+  }
+}
+
+function smsconversation_civicrm_searchTasks( $objectName, &$tasks ){
+  if($objectName == 'contact'){
+    $tasks[] = [
+      'title' => 'SMS - schedule a conversation',
+      'class' => 'CRM_SmsConversation_Form_ScheduleMultiple'
     ];
   }
 }
