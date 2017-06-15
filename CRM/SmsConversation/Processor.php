@@ -33,6 +33,8 @@ class CRM_SmsConversation_Processor {
     // Get actions for current question
     $convActions = CRM_SmsConversation_BAO_Action::getAction($convContact['current_question_id']);
     if (!$convActions) {
+      // End the conversation
+      CRM_SmsConversation_BAO_Contact::endConversation($convContact['id']);
       return FALSE;
     }
 

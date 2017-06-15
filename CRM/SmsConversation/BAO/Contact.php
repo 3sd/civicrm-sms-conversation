@@ -107,6 +107,8 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     // Update conversation contact status
     CRM_SmsConversation_BAO_Contact::updateStatus($convContact['id'], 'In Progress');
 
+    $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
+
     // Ask the question
     return CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, $convContact);
   }
@@ -140,7 +142,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       'status_id' => $statusId,
     ));
     if (empty($convContact['is_error'])) {
-      return TRUE;
+      return $convContact['values'][$id];
     }
     return FALSE;
   }

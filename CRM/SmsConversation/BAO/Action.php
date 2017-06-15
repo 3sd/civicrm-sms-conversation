@@ -66,7 +66,6 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
    */
   static function processAction($action, $contactId, $conversationId, $sms) {
     // Perform action based on action_type, action_data and answer
-    // TODO processAction
     Civi::log('processAction');
     if (!isset($action['action_type'])) {
       return FALSE;
@@ -102,7 +101,7 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     // Trigger the question
     $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
 
-    CRM_SmsConversation_BAO_Question::ask($action['question_id'], $contactId, $convContact);
+    CRM_SmsConversation_BAO_Question::ask($action['action_data'], $contactId, $convContact);
   }
 
   /**
@@ -137,9 +136,9 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     $params[$customFieldName] = $sms;
     $contactResult = civicrm_api3('Contact', 'create', $params);
     if (empty($contactResult['is_error'])) {
-      return FALSE;
+      return TRUE;
     }
-    return TRUE;
+    return FALSE;
   }
 
 }

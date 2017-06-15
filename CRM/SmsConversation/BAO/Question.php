@@ -62,7 +62,17 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
         return FALSE;
       }
 
-      return CRM_SmsConversation_Processor::sendSMS($contactId, $question['text'], $convContact['source_contact_id']);
+      if (CRM_SmsConversation_Processor::sendSMS($contactId, $question['text'], $convContact['source_contact_id'])) {
+
+        // If there are no actions for the question, we end the conversation
+        $convActions = CRM_SmsConversation_BAO_Action::getAction($questionId);
+        if (!$convActions) {
+          // End the conversation
+          CRM_SmsConversation_BAO_Contact::endConversation($convContact['id']);
+        }
+        return TRUE;
+      }
+
     }
     return FALSE;
   }
