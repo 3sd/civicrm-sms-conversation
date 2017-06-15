@@ -102,7 +102,7 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     // Trigger the question
     $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
 
-    CRM_SmsConversation_BAO_Question::ask($action['question_id'], $contactId, $convContact['source_contact_id']);
+    CRM_SmsConversation_BAO_Question::ask($action['question_id'], $contactId, $convContact);
   }
 
   /**

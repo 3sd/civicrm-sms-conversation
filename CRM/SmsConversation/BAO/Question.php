@@ -49,10 +49,20 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
    *
    * @return bool
    */
-  static function ask($questionId, $contactId, $sourceContactId) {
+  static function ask($questionId, $contactId, $convContact) {
     $question = CRM_SmsConversation_BAO_Question::getQuestion($questionId);
     if ($question) {
-      CRM_SmsConversation_Processor::sendSMS($contactId, $question['text'], $sourceContactId);
+      // Record the new question id
+      $convContact = civicrm_api3('SmsConversationContact', 'create', array(
+        'id' => $convContact['id'],
+        'status_id' => $convContact['status_id'],
+        'current_question_id' => $questionId,
+      ));
+      if (!empty($convContact['is_error'])) {
+        return FALSE;
+      }
+
+      return CRM_SmsConversation_Processor::sendSMS($contactId, $question['text'], $convContact['source_contact_id']);
     }
     return FALSE;
   }

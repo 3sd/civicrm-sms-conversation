@@ -47,12 +47,5 @@
     <comment>FK to sms_conversation_question.id</comment>
     <add>4.7</add>
   </field>
-  <foreignKey>
-    <name>start_question_id</name>
-    <table>civicrm_sms_conversation_question</table>
-    <key>id</key>
-    <add>4.7</add>
-    <onDelete>CASCADE</onDelete>
-  </foreignKey>
 
 </table>

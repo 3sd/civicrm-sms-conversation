@@ -85,9 +85,8 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       throw new CRM_Core_Exception('This contact already has a conversation in progress');
     }
 
+    // Get conversation contact
     $convContact = CRM_SmsConversation_BAO_Contact::getNextScheduledConversation($contactId);
-
-    CRM_SmsConversation_BAO_Contact::updateStatus($convContact['id'], 'In Progress');
 
     if (empty($convContact)) {
       throw new CRM_Core_Exception('No scheduled conversations found');
@@ -97,7 +96,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       return FALSE;
     }
 
-    // Ask the first question
+    // Get the conversation
     $conversation = CRM_SmsConversation_BAO_Conversation::getConversation($convContact['conversation_id']);
     if (!$conversation['is_active']) {
       return FALSE;
@@ -105,8 +104,11 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
 
     // Get the question
     $question = CRM_SmsConversation_BAO_Question::getQuestion($conversation['start_question_id']);
+    // Update conversation contact status
+    CRM_SmsConversation_BAO_Contact::updateStatus($convContact['id'], 'In Progress');
+
     // Ask the question
-    return CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, $convContact['source_contact_id']);
+    return CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, $convContact);
   }
 
   /**
@@ -117,7 +119,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    * @return bool
    */
   static function endConversation($id, $status = 'Completed') {
-    return CRM_SmsConversation_BAO_Contact::updateStatus($id, $status);
+    return CRM_SmsConversation_BAO_Contact::updateStatus($id, $status, NULL);
   }
 
   /**

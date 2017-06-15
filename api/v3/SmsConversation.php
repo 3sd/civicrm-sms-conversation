@@ -14,7 +14,7 @@ function _civicrm_api3_sms_conversation_create_spec(&$spec) {
     'type' => CRM_Utils_Type::T_BOOLEAN,
   );
   $spec['start_question_id'] = array(
-    'api.required' => 1,
+    'api.required' => 0,
     'title' => 'ID of first question',
     'type' => CRM_Utils_Type::T_INT,
   );

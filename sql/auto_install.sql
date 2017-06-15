@@ -1,7 +1,9 @@
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `civicrm_sms_conversation_action`;
 DROP TABLE IF EXISTS `civicrm_sms_conversation_contact`;
 DROP TABLE IF EXISTS `civicrm_sms_conversation`;
 DROP TABLE IF EXISTS `civicrm_sms_conversation_question`;
+SET foreign_key_checks = 1;
 
 -- /*******************************************************
 -- *
@@ -16,12 +18,13 @@ CREATE TABLE `civicrm_sms_conversation_question` (
      `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique SmsConversationQuestion ID',
      `text` longtext    COMMENT 'Question Text.',
      `timeout` int unsigned   DEFAULT 0 COMMENT 'Timeout in seconds',
-     `text_invalid` longtext    COMMENT 'Question Text when the answer is invalid'
-,
-        PRIMARY KEY (`id`)
+     `text_invalid` longtext    COMMENT 'Question Text when the answer is invalid',
+     `conversation_id` int unsigned    COMMENT 'FK to sms_conversation.id'
+     ,
+     PRIMARY KEY (`id`)
 
 
-
+     ,          CONSTRAINT FK_civicrm_sms_conversation_question_conversation_id FOREIGN KEY (`conversation_id`) REFERENCES `civicrm_sms_conversation`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -38,11 +41,11 @@ CREATE TABLE `civicrm_sms_conversation` (
      `name` varchar(255)    COMMENT 'Name of conversation.',
      `is_active` tinyint    COMMENT 'Is this conversation enabled?',
      `start_question_id` int unsigned    COMMENT 'FK to sms_conversation_question.id'
-,
-        PRIMARY KEY (`id`)
+     ,
+     PRIMARY KEY (`id`)
 
 
-,          CONSTRAINT FK_civicrm_sms_conversation_start_question_id FOREIGN KEY (`start_question_id`) REFERENCES `civicrm_sms_conversation_question`(`id`) ON DELETE CASCADE
+
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************
@@ -60,11 +63,11 @@ CREATE TABLE `civicrm_sms_conversation_action` (
      `answer_pattern` varchar(255)    COMMENT 'Regex pattern for answer.',
      `action_type` int unsigned    COMMENT 'FK to sms_conversation_action_type option group',
      `action_data` varchar(255)    COMMENT 'eg. group Id, custom field Id etc'
-,
-        PRIMARY KEY (`id`)
+     ,
+     PRIMARY KEY (`id`)
 
 
-,          CONSTRAINT FK_civicrm_sms_conversation_action_question_id FOREIGN KEY (`question_id`) REFERENCES `civicrm_sms_conversation_question`(`id`) ON DELETE CASCADE
+     ,          CONSTRAINT FK_civicrm_sms_conversation_action_question_id FOREIGN KEY (`question_id`) REFERENCES `civicrm_sms_conversation_question`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 -- /*******************************************************

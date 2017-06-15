@@ -3,12 +3,21 @@
 class CRM_SmsConversation_Examples {
 
   static function addExampleConversation1() {
+    $conversation = civicrm_api3('SmsConversation', 'create', array(
+      'name' => 'Example 1: What are you up to?',
+      'is_active' => 1,
+    ));
+
     // Add question
     $question = civicrm_api3('SmsConversationQuestion', 'create', array(
       'text' => "Can you tell us what you are up to at the moment, are you working, in education or doing something else?",
       'text_invalid' => "Sorry I didn't understand, please reply a for working or b for education",
       'timeout' => 0,
     ));
+
+    $convParams = $conversation['values'][$conversation['id']];
+    $convParams['start_question_id'] = $question['id'];
+    $conversation = civicrm_api3('SmsConversation', 'create', $convParams);
 
     $question2 = civicrm_api3('SmsConversationQuestion', 'create', array(
       'text' => "Thankyou for your time",
@@ -40,22 +49,25 @@ class CRM_SmsConversation_Examples {
       'action_data' => "5", // Group ID 5 (education)
     ));
 
-    $conversation = civicrm_api3('SmsConversation', 'create', array(
-      'start_question_id' => $question['id'],
-      'name' => 'Example 1: What are you up to?',
-      'is_active' => 1,
-    ));
-
     return TRUE;
   }
 
   static function addExampleConversation2() {
+    $conversation = civicrm_api3('SmsConversation', 'create', array(
+      'name' => 'Example 2: Collect information',
+      'is_active' => 1,
+    ));
+
     // Add question
     $question = civicrm_api3('SmsConversationQuestion', 'create', array(
       'text' => "What is your favourite colour?",
       'text_invalid' => "",
       'timeout' => 0,
     ));
+
+    $convParams = $conversation['values'][$conversation['id']];
+    $convParams['start_question_id'] = $question['id'];
+    $conversation = civicrm_api3('SmsConversation', 'create', $convParams);
 
     $question2 = civicrm_api3('SmsConversationQuestion', 'create', array(
       'text' => "What is your mother's maiden name?",
@@ -92,11 +104,6 @@ class CRM_SmsConversation_Examples {
       'action_data' => $maidenNameCustomField['id'], // Custom field ID
     ));
 
-    $conversation = civicrm_api3('SmsConversation', 'create', array(
-      'start_question_id' => $question['id'],
-      'name' => 'Example 2: Collect information',
-      'is_active' => 1,
-    ));
 
     return TRUE;
   }
