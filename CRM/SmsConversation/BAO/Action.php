@@ -66,7 +66,6 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
    */
   static function processAction($action, $contactId, $conversationId, $sms) {
     // Perform action based on action_type, action_data and answer
-    // TODO processAction
     Civi::log('processAction');
     if (!isset($action['action_type'])) {
       return FALSE;
@@ -80,7 +79,7 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
         return self::actionAddContactToGroup($action, $contactId);
         break;
       case 3: // Record answer in custom field
-        return self::actionRecordInCustomField($action, $contactId, $sms);
+        return self::actionRecordInField($action, $contactId, $sms);
         break;
       case 4: // Trigger CiviRule
         Civi::log('Trigger CiviRule not implemented');
@@ -102,7 +101,7 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     // Trigger the question
     $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
 
-    CRM_SmsConversation_BAO_Question::ask($action['question_id'], $contactId, $convContact);
+    CRM_SmsConversation_BAO_Question::ask($action['action_data'], $contactId, $convContact);
   }
 
   /**
@@ -122,24 +121,24 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
   }
 
   /**
-   * Record answer in custom field specified by ID in action_data
+   * Record answer in field specified in action_data
    * @param $action
    * @param $contactId
    */
-  static function actionRecordInCustomField($action, $contactId, $sms) {
-    // Get contact and then create with additional custom field as parameter
+  static function actionRecordInField($action, $contactId, $sms) {
+    // Get contact and then create with additional field as parameter
     $contact = civicrm_api3('Contact', 'get', array(
       'id' => $contactId,
     ));
     $params = $contact['values'][$contactId];
 
-    $customFieldName = 'custom_' . $action['action_data'];
-    $params[$customFieldName] = $sms;
+    $fieldName = $action['action_data'];
+    $params[$fieldName] = $sms;
     $contactResult = civicrm_api3('Contact', 'create', $params);
     if (empty($contactResult['is_error'])) {
-      return FALSE;
+      return TRUE;
     }
-    return TRUE;
+    return FALSE;
   }
 
 }
