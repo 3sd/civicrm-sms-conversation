@@ -32,7 +32,15 @@ class CRM_SmsConversation_Processor {
 
     // Get actions for current question
     $convActions = CRM_SmsConversation_BAO_Action::getAction($convContact['current_question_id']);
-    if (!$convActions) {
+    // We end the conversation if there are no "Ask another question" actions
+    $endConversation = TRUE;
+    foreach ($convActions as $action) {
+      if ($action['action_type'] == 1) {
+        $endConversation = FALSE;
+        break;
+      }
+    }
+    if ($endConversation) {
       // End the conversation
       CRM_SmsConversation_BAO_Contact::endConversation($convContact['id']);
       return FALSE;

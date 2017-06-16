@@ -166,14 +166,14 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
   static function recordConversation($convContact, $convQuestion, $sms, $validAnswer) {
     // TODO: Test this function, do we use serialize or something else?
     // Also record sms and validanswer
-    $records = unserialize($convContact['conversation_record']);
+    $records = json_decode($convContact['conversation_record']);
     $records[] = [
       'q' => $convQuestion['id'],
       'a' => $sms,
       'v' => (boolean) $validAnswer
     ];
 
-    $convContact['conversation_record'] = serialize($records);
+    $convContact['conversation_record'] = json_encode($records);
     $convContactResult = civicrm_api3('SmsConversationContact', 'create', $convContact);
 
     if (empty($convContactResult['is_error'])) {
@@ -226,6 +226,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
         CRM_Core_Action::VIEW,
         array(
           'cid' => $params['cid'],
+          'conversation' => $convContact['id'],
         ),
         ts('more')
       );
@@ -240,8 +241,8 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     $links = array(
       CRM_Core_Action::VIEW => array(
         'name' => ts('View'),
-        'url' => 'civicrm/sms/conversation/view',
-        'qs' => 'reset=1&cid=%%cid%%',
+        'url' => 'civicrm/contact/view/smsconversation/detail',
+        'qs' => 'reset=1&cid=%%cid%%&conversation=%%conversation%%',
         'title' => ts('View Conversation'),
         'class' => 'crm-popup',
       ),
