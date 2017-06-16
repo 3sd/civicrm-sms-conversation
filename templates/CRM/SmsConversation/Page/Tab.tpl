@@ -39,7 +39,7 @@
 {literal}
 <script type="text/javascript">
     (function($) {
-        var ZeroRecordText = {/literal}'{ts escape="js"}<div class="status messages">No smsconversations have been created for this site.{/ts}</div>'{literal};
+        var ZeroRecordText = {/literal}'{ts escape="js"}<div class="status messages">No SMS Conversations for this contact.{/ts}</div>'{literal};
         $('table.crm-smsconversation-selector').data({
             "ajax": {
                 "url": {/literal}'{crmURL p="civicrm/ajax/smsconversationlist" h=0 q="snippet=4&cid=`$contactId`"}'{literal},
@@ -47,7 +47,8 @@
                 }
             },
             "language": {
-                "zeroRecords": ZeroRecordText
+                "zeroRecords": ZeroRecordText,
+                "emptyTable": ZeroRecordText
             },
             "drawCallback": function(settings) {
                 //Add data attributes to cells

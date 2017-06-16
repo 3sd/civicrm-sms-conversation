@@ -10,13 +10,6 @@ class CRM_SmsConversation_Page_Tab extends CRM_Core_Page {
     // check logged in url permission
     CRM_Contact_Page_View::checkUserPermission($this);
 
-
-    // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-    CRM_Utils_System::setTitle(ts('Tab'));
-
-    // Example: Assign a variable for use in a template
-    $this->assign('currentTime', date('Y-m-d H:i:s'));
-
     parent::run();
   }
 }

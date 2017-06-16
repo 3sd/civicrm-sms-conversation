@@ -200,8 +200,11 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
 
   static function getConversationList($params) {
     $params['sequential'] = 1;
+    $params['contact_id'] = $params['cid'];
 
     $convList = civicrm_api3('SmsConversationContact', 'get', $params);
+
+    $DT['data'] = array(); // Datatables requires the data element even if no data
 
     foreach ($convList['values'] as $convContact) {
       $conversation = civicrm_api3('SmsConversation', 'get', ['id' => $convContact['conversation_id']]);
