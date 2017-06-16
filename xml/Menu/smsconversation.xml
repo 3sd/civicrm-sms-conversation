@@ -18,4 +18,15 @@
     <title>SMS conversation</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/contact/view/smsconversation</path>
+    <page_callback>CRM_SmsConversation_Page_Tab</page_callback>
+    <title>Tab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/ajax/smsconversationlist</path>
+    <page_callback>CRM_SmsConversation_Page_AJAX::getContactConversations</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

@@ -206,3 +206,24 @@ function smsconversation_civicrm_searchTasks( $objectName, &$tasks ){
     ];
   }
 }
+
+/*function smsconversation_civicrm_tabset($tabsetName, &$tabs, $context) {
+  // FIXME: For CiviCRM 4.7 we can use this hook instead.
+}*/
+
+/**
+ * Replace the existing activities tab
+ * @param $tabs
+ * @param $contactID
+ */
+function smsconversation_civicrm_tabs ( &$tabs, $contactID ) {
+  // ADD the sms conversation tab as a separate tab
+  $tabs[] = array(
+    'title'  => 'SMS Conversations',
+    'class'  => 'livePage',
+    'id'     => 'smsconversation',
+    'url'    => CRM_Utils_System::url('civicrm/contact/view/smsconversation', "reset=1&cid={$contactID}"),
+    'weight' => 50,
+    'count'  => CRM_SmsConversation_BAO_Contact::getConversationCount($contactID),
+  );
+}
