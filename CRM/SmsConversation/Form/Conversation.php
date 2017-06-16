@@ -27,7 +27,7 @@ public function preProcess(){
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){
       CRM_Utils_System::setTitle(ts('Add an SMS conversation'));
-      $this->add( 'text', 'start_question_text', ts('First question'), ['size' => 40], TRUE);
+      // $this->add( 'text', 'start_question_text', ts('First question'), ['size' => 40], TRUE);
       $this->addButtons([
         array('type' => 'cancel', 'name' => 'Cancel'),
         array('type' => 'submit', 'name' => 'Add', 'isDefault' => TRUE)
@@ -66,22 +66,24 @@ public function preProcess(){
       $conversation = civicrm_api3('SmsConversation', 'create', [
         'name' => $values['name']
       ]);
-      $question = civicrm_api3('SmsConversationQuestion', 'create', [
+      /*$question = civicrm_api3('SmsConversationQuestion', 'create', [
         'text' => $values['start_question_text'],
         'conversation_id' => $conversation['id']
-      ]);
+      ]);*/
       $conversation = civicrm_api3('SmsConversation', 'create', [
         'id' => $conversation['id'],
-        'start_question_id' => $question['id']
+      //  'start_question_id' => $question['id']
       ]);
+      $this->controller->_destination = CRM_Utils_System::url('civicrm/sms/conversation/question/edit', "action=add&conversation_id={$conversation['id']}");
     }else{
       $conversation = civicrm_api3('SmsConversation', 'create', [
         'id' => $this->conversationId,
         'name' => $values['name'],
         'start_question_id' => $values['start_question_id']
       ]);
+      $this->controller->_destination = CRM_Utils_System::url('civicrm/sms/conversation/view', "&id={$conversation['id']}");
     }
-    $this->controller->_destination = CRM_Utils_System::url('civicrm/sms/conversation/view', "&id={$conversation['id']}");
+
     parent::postProcess();
   }
 }
