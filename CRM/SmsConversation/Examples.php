@@ -10,8 +10,8 @@ class CRM_SmsConversation_Examples {
 
     // Add question
     $question = civicrm_api3('SmsConversationQuestion', 'create', array(
-      'text' => "Can you tell us what you are up to at the moment, are you working, in education or doing something else?",
-      'text_invalid' => "Sorry I didn't understand, please reply a for working or b for education",
+      'text' => "Are you working or in education? Please answer 'A' for education or 'B' for working.",
+      'text_invalid' => "Sorry I didn't understand, please reply 'A' for working or 'B' for education",
       'timeout' => 0,
       'conversation_id' => $conversation['id'],
     ));
@@ -21,20 +21,19 @@ class CRM_SmsConversation_Examples {
     $conversation = civicrm_api3('SmsConversation', 'create', $convParams);
 
     $question2 = civicrm_api3('SmsConversationQuestion', 'create', array(
-      'text' => "What is your post code?",
+      'text' => "What is your job title?",
       'text_invalid' => "Sorry. I couldn't understand your post code. Please try again.",
       'timeout' => 0,
       'conversation_id' => $conversation['id'],
     ));
 
     $question3 = civicrm_api3('SmsConversationQuestion', 'create', array(
-      'text' => "Thank you for your time",
+      'text' => "Thanks for your time, and for letting us know!",
       'text_invalid' => "",
       'timeout' => 0,
       'conversation_id' => $conversation['id'],
     ));
 
-    // Action for any valid answer
     $uptoCustomField = civicrm_api3('CustomField', 'get', array(
       'name' => "what_are_you_up_to",
     ));
@@ -53,6 +52,22 @@ class CRM_SmsConversation_Examples {
       'action_data' => $question2['id'],
     ));
 
+    // Action for answer a|working
+    $action = civicrm_api3('SmsConversationAction', 'create', array(
+      'question_id' => $question['id'],
+      'answer_pattern' => "/.*/",
+      'action_type' => 1, // Ask another question
+      'action_data' => $question3['id'],
+    ));
+
+    // Action for answer a|working
+    $action = civicrm_api3('SmsConversationAction', 'create', array(
+      'question_id' => $question2['id'],
+      'answer_pattern' => "/.*/",
+      'action_type' => 1, // Ask another question
+      'action_data' => $question3['id'],
+    ));
+
     // Action for answer b|education
     $action = civicrm_api3('SmsConversationAction', 'create', array(
       'question_id' => $question['id'],
@@ -66,7 +81,7 @@ class CRM_SmsConversation_Examples {
       'question_id' => $question2['id'],
       'answer_pattern' => "/.*/",
       'action_type' => 3, // Record in a custom field
-      'action_data' => "postal_code", // Field ID
+      'action_data' => "job_title", // Field ID
     ));
 
     return TRUE;
