@@ -200,12 +200,27 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
 
   static function getConversationList($params) {
     $params['sequential'] = 1;
+    $params['contact_id'] = $params['cid'];
 
     $convList = civicrm_api3('SmsConversationContact', 'get', $params);
+
+    $DT['data'] = array(); // Datatables requires the data element even if no data
 
     foreach ($convList['values'] as $convContact) {
       $conversation = civicrm_api3('SmsConversation', 'get', ['id' => $convContact['conversation_id']]);
       $convContact['conversation_name'] = $conversation['values'][$convContact['conversation_id']]['name'];
+      // Format status
+      $convContact['status'] = CRM_Core_PseudoConstant::getLabel('CRM_SmsConversation_BAO_Contact', 'status_id', $convContact['status_id']);
+      // Format name
+      $sourceContact = civicrm_api3('Contact', 'getsingle', array(
+        'return' => array("display_name"),
+        'id' => $convContact['source_contact_id'],
+      ));
+      $url = CRM_Utils_System::url('civicrm/contact/view', 'reset=1&cid='.$convContact['source_contact_id']);
+      $convContact['source_contact'] = "<a href='{$url}'>{$sourceContact['display_name']}</a>";
+      // Format Date
+      $convContact['date'] = CRM_Utils_Date::customFormat($convContact['scheduled_date']);
+      // Add links
       $links = self::actionLinks();
       $convContact['links'] = CRM_Core_Action::formLink($links,
         CRM_Core_Action::VIEW,
