@@ -12,6 +12,9 @@
         <p><b>{$question.number}. {$question.text}</b>
         <a href="{crmURL p='civicrm/sms/conversation/question/edit' q="action=update&id=`$question.id`"}" title="edit question"><i class="crm-i fa-pencil"></i></a>
         </p>
+        {if $question.text_invalid}
+        <p><i>Invalid text: "{$question.text_invalid}"</i></p>
+          {/if}
       </td>
       <td>
         {if $question.actions}
