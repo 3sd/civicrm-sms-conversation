@@ -36,10 +36,10 @@ public function preProcess(){
 
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){
-      CRM_Utils_System::setTitle(ts("Add a question to '{$this->conversation['name']}'"));
+      CRM_Utils_System::setTitle(ts("Create a question for '{$this->conversation['name']}'"));
       $this->addButtons([
         array('type' => 'cancel', 'name' => 'Cancel'),
-        array('type' => 'submit', 'name' => 'Add', 'isDefault' => TRUE)
+        array('type' => 'submit', 'name' => 'Create', 'isDefault' => TRUE)
       ]);
     }elseif($this->action == CRM_Core_Action::UPDATE){
       CRM_Utils_System::setTitle(ts('Update an SMS conversation question'));

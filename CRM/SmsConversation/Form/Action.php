@@ -7,42 +7,91 @@
  */
 class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
 
-public function preProcess(){
-  $this->action = CRM_Utils_Request::retrieve('action', 'String', $this);
-  $this->questionId = CRM_Utils_Request::retrieve('id', 'String', $this);
+  public function preProcess(){
+    $this->action = CRM_Utils_Request::retrieve('action', 'String', $this);
+    $this->assign('action', $this->action);
 
-  //We should always be able to determine a convesation ID. When adding a
-  //Wquestion, it should be in the URL. When editing a question, we should be
-  //able to rertrieve it from the SmsConversationQuestion being edited
-  $this->conversationId = CRM_Utils_Request::retrieve('conversation_id', 'String', $this);
-  if($this->questionId){
+    $this->smsActionId = CRM_Utils_Request::retrieve('id', 'String', $this);
+    $this->smsActionTypeId = CRM_Utils_Request::retrieve('action_type', 'Integer', $this);
+    $this->questionId = CRM_Utils_Request::retrieve('question_id', 'String', $this);
+
+    // We should always be able to determine the question_id and action_type.
+    // Either from the URLduring creation or via the retrieved entity during
+    // update.
+    if($this->smsActionId){
+      $this->smsAction = civicrm_api3('SmsConversationAction', 'getsingle', ['id' => $this->smsActionId]);
+      $this->questionId = $this->smsAction['question_id'];
+      $this->smsActionTypeId = $this->smsAction['action_type'];
+    }
+    var_dump($this->smsAction);
+
+    $this->smsActionType = civicrm_api3('OptionValue', 'getsingle', [ 'option_group_id' => 'sms_conversation_action_type', 'value' => $this->smsActionTypeId ]);
     $this->question = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $this->questionId]);
-    $this->conversationId = $this->question['conversation_id'];
-  }
-  $this->conversation = civicrm_api3('SmsConversation', 'getsingle', ['id' => $this->conversationId]);
+    $this->assign('question', $this->question);
 
-  $this->assign('action', $this->action);
-  $session = CRM_Core_Session::singleton();
-  $this->context = CRM_Utils_System::url('civicrm/sms/conversation/view', "id={$this->conversationId}");
-  $session->pushUserContext($this->context);
-  $this->controller->_destination = $this->context;
-}
+    // Ensure that form rediection happens as one would expect
+    $this->conversationId = $this->question['conversation_id'];
+    $session = CRM_Core_Session::singleton();
+    $this->context = CRM_Utils_System::url('civicrm/sms/conversation/view', "id={$this->conversationId}");
+    $session->pushUserContext($this->context);
+    $this->controller->_destination = $this->context;
+
+    // Set title
+    if($this->action == CRM_Core_Action::ADD){
+      $title = ts("Create '%1' action", [1 => $this->smsActionType['label']]);
+    }else{
+      $title = ts("Update '%1' action", [1 => $this->smsActionType['label']]);
+    }
+    CRM_Utils_System::setTitle(ts($title));
+
+  }
 
   public function buildQuickForm() {
 
-    // add form elements
-    $this->add( 'text', 'text', ts('Question'), ['size' => 40], TRUE);
-    $this->add( 'text', 'text_invalid', ts('Invalid text'), ['size' => 40]);
+    CRM_Core_Resources::singleton()->addScriptFile('civicrm.sms.conversations', 'templates/CRM/SmsConversation/Form/Action.js');
 
+    // The type of pattern matching
+    $this->add('select', 'answer_pattern_type', ts('Match'), [
+      'anything' => 'anything',
+      'exact' => 'an exact match',
+      'contains' => 'contains',
+      'list-exact' => 'list of exact matches (comma seperated)',
+      'list-contains' => 'list of contains (comma seperated)',
+      'regexp' => 'regular expression'
+    ], FALSE, ['class' => 'crm-select2']);
+
+    // The parameters of the match
+    $this->add( 'text', 'answer_pattern_raw', ts('Match text'), ['size' => 40], TRUE);
+    if($this->smsActionType['name'] == 'question'){
+      $this->addEntityRef('action_data', ts('Next question'), [
+        'entity' => 'SmsConversationQuestion',
+        'api' => [
+          'params' => ['conversation_id' => $this->conversationId],
+          'label_field' => 'text'
+        ],
+        'placeholder' => ts('- select question -'),
+        'select' => ['minimumInputLength' => 0]
+      ], TRUE);
+    }elseif($this->smsActionType['name'] == 'add_to_group'){
+      $this->addEntityRef('action_data', ts('Add to group'), [
+        'entity' => 'Group',
+        'api' => [
+          'label_field' => 'title',
+          'value_field' => 'name'
+      ],
+        'placeholder' => ts('- select group -'),
+        'select' => ['minimumInputLength' => 0]
+      ], TRUE);
+    }elseif($this->smsActionType['name'] == 'record_field'){
+      $this->add('select', 'action_data', ts('Record in field'), array_column(civicrm_api3('Contact', 'getfields', ['action' => 'get'])['values'], 'title', 'name'), TRUE, ['class' => 'crm-select2']);
+    }
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){
-      CRM_Utils_System::setTitle(ts("Add a question to '{$this->conversation['name']}'"));
       $this->addButtons([
         array('type' => 'cancel', 'name' => 'Cancel'),
-        array('type' => 'submit', 'name' => 'Add', 'isDefault' => TRUE)
+        array('type' => 'submit', 'name' => 'Create', 'isDefault' => TRUE)
       ]);
     }elseif($this->action == CRM_Core_Action::UPDATE){
-      CRM_Utils_System::setTitle(ts('Update an SMS conversation question'));
       $this->addButtons([
         array('type' => 'cancel', 'name' => 'Cancel'),
         array('type' => 'submit', 'name' => 'Update', 'isDefault' => TRUE)
@@ -53,20 +102,58 @@ public function preProcess(){
 
   public function setDefaultValues() {
     if($this->action == CRM_Core_Action::UPDATE){
-      return $this->question;
+      $defaults = $this->smsAction;
+      $match = CRM_SmsConversation_Match::decipherPatternType($this->smsAction['answer_pattern']);
+      var_dump($match);
+      $defaults['answer_pattern_type'] = $match['pattern_type'];
+      $defaults['answer_pattern_raw'] = $match['pattern_raw'];
+      return $defaults;
     }
   }
 
   public function postProcess() {
+
     $values = $this->exportValues();
-    $params['text'] = $values['text'];
-    $params['text_invalid'] = $values['text_invalid'];
-    $params['conversation_id'] = $this->conversationId;
-    if($this->action == CRM_Core_Action::UPDATE){
-      $params['id'] = $this->questionId;
+    switch($values['answer_pattern_type']){
+      case 'anything':
+        $params['answer_pattern'] = '/.*/';
+        break;
+      case 'exact':
+        $params['answer_pattern'] = '/^'.$values['answer_pattern_raw'].'$/';
+        break;
+      case 'contains':
+        $params['answer_pattern'] = $params['answer_pattern'] = '/'.$values['answer_pattern_raw'].'/';
+        break;
+      case 'list-exact':
+        $terms = explode(',', $values['answer_pattern_raw']);
+        foreach($terms as &$term){
+          $term = trim($term);
+          $term = "^$term$";
+        }
+        $pattern = implode ('|', $terms);
+        $params['answer_pattern'] = '/'.$pattern.'/';
+        break;
+      case 'list-contains':
+        $terms = explode(',', $values['answer_pattern_raw']);
+        foreach($terms as &$term){
+          $term = trim($term);
+        }
+        $pattern = implode ('|', $terms);
+        $params['answer_pattern'] = '/'.$pattern.'/';
+        break;
+      case 'regexp':
+        $params['answer_pattern'] = $values['answer_pattern_raw'];
+        break;
     }
-    $question = civicrm_api3('SmsConversationQuestion', 'create', $params);
-    var_dump($question);
+    $params['question_id'] = $this->questionId;
+    $params['action_type'] = $this->smsActionTypeId;
+    $params['action_data'] = $values['action_data'];
+    if($this->action == CRM_Core_Action::UPDATE){
+      $params['id'] = $this->smsActionId;
+    }
+    $action = civicrm_api3('SmsConversationAction', 'create', $params);
+    var_dump($params);
+    var_dump($action);
     parent::postProcess();
   }
 }

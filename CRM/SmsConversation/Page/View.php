@@ -25,7 +25,8 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
 
     // Decorate the actions
     foreach($this->actions as $key => $action){
-      $this->actions[$key]['friendly_answer_pattern'] = $this->getFriendlyAnswerPattern($action['answer_pattern']);
+      $match = CRM_SmsConversation_Match::decipherPatternType($action['answer_pattern']);
+      $this->actions[$key]['friendly_answer_pattern'] = $match['human_friendly'];
     }
 
 
