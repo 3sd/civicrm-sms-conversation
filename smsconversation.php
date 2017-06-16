@@ -227,3 +227,26 @@ function smsconversation_civicrm_tabs ( &$tabs, $contactID ) {
     'count'  => CRM_SmsConversation_BAO_Contact::getConversationCount($contactID),
   );
 }
+
+function smsconversation_civicrm_navigationMenu(&$menus){
+
+  // Find the mailing menu
+  foreach($menus as &$menu){
+    if($menu['attributes']['name'] == 'Mailings'){
+      $nextId = max(array_keys($menu['child']));
+      $menu['child'][$nextId]=[
+        'attributes' => array(
+          'label'      => 'SMS Conversations',
+          'name'       => 'SMS Conversations',
+          'url'        => 'civicrm/sms/conversations',
+          'permission' => 'access CiviMail',
+          'navID'      => $nextId,
+          'operator'   => FALSE,
+          'separator'  => TRUE,
+          'parentID'   => $menu['attributes']['navID'],
+          'active'     => 1
+        ),
+      ];
+    }
+  }
+}
