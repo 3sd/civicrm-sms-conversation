@@ -45,4 +45,10 @@
     <page_callback>CRM_SmsConversation_Page_AJAX::getContactConversations</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/contact/view/smsconversation/detail</path>
+    <page_callback>CRM_SmsConversation_Form_ViewConversation</page_callback>
+    <title>ViewConversation</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
