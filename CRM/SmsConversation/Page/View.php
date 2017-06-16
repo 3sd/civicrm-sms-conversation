@@ -9,7 +9,13 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
     $this->id = CRM_Utils_Request::retrieve('id', 'Positive', $this);
 
     // Get the relevant entities
-    $this->conversation = civicrm_api3('SmsConversation', 'getsingle', ['id' => $this->id]);
+    try {
+      $this->conversation = civicrm_api3('SmsConversation', 'getsingle', ['id' => $this->id]);
+    }
+    catch (Exception $e) {
+      // If we can't find a conversation with id, redirect to the conversation overview
+      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/sms/conversation'));
+    }
     CRM_Utils_System::setTitle(ts('SMS conversation: %1', [1 => $this->conversation['name']]));
 
     $this->questions = civicrm_api3('SmsConversationQuestion', 'get', ['conversation_id' => $this->id])['values'];
