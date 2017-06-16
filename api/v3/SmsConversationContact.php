@@ -119,3 +119,17 @@ function _civicrm_api3_sms_conversation_contact_start_spec(&$spec) {
     'title' => 'Conversation Contact Id',
   );
 }
+
+function civicrm_api3_sms_conversation_contact_schedule($params) {
+  return CRM_SmsConversation_BAO_Contact::scheduleConversations($params['contact_id']);
+}
+
+function _civicrm_api3_sms_conversation_contact_schedule_spec(&$spec) {
+  $spec['contact_id'] = array(
+    'title' => 'Contact ID',
+    'description' => 'If specified, conversations will be scheduled for that contact only',
+    'api.aliases' => array('contact_id'),
+  );
+}
+
+
