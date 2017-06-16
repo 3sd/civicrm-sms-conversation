@@ -23,7 +23,6 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
       $this->questionId = $this->smsAction['question_id'];
       $this->smsActionTypeId = $this->smsAction['action_type'];
     }
-    var_dump($this->smsAction);
 
     $this->smsActionType = civicrm_api3('OptionValue', 'getsingle', [ 'option_group_id' => 'sms_conversation_action_type', 'value' => $this->smsActionTypeId ]);
     $this->question = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $this->questionId]);
@@ -104,7 +103,6 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
     if($this->action == CRM_Core_Action::UPDATE){
       $defaults = $this->smsAction;
       $match = CRM_SmsConversation_Match::decipherPatternType($this->smsAction['answer_pattern']);
-      var_dump($match);
       $defaults['answer_pattern_type'] = $match['pattern_type'];
       $defaults['answer_pattern_raw'] = $match['pattern_raw'];
       return $defaults;
@@ -152,8 +150,6 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
       $params['id'] = $this->smsActionId;
     }
     $action = civicrm_api3('SmsConversationAction', 'create', $params);
-    var_dump($params);
-    var_dump($action);
     parent::postProcess();
   }
 }

@@ -66,7 +66,6 @@ public function preProcess(){
       $params['id'] = $this->questionId;
     }
     $question = civicrm_api3('SmsConversationQuestion', 'create', $params);
-    var_dump($question);
     parent::postProcess();
   }
 }
