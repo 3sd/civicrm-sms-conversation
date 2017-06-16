@@ -322,6 +322,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     $params = array(
       'options' => array('sort' => "id ASC", 'limit' => 0),
       'status_id' => "In Progress",
+      'scheduled_date' => array('<' => "now"),
     );
     if (!empty($contactId)) {
       $contactIds[$contactId] = $contactId;
