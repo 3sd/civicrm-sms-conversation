@@ -87,12 +87,12 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
   }
 
   function transplantQuestions(){
-    $this->questionNumber++;
     $currentQuestion = current($this->orderedQuestions);
     if(isset($this->nextQuestionsMap[$currentQuestion['id']])){
       $nextQuestions = $this->nextQuestionsMap[$currentQuestion['id']];
       foreach($nextQuestions as $nextQuestion){
         if(isset($this->questions[$nextQuestion])){
+          $this->questionNumber++;
           $this->orderedQuestions[$this->questionNumber] = $this->questions[$nextQuestion];
           $this->orderedQuestions[$this->questionNumber]['number'] = $this->questionNumber;
           unset($this->questions[$nextQuestion]);
