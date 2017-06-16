@@ -35,7 +35,7 @@ public function preProcess(){
     }elseif($this->action == CRM_Core_Action::UPDATE){
       $session = CRM_Core_Session::singleton();
       $session->pushUserContext(CRM_Utils_System::url('civicrm/sms/conversation/view', "id={$this->conversationId}"));
-      CRM_Utils_System::setTitle(ts('Update SMS conversation'));
+      CRM_Utils_System::setTitle(ts('Update an SMS conversation'));
       $this->addEntityRef('start_question_id', ts('First question'), [
         'entity' => 'SmsConversationQuestion',
         'api' => [
