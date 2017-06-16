@@ -7,10 +7,47 @@
  */
 class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
   public function buildQuickForm() {
-    $this->_contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this, TRUE);
-    $this->_conversation = CRM_Utils_Request::retrieve('conversation', 'Positive', $this, TRUE);
+    $this->contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this, TRUE);
+    $this->conversation = CRM_Utils_Request::retrieve('conversation', 'Positive', $this, TRUE);
+    $this->action = CRM_Utils_Request::retrieve('action', 'String', $this, TRUE);
+    $this->assign('action', $this->action);
+    $this->assign('conversation', $this->conversation);
 
-    $convContact = civicrm_api3('SmsConversationContact', 'get', ['id' => $this->_conversation, 'contact_id' => $this->_contactId, 'sequential' => 1]);
+    $convContact = civicrm_api3('SmsConversationContact', 'get', ['id' => $this->conversation, 'contact_id' => $this->contactId, 'sequential' => 1]);
+
+    if ($this->action == CRM_Core_Action::DELETE) {
+      CRM_Utils_System::setTitle('Delete Conversation');
+      $this->addButtons(array(
+        array(
+          'type' => 'cancel',
+          'name' => ts('Cancel'),
+          'isDefault' => TRUE,
+        ),
+        array(
+          'type' => 'submit',
+          'name' => ts('Delete'),
+          'isDefault' => FALSE,
+        ),
+      ));
+      return;
+    }
+    elseif ($this->action == CRM_Core_Action::UPDATE) {
+      CRM_Utils_System::setTitle('Cancel Conversation');
+      $this->addButtons(array(
+        array(
+          'type' => 'cancel',
+          'name' => ts('No'),
+          'isDefault' => TRUE,
+        ),
+        array(
+          'type' => 'submit',
+          'name' => ts('Yes'),
+          'isDefault' => FALSE,
+        ),
+      ));
+      return;
+    }
+
     $convContact = $convContact['values'][0];
     $convRecord = json_decode($convContact['conversation_record'], TRUE);
 
@@ -58,13 +95,25 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
         'isDefault' => TRUE,
       ),
     ));
-    CRM_Utils_System::setTitle('Sms Conversation '.$this->_conversation);
+    CRM_Utils_System::setTitle('Sms Conversation '.$this->conversation);
 
     parent::buildQuickForm();
   }
 
   public function postProcess() {
     $values = $this->exportValues();
+    if ($this->action == CRM_Core_Action::DELETE) {
+      if (!empty($this->conversation)) {
+        $result = civicrm_api3('SmsConversationContact', 'delete', ['id' => $this->conversation]);
+        return;
+      }
+    }
+    elseif ($this->action == CRM_Core_Action::UPDATE) {
+      if (!empty($this->conversation)) {
+        CRM_SmsConversation_BAO_Contact::updateStatus($this->conversation, 'Cancelled');
+        return;
+      }
+    }
     parent::postProcess();
   }
 

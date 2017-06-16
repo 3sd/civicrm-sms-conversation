@@ -225,8 +225,22 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       }
       // Add links
       $links = self::actionLinks();
+      // Get mask
+      $mask = CRM_Core_Action::VIEW;
+      $scheduledId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact','status_id', 'Scheduled');
+      $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact','status_id', 'In Progress');
+      switch ($convContact['status_id']) {
+        case $scheduledId:
+          // We show delete if in scheduled state
+          $mask += CRM_Core_Action::DELETE;
+          break;
+        case $inProgressId:
+          // We show cancel if in "In Progress" state
+          $mask += CRM_Core_Action::UPDATE;
+          break;
+      }
       $convContact['links'] = CRM_Core_Action::formLink($links,
-        CRM_Core_Action::VIEW,
+        $mask,
         array(
           'cid' => $params['cid'],
           'conversation' => $convContact['id'],
@@ -245,8 +259,22 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       CRM_Core_Action::VIEW => array(
         'name' => ts('View'),
         'url' => 'civicrm/contact/view/smsconversation/detail',
-        'qs' => 'reset=1&cid=%%cid%%&conversation=%%conversation%%',
+        'qs' => 'reset=1&action=view&cid=%%cid%%&conversation=%%conversation%%',
         'title' => ts('View Conversation'),
+        'class' => 'crm-popup',
+      ),
+      CRM_Core_Action::DELETE => array(
+        'name' => ts('Delete'),
+        'url' => 'civicrm/contact/view/smsconversation/detail',
+        'qs' => 'reset=1&action=delete&cid=%%cid%%&conversation=%%conversation%%',
+        'title' => ts('Delete Conversation'),
+        'class' => 'crm-popup',
+      ),
+      CRM_Core_Action::UPDATE => array(
+        'name' => ts('Cancel'),
+        'url' => 'civicrm/contact/view/smsconversation/detail',
+        'qs' => 'reset=1&action=update&cid=%%cid%%&conversation=%%conversation%%',
+        'title' => ts('Cancel Conversation'),
         'class' => 'crm-popup',
       ),
     );
