@@ -22,7 +22,6 @@ class CRM_SmsConversation_Examples {
 
     $question2 = civicrm_api3('SmsConversationQuestion', 'create', array(
       'text' => "What is your job title?",
-      'text_invalid' => "Sorry. I couldn't understand your post code. Please try again.",
       'timeout' => 0,
       'conversation_id' => $conversation['id'],
     ));
