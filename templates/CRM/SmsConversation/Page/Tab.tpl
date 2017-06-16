@@ -27,10 +27,10 @@
   <thead>
   <tr>
     <th data-data="conversation_name" cell-class="crm-smsconversation-conversation_name crmf-title" class='crm-smsconversation-conversation_name'>{ts}Conversation{/ts}</th>
-    <th data-data="source_contact_id" cell-class="crm-smsconversation-source_contact right" class='crm-smsconversation-source_contact'>{ts}Started By{/ts}</th>
-    <th data-data="scheduled_date" cell-class="crm-smsconversation-date" class='crm-smsconversation-date'>{ts}Date{/ts}</th>
+    <th data-data="source_contact" cell-class="crm-smsconversation-source_contact right" class='crm-smsconversation-source_contact'>{ts}Started By{/ts}</th>
+    <th data-data="date" cell-class="crm-smsconversation-date" class='crm-smsconversation-date'>{ts}Date{/ts}</th>
     <th data-data="current_question_id" cell-class="crm-smsconversation-current_question_id" class='crm-smsconversation-current_question_id'>{ts}Current Question{/ts}</th>
-    <th data-data="status_id" cell-class="crm-smsconversation-status" class='crm-smsconversation-status'>{ts}Status{/ts}</th>
+    <th data-data="status" cell-class="crm-smsconversation-status" class='crm-smsconversation-status'>{ts}Status{/ts}</th>
     <th data-data="links" data-orderable="false" cell-class="crm-smsconversation-smsconversation_links" class='crm-smsconversation-smsconversation_links'>&nbsp;</th>
   </tr>
   </thead>
