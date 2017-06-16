@@ -10,7 +10,7 @@
     <tr class="{cycle values='odd,even'}-row crm-report">
       <td>
         <p><b>{$question.number}. {$question.text}</b>
-        <a href="{crmURL p='civicrm/sms/conversation/question/edit' q="id=`$question.id`"}" title="edit question"><i class="crm-i fa-pencil"></i></a>
+        <a href="{crmURL p='civicrm/sms/conversation/question/edit' q="action=update&id=`$question.id`"}" title="edit question"><i class="crm-i fa-pencil"></i></a>
         </p>
       </td>
       <td>
@@ -24,21 +24,31 @@
               {elseif $action.action_type == 3}
                 {include file="CRM/SmsConversation/Page/View/AddField.tpl"}
               {/if}
-              <a href="{crmURL p='civicrm/sms/conversation/action/edit' q="id=`$action.id`"}" title="add action"><i class="crm-i fa-pencil"></i></a>
+              <a href="{crmURL p='civicrm/sms/conversation/action/edit' q="action=update&id=`$action.id`"}" title="add action"><i class="crm-i fa-pencil"></i></a>
             </p>
           {/foreach}
       {/if}
       <!-- add http://jsfiddle.net/LxauG/606/ here for nice form controls -->
-      <a href="{crmURL p='civicrm/sms/conversation/action/add' q="action_type=3&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> record in field</i></a>
-      <a href="{crmURL p='civicrm/sms/conversation/action/add' q="action_type=2&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> add to group</i></a>
-      <a href="{crmURL p='civicrm/sms/conversation/action/add' q="action_type=1&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> go to question</i></a>
+      <a href="{crmURL p='civicrm/sms/conversation/action/edit' q="action=add&action_type=3&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> record in field</i></a>
+      <a href="{crmURL p='civicrm/sms/conversation/action/edit' q="action=add&action_type=2&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> add to group</i></a>
+      <a href="{crmURL p='civicrm/sms/conversation/action/edit' q="action=add&action_type=1&question_id=`$question.id`"}" title="add action"><i class="crm-i fa-plus-circle"> go to question</i></a>
       </td>
     </tr>
   {/foreach}
   <tr>
     <td colspan=2>
-      <a href="{crmURL p='civicrm/sms/conversation/question/add' q="conversation_id=`$question.id`"}" title="add question"><i class="crm-i fa-plus-circle"></i> question</a> |
-      <a href="{crmURL p='civicrm/sms/conversation/edit' q="id=`$conversation.id`"}" title="edit conversation"><i class="crm-i fa-pencil"></i> conversation</a>
+      <a href="{crmURL p='civicrm/sms/conversation/question/add' q="action=add&conversation_id=`$question.id`"}" title="add question"><i class="crm-i fa-plus-circle"></i> question</a> |
+      <a href="{crmURL p='civicrm/sms/conversation/edit' q="action=update&id=`$conversation.id`"}" title="edit conversation"><i class="crm-i fa-pencil"></i> conversation</a>
     </td>
   </tr>
 </table>
+{if $unusedQuestions}
+<div class="messages status no-popup">
+  <p><b>Note:</b> the following questions are defined for this conversation but will do not have an action that would trigger them to be asked:</p>
+  <ul>
+    {foreach from=$unusedQuestions item=question}
+    <li>{$question.text}</li>
+    {/foreach}
+  </ul>
+</div>
+{/if}

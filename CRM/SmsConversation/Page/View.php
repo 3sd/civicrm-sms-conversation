@@ -67,6 +67,7 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
     $this->assign('conversation', $this->conversation);
     $this->assign('orderedQuestions', $this->orderedQuestions);
     $this->assign('unorderedQuestions', $this->unorderedQuestions);
+    $this->assign('unusedQuestions', $this->questions);
     $this->assign('contactFieldTitles', $this->contactFieldTitles);
 
     if($groupIds){
