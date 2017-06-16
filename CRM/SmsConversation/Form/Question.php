@@ -19,38 +19,30 @@ public function preProcess(){
     $this->question = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $this->questionId]);
     $this->conversationId = $this->question['conversation_id'];
   }
+  $this->conversation = civicrm_api3('SmsConversation', 'getsingle', ['id' => $this->conversationId]);
+
   $this->assign('action', $this->action);
   $session = CRM_Core_Session::singleton();
-  $session->pushUserContext(CRM_Utils_System::url('civicrm/sms/conversation/view', "id={$this->conversationId}"));
+  $this->context = CRM_Utils_System::url('civicrm/sms/conversation/view', "id={$this->conversationId}");
+  $session->pushUserContext($this->context);
+  $this->controller->_destination = $this->context;
 }
 
   public function buildQuickForm() {
 
     // add form elements
     $this->add( 'text', 'text', ts('Question'), ['size' => 40], TRUE);
-    $this->add( 'text', 'text_invalid', ts('Invalid text'), ['size' => 40], TRUE);
+    $this->add( 'text', 'text_invalid', ts('Invalid text'), ['size' => 40]);
 
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){
-      CRM_Utils_System::setTitle(ts('Add an SMS conversation'));
-      $this->add( 'text', 'start_question_text', ts('First question'), ['size' => 40], TRUE);
+      CRM_Utils_System::setTitle(ts("Add a question to '{$this->conversation['name']}'"));
       $this->addButtons([
         array('type' => 'cancel', 'name' => 'Cancel'),
         array('type' => 'submit', 'name' => 'Add', 'isDefault' => TRUE)
       ]);
     }elseif($this->action == CRM_Core_Action::UPDATE){
-      $session = CRM_Core_Session::singleton();
-      $session->pushUserContext(CRM_Utils_System::url('civicrm/sms/conversation/view', "id={$this->conversationId}"));
       CRM_Utils_System::setTitle(ts('Update an SMS conversation question'));
-      $this->addEntityRef('start_question_id', ts('First question'), [
-        'entity' => 'SmsConversationQuestion',
-        'api' => [
-          'params' => ['conversation_id' => $this->conversationId],
-          'label_field' => 'text'
-      ],
-        'placeholder' => ts('- Select question -'),
-        'select' => ['minimumInputLength' => 0]
-      ], TRUE);
       $this->addButtons([
         array('type' => 'cancel', 'name' => 'Cancel'),
         array('type' => 'submit', 'name' => 'Update', 'isDefault' => TRUE)
@@ -65,29 +57,16 @@ public function preProcess(){
     }
   }
 
-
   public function postProcess() {
     $values = $this->exportValues();
-    if($this->action == CRM_Core_Action::ADD){
-      $conversation = civicrm_api3('SmsConversation', 'create', [
-        'name' => $values['name']
-      ]);
-      $question = civicrm_api3('SmsConversationQuestion', 'create', [
-        'text' => $values['start_question_text'],
-        'conversation_id' => $conversation['id']
-      ]);
-      $conversation = civicrm_api3('SmsConversation', 'create', [
-        'id' => $conversation['id'],
-        'start_question_id' => $question['id']
-      ]);
-    }else{
-      $conversation = civicrm_api3('SmsConversation', 'create', [
-        'id' => $this->conversationId,
-        'name' => $values['name'],
-        'start_question_id' => $values['start_question_id']
-      ]);
+    $params['text'] = $values['text'];
+    $params['text_invalid'] = $values['text_invalid'];
+    $params['conversation_id'] = $this->conversationId;
+    if($this->action == CRM_Core_Action::UPDATE){
+      $params['id'] = $this->questionId;
     }
-    $this->controller->_destination = CRM_Utils_System::url('civicrm/sms/conversation/view', "&id={$conversation['id']}");
+    $question = civicrm_api3('SmsConversationQuestion', 'create', $params);
+    var_dump($question);
     parent::postProcess();
   }
 }
