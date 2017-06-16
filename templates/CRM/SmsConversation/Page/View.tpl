@@ -40,7 +40,7 @@
   {/foreach}
   <tr>
     <td colspan=2>
-      <a href="{crmURL p='civicrm/sms/conversation/question/add' q="action=add&conversation_id=`$question.id`"}" title="add question"><i class="crm-i fa-plus-circle"></i> question</a> |
+      <a href="{crmURL p='civicrm/sms/conversation/question/edit' q="action=add&conversation_id=`$conversation.id`"}" title="add question"><i class="crm-i fa-plus-circle"></i> question</a> |
       <a href="{crmURL p='civicrm/sms/conversation/edit' q="action=update&id=`$conversation.id`"}" title="edit conversation"><i class="crm-i fa-pencil"></i> conversation</a>
     </td>
   </tr>
