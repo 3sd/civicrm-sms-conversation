@@ -11,9 +11,9 @@ public function preProcess(){
   $this->action = CRM_Utils_Request::retrieve('action', 'String', $this);
   $this->questionId = CRM_Utils_Request::retrieve('id', 'String', $this);
 
-  //We should always be able to determine a convesation ID. When adding a
-  //Wquestion, it should be in the URL. When editing a question, we should be
-  //able to rertrieve it from the SmsConversationQuestion being edited
+  //We should always be able to determine a conversation ID. When adding a
+  //question, it should be in the URL. When editing a question, we should be
+  //able to retrieve it from the SmsConversationQuestion being edited
   $this->conversationId = CRM_Utils_Request::retrieve('conversation_id', 'String', $this);
   if($this->questionId){
     $this->question = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $this->questionId]);
@@ -31,8 +31,8 @@ public function preProcess(){
   public function buildQuickForm() {
 
     // add form elements
-    $this->add( 'text', 'text', ts('Question'), ['size' => 40], TRUE);
-    $this->add( 'text', 'text_invalid', ts('Invalid text'), ['size' => 40]);
+    $this->add( 'textarea', 'text', ts('Question'), ['rows' => 3, 'cols' => 80], TRUE);
+    $this->add( 'textarea', 'text_invalid', ts('Invalid text'), ['rows' => 3, 'cols' => 80]);
 
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){
@@ -66,6 +66,16 @@ public function preProcess(){
       $params['id'] = $this->questionId;
     }
     $question = civicrm_api3('SmsConversationQuestion', 'create', $params);
+    $this->questionId = $question['id'];
+    if ($this->action == CRM_Core_Action::ADD) {
+      $params['id'] = $this->conversationId;
+      $conversation = civicrm_api3('SmsConversation', 'get', $params);
+      $conversation = $conversation['values'][$this->conversationId];
+      if (empty($conversation['start_question_id'])) {
+        $conversation['start_question_id'] = $this->questionId;
+        $conversation = civicrm_api3('SmsConversation', 'create', $conversation);
+      }
+    }
     var_dump($question);
     parent::postProcess();
   }
