@@ -23,7 +23,7 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
-<table class="crm-smsconversation-selector crm-ajax-table" data-order='[[0,"asc"]]'>
+<table class="crm-smsconversation-selector crm-ajax-table" data-order='[[2,"desc"]]'>
   <thead>
   <tr>
     <th data-data="conversation_name" cell-class="crm-smsconversation-conversation_name crmf-title" class='crm-smsconversation-conversation_name'>{ts}Conversation{/ts}</th>
