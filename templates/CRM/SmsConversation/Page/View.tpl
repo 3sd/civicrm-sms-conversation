@@ -47,7 +47,7 @@
 </table>
 {if $unusedQuestions}
 <div class="messages status no-popup">
-  <p><b>Note:</b> the following questions are defined for this conversation but will do not have an action that would trigger them to be asked:</p>
+  <p><b>Note:</b> the following questions are defined for this conversation but are not the target of any actions so will never be asked. You may want to add them as targets or delete them.</p>
   <ul>
     {foreach from=$unusedQuestions item=question}
     <li>{$question.text}</li>
