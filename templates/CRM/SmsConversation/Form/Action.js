@@ -11,10 +11,12 @@ CRM.$(function($) {
     }else{
       $('tr.answer_pattern_raw').show();
     }
+
+    $('.answer-pattern-help').hide();
+    $('.answer-pattern-help-' + $('[name=answer_pattern_type]').val()).show();
+
   }
 
-  // Ensure that the hidden required field has a value to avoid form
-  // invalidation. (We ignore the value.)
   $('[name=_qf_Action_submit]').on( "click", function(){
     if($('select[name=answer_pattern_type]').val() === 'anything'){
       $('input[name=answer_pattern_raw]').val('/.*/');
@@ -28,12 +30,4 @@ CRM.$(function($) {
     $('tr.action_type').hide();
     $('tr.action_type.' + action_type_class).show();
   }
-  //   $('tr.action_type.).show();
-  //   if( a === 'anything' ){
-  //     $('tr.x').hide();
-  //   }else{
-  //     $('tr.x').show();
-  //   }
-  // }
-
 });

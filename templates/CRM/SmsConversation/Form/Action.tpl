@@ -10,7 +10,12 @@
     </tr>
     <tr class="answer_pattern_raw">
       <td>{$form.answer_pattern_raw.label}</td>
-      <td>{$form.answer_pattern_raw.html}</td>
+      <td>{$form.answer_pattern_raw.html}<br /> <i>
+        <span class="answer-pattern-help answer-pattern-help-list">Help test for the pattern</span>
+        <span class="answer-pattern-help answer-pattern-help-list-exact">Seperate each term with a comma</span>
+        <span class="answer-pattern-help answer-pattern-help-list-contains">Seperate each term with a comma</span>
+        <span class="answer-pattern-help answer-pattern-help-regexp">Please enter a <a href="http://php.net/manual/en/book.pcre.php">regular expression</a></span>
+      </i></td>
     </tr>
       <tr>
       <td>{$form.action_data.label}</td>
