@@ -66,7 +66,7 @@ class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
 
     try {
       // Start the conversation
-      $status = civicrm_api3('SmsConversationContact', 'start', $params);
+      $status = civicrm_api3('SmsConversationContact', 'schedule', $params);
     }
     catch (Exception $e) {
       $status = $e->getMessage();

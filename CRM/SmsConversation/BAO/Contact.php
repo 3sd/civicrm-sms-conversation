@@ -65,6 +65,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       'contact_id' => $contactId,
       'status_id' => $scheduledId,
       'options' => ['limit' => 1, 'sort' => "scheduled_date ASC,id ASC"],
+      'scheduled_date' => array('<' => "now"),
     ]);
 
     if (empty($convContact['is_error']) && !empty($convContact['count'])) {
@@ -81,7 +82,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    * @param $contactId
    * @param $conversationId
    *
-   * @return bool
+   * @return SmsConversation.contact_id or FALSE
    */
   static function startConversation($contactId, $id = NULL) {
     // Don't allow another conversation to start
@@ -127,7 +128,12 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
 
     // Ask the question
-    return CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, $convContact);
+    if (CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, $convContact)) {
+      return $convContact['id'];
+    }
+    else {
+      return FALSE;
+    }
   }
 
   /**
@@ -320,9 +326,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    */
   static function scheduleConversations($contactId = NULL) {
     $params = array(
-      'options' => array('sort' => "id ASC", 'limit' => 0),
       'status_id' => "In Progress",
-      'scheduled_date' => array('<' => "now"),
     );
     if (!empty($contactId)) {
       $contactIds[$contactId] = $contactId;
@@ -331,22 +335,24 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       $contactIds = self::getAllContactIds();
     }
 
-    $scheduledStatusId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'Scheduled');
+    // Loop through each contact and start a conversation if one is waiting
+    $result = array();
     foreach ($contactIds as $cid => $value) {
       $params['contact_id'] = $cid;
       $convContact = civicrm_api3('SmsConversationContact', 'get', $params);
       if (empty($convContact['count'])) {
         // No conversations in progress so we need to schedule one
         // Get the one with the oldest date that is in state "Scheduled"
-        $params['status_id'] = $scheduledStatusId;
-        $params['options'] = array('sort' => "scheduled_date ASC,id ASC", 'limit' => 1);
-        $convContactScheduled = civicrm_api3('SmsConversationContact', 'get', $params);
-        if (($convContactScheduled['count'] != 1) || (empty($convContactScheduled['id']))) {
-          continue; // We should get exactly one conversation for contact.  If not, skip.
+        $convContactScheduled = self::getNextScheduledConversation($cid);
+        if ($convContactScheduled) {
+          // Start the conversation
+          $contactId = self::startConversation($cid, $convContactScheduled['id']);
+          if ($contactId) {
+            $result[$contactId] = $contactId;
+          }
         }
-        // Start the conversation
-        self::startConversation($cid,$convContactScheduled['id']);
       }
     }
+    return $result;
   }
 }

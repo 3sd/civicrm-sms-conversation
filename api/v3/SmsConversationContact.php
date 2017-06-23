@@ -90,7 +90,10 @@ function civicrm_api3_sms_conversation_contact_get($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_contact_start($params) {
-  return CRM_SmsConversation_BAO_Contact::startConversation($params['contact_id'], $params['id']);
+  $result = CRM_SmsConversation_BAO_Contact::startConversation($params['contact_id'], $params['id']);
+  if ($result) {
+    return civicrm_api3_create_success($result,$params,'SmsConversationContact','start');
+  }
 }
 
 /**
@@ -114,7 +117,11 @@ function _civicrm_api3_sms_conversation_contact_start_spec(&$spec) {
 }
 
 function civicrm_api3_sms_conversation_contact_schedule($params) {
-  return CRM_SmsConversation_BAO_Contact::scheduleConversations($params['contact_id']);
+  if (isset($params['contact_id'])) {
+    $contactId = $params['contact_id'];
+  }
+  $result = CRM_SmsConversation_BAO_Contact::scheduleConversations($contactId);
+  return civicrm_api3_create_success($result, $params,'SmsConversation','schedule');
 }
 
 function _civicrm_api3_sms_conversation_contact_schedule_spec(&$spec) {

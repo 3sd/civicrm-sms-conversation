@@ -38,7 +38,7 @@ CREATE TABLE `civicrm_sms_conversation` (
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique SmsConversation ID',
      `name` varchar(255)    COMMENT 'Name of conversation.',
-     `is_active` tinyint    COMMENT 'Is this conversation enabled?',
+     `is_active` tinyint NOT NULL  DEFAULT 1 COMMENT 'Is this conversation enabled?',
      `start_question_id` int unsigned    COMMENT 'FK to sms_conversation_question.id'
      ,
      PRIMARY KEY (`id`)

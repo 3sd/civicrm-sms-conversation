@@ -49,12 +49,30 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
     }
 
     $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'In Progress');
+    $scheduledId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'Scheduled');
+
     $convContact = $convContact['values'][0];
     $convRecord = json_decode($convContact['conversation_record'], TRUE);
 
     $conversationRecord = array();
     $prevValid = TRUE;
-    if (empty($convRecord) && ($convContact['status_id'] != $inProgressId)) {
+
+    // Add each conversation record
+    foreach ($convRecord as $conv) {
+      $convQuestion = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $conv['q']]);
+      if (!$prevValid) {
+        $conv['question'] = $convQuestion['text_invalid'];
+      }
+      else {
+        $conv['question'] = $convQuestion['text'];
+      }
+      $conv['vPrev'] = $prevValid;
+      $conversationRecord[] = $conv;
+      $prevValid = $conv['v'];
+    }
+
+    // Add next question
+    if (empty($convRecord) && ($convContact['status_id'] == $scheduledId)) {
       // Not "In Progress" and no conversation history so the conversation hasn't started.
       $conv = civicrm_api3('SmsConversation', 'getsingle', ['id' => $convContact['conversation_id']]);
       $convQuestion = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $conv['start_question_id']]);
@@ -64,28 +82,13 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
       $conv['a'] = '<em style="color:grey">- Not sent yet -</em>';
       $conversationRecord[] = $conv;
     }
-    else {
-      foreach ($convRecord as $conv) {
-        $convQuestion = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $conv['q']]);
-        if (!$prevValid) {
-          $conv['question'] = $convQuestion['text_invalid'];
-        }
-        else {
-          $conv['question'] = $convQuestion['text'];
-        }
-        $conv['vPrev'] = $prevValid;
-        $conversationRecord[] = $conv;
-        $prevValid = $conv['v'];
-      }
-    }
-
-    if ($convContact['status_id'] == $inProgressId) {
+    elseif (!empty($convContact['current_question_id'])) {
       // Add next question to conversation detail view as we are awaiting a response (it's not stored in conversation record until we get a reply)
       $convQuestion = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $convContact['current_question_id']]);
       $conv['question'] = $convQuestion['text'];
       $conv['v'] = TRUE;
       $conv['vPrev'] = TRUE;
-      $conv['a'] = '<em style="color:grey">- Awaiting reply -</em>';
+      $conv['a'] = '<em style="color:grey">- Sent -</em>';
       $conversationRecord[] = $conv;
     }
 
