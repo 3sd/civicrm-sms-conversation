@@ -51,12 +51,12 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
 
     // The type of pattern matching
     $this->add('select', 'answer_pattern_type', ts('Match'), [
-      'anything' => 'anything',
-      'exact' => 'an exact match',
-      'contains' => 'contains',
-      'list-exact' => 'list of exact matches (comma seperated)',
-      'list-contains' => 'list of contains (comma seperated)',
-      'regexp' => 'regular expression'
+      'anything' => 'Anything',
+      'exact' => 'Exact match',
+      'contains' => 'Text contains',
+      'list-exact' => 'List of exact matches',
+      'list-contains' => 'List of \'text contains\'',
+      'regexp' => 'Advanced mode'
     ], FALSE, ['class' => 'crm-select2']);
 
     // The parameters of the match
@@ -117,10 +117,10 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
         $params['answer_pattern'] = '/.*/';
         break;
       case 'exact':
-        $params['answer_pattern'] = '/^'.$values['answer_pattern_raw'].'$/';
+        $params['answer_pattern'] = '/^'.$values['answer_pattern_raw'].'$/i';
         break;
       case 'contains':
-        $params['answer_pattern'] = $params['answer_pattern'] = '/'.$values['answer_pattern_raw'].'/';
+        $params['answer_pattern'] = $params['answer_pattern'] = '/'.$values['answer_pattern_raw'].'/i';
         break;
       case 'list-exact':
         $terms = explode(',', $values['answer_pattern_raw']);
@@ -129,7 +129,7 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
           $term = "^$term$";
         }
         $pattern = implode ('|', $terms);
-        $params['answer_pattern'] = '/'.$pattern.'/';
+        $params['answer_pattern'] = '/'.$pattern.'/i';
         break;
       case 'list-contains':
         $terms = explode(',', $values['answer_pattern_raw']);
@@ -137,7 +137,7 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
           $term = trim($term);
         }
         $pattern = implode ('|', $terms);
-        $params['answer_pattern'] = '/'.$pattern.'/';
+        $params['answer_pattern'] = '/'.$pattern.'/i';
         break;
       case 'regexp':
         $params['answer_pattern'] = $values['answer_pattern_raw'];
