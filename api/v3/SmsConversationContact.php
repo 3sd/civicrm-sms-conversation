@@ -57,7 +57,12 @@ function civicrm_api3_sms_conversation_contact_create($params) {
   if (!isset($params['status_id'])) {
     $params['status_id'] = $statusId;
   }
-  return _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Contact', $params);
+  $result = _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Contact', $params);
+  if($params['process_now']){
+    civicrm_api3('SmsConversationContact', 'schedule', $params);
+  }
+  return $result;
+
 }
 
 /**
@@ -131,5 +136,3 @@ function _civicrm_api3_sms_conversation_contact_schedule_spec(&$spec) {
     'api.aliases' => array('contact_id'),
   );
 }
-
-
