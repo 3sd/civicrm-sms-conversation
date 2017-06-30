@@ -11,6 +11,7 @@
       <td>
         <p><b>{$question.number}. {$question.text}</b>
         <a href="{crmURL p='civicrm/sms/conversation/question/edit' q="action=update&id=`$question.id`"}" title="edit question"><i class="crm-i fa-pencil"></i></a>
+        <a href="{crmURL p='civicrm/sms/conversation/confirmdelete' q="entity=SmsConversationQuestion&id=`$question.id`"}" title="delete question"><i class="crm-i fa-trash"></i></a>
         </p>
         {if $question.text_invalid}
         <p><i>Invalid text: "{$question.text_invalid}"</i></p>
@@ -28,6 +29,7 @@
                 {include file="CRM/SmsConversation/Page/View/AddField.tpl"}
               {/if}
               <a href="{crmURL p='civicrm/sms/conversation/action/edit' q="action=update&id=`$action.id`"}" title="add action"><i class="crm-i fa-pencil"></i></a>
+              <a href="{crmURL p='civicrm/sms/conversation/confirmdelete' q="entity=SmsConversationAction&id=`$action.id`"}" title="delete action"><i class="crm-i fa-trash"></i></a>
             </p>
           {/foreach}
       {/if}
@@ -42,6 +44,7 @@
     <td colspan=2>
       <a href="{crmURL p='civicrm/sms/conversation/question/edit' q="action=add&conversation_id=`$conversation.id`"}" title="add question"><i class="crm-i fa-plus-circle"></i> question</a> |
       <a href="{crmURL p='civicrm/sms/conversation/edit' q="action=update&id=`$conversation.id`"}" title="edit conversation"><i class="crm-i fa-pencil"></i> conversation</a>
+      <a href="{crmURL p='civicrm/sms/conversation/confirmdelete' q="entity=SmsConversation&id=`$conversation.id`"}" title="delete conversation"><i class="crm-i fa-trash"></i> conversation</a>
     </td>
   </tr>
 </table>
@@ -50,7 +53,7 @@
   <p><b>Note:</b> the following questions are defined for this conversation but are not the target of any actions so will never be asked. You may want to add them as targets or delete them.</p>
   <ul>
     {foreach from=$unusedQuestions item=question}
-    <li>{$question.text}</li>
+    <li>{$question.text} <a href="{crmURL p='civicrm/sms/conversation/confirmdelete' q="entity=SmsConversationQuestion&id=`$question.id`"}" title="delete question"><i class="crm-i fa-trash"></i></a></li>
     {/foreach}
   </ul>
 </div>

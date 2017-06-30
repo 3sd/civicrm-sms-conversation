@@ -30,6 +30,11 @@
     <title>Conversation</title>
   </item>
   <item>
+    <path>civicrm/sms/conversation/confirmdelete</path>
+    <page_callback>CRM_SmsConversation_Form_ConfirmDelete</page_callback>
+    <title>Conversation</title>
+  </item>
+  <item>
     <path>civicrm/sms/conversation/question/edit</path>
     <page_callback>CRM_SmsConversation_Form_Question</page_callback>
     <title>Conversation</title>
