@@ -158,7 +158,7 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     }
 
     $result = civicrm_api3($entity, 'create', $params);
-    if (empty($contactResult['is_error'])) {
+    if (empty($result['is_error'])) {
       return TRUE;
     }
     return FALSE;
