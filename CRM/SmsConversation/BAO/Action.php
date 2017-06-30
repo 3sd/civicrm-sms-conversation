@@ -126,19 +126,47 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
    * @param $contactId
    */
   static function actionRecordInField($action, $contactId, $sms) {
-    // Get contact and then create with additional field as parameter
-    $contact = civicrm_api3('Contact', 'get', array(
-      'id' => $contactId,
-    ));
-    $params = $contact['values'][$contactId];
 
     $fieldName = $action['action_data'];
     $params[$fieldName] = $sms;
-    $contactResult = civicrm_api3('Contact', 'create', $params);
+
+    // Work out what entity we should be creating / updating
+
+    // If this is an address field, update the primary address if it exists,
+    // else create a new (primary) address.
+    if(self::isAddressField($fieldName)){
+      $entity = 'Address';
+      try{
+        $params['id'] = civicrm_api3('Address', 'getsingle', [
+          'contact_id' => $contactId,
+          'is_primary' => '1'
+        ])['id'];
+      }catch (Exception $e){
+        $params['contact_id'] = $contactId;
+        $params['location_type_id'] = civicrm_api3('LocationType', 'getvalue', [
+          'return' => "id",
+          'is_default' => 1
+        ]);
+      }
+    // Else, assume we are updating the contact. I *think* that email will be
+    // handled reasonably, and think that asking for a phone number via SMS can
+    // probably be classed as an edge case
+    }else{
+
+      $entity = 'Contact';
+      $params['id'] = $contactId;
+    }
+
+    $result = civicrm_api3($entity, 'create', $params);
     if (empty($contactResult['is_error'])) {
       return TRUE;
     }
     return FALSE;
+  }
+
+  static function isAddressField($field){
+    $addressFields = civicrm_api3('Address', 'getfields')['values'];
+    return in_array($field, array_keys($addressFields));
   }
 
 }
