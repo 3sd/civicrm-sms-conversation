@@ -2,25 +2,28 @@
 <extension key="civicrm.sms.conversations" type="module">
   <file>smsconversation</file>
   <name>SMS Conversations</name>
-  <description>FIXME</description>
+  <description>Sms Conversation support for CiviCRM</description>
   <license>AGPL-3.0</license>
+  <maintainer>
+    <author>Michael McAndrew</author>
+    <email>michaelmcandrew@thirdsectordesign.org</email>
+  </maintainer>
   <maintainer>
     <author>Matthew Wire</author>
     <email>mjw@mjwconsult.co.uk</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">http://FIXME</url>
-    <url desc="Documentation">http://FIXME</url>
-    <url desc="Support">http://FIXME</url>
+    <url desc="Main Extension Page">https://github.com/3sd/civicrm-sms-conversations</url>
+    <url desc="Support">http://thirdsectordesign.org/</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
-  <releaseDate>2017-06-02</releaseDate>
+  <releaseDate>2017-07-02</releaseDate>
   <version>0.1</version>
   <develStage>alpha</develStage>
   <compatibility>
     <ver>4.7</ver>
   </compatibility>
-  <comments>This is a new, undeveloped module</comments>
+  <comments></comments>
   <civix>
     <namespace>CRM/SmsConversation</namespace>
   </civix>

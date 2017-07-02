@@ -10,6 +10,7 @@ class CRM_SmsConversation_Page_Tab extends CRM_Core_Page {
     // check logged in url permission
     CRM_Contact_Page_View::checkUserPermission($this);
 
-    parent::run();
+    $this->ajaxResponse['tabCount'] = CRM_SmsConversation_BAO_Contact::getConversationCount($this->_contactId);
+    return parent::run();
   }
 }

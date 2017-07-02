@@ -6,15 +6,15 @@
  */
 return array(
   0 => array (
-    'name' => 'Cron:SmsConversations.Schedule',
+    'name' => 'Cron:Job.ProcessSmsConversations',
     'entity' => 'Job',
     'params' => array (
       'version' => 3,
       'name' => 'Schedule SMS Conversations',
       'description' => 'Schedule conversations for contacts where conversations are in "Scheduled" state.',
       'run_frequency' => 'Hourly',
-      'api_entity' => 'SmsConversationContact',
-      'api_action' => 'schedule',
+      'api_entity' => 'Job',
+      'api_action' => 'ProcessSmsConversations',
       'parameters' => '',
     ),
   ),

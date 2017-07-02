@@ -23,6 +23,7 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
+<div id="sms-conversations-tab" class="view-content">
 <div class="action-link">
   <a accesskey="N" href='{crmURL p="civicrm/sms/conversation/schedule" q="cid=`$contactId`"}' class="button medium-popup"><span><i class="crm-i fa-comment"></i> Schedule Conversation</span></a>
 </div>
@@ -39,6 +40,7 @@
   </tr>
   </thead>
 </table>
+</div>
 
 {literal}
 <script type="text/javascript">
@@ -79,4 +81,15 @@
             });
     })(CRM.$);
 </script>
+{/literal}
+
+{literal}
+  <script type="text/javascript">
+      CRM.$(function($) {
+          // Changing relationships may affect related members and contributions. Ensure they are refreshed.
+          $('#sms-conversations-tab').on('crmPopupFormSuccess', function() {
+              CRM.tabHeader.resetTab('#tab_smsconversation',true);
+          });
+      });
+  </script>
 {/literal}

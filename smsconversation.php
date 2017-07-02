@@ -220,7 +220,6 @@ function smsconversation_civicrm_tabs ( &$tabs, $contactID ) {
   // ADD the sms conversation tab as a separate tab
   $tabs[] = array(
     'title'  => 'SMS Conversations',
-    'class'  => 'livePage',
     'id'     => 'smsconversation',
     'url'    => CRM_Utils_System::url('civicrm/contact/view/smsconversation', "reset=1&cid={$contactID}"),
     'weight' => 50,

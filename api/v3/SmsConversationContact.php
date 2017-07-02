@@ -42,6 +42,11 @@ function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
     'type' => CRM_Utils_Type::T_INT,
     // FIXME: This should lookup FK to civicrm_contact.id
   );
+  $spec['scheduled_date'] = array (
+    'title' => 'SMS Conversation Scheduled Date',
+    'description' => 'Date and time this SMS Conversation was scheduled.',
+    'type' => CRM_Utils_Type::T_TIMESTAMP,
+  );
 }
 
 /**
@@ -53,16 +58,29 @@ function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
  */
 function civicrm_api3_sms_conversation_contact_create($params) {
   $statusId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'Scheduled');
-  // Force status to "In Progress" if not specified.
+  // Force status to "Scheduled" if not specified.
   if (!isset($params['status_id'])) {
     $params['status_id'] = $statusId;
   }
   $result = _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Contact', $params);
-  if($params['process_now']){
-    civicrm_api3('SmsConversationContact', 'schedule', $params);
+  if(!empty($params['process_now'])){
+    civicrm_api3('Job', 'ProcessSmsConversations', $params);
   }
   return $result;
+}
 
+/**
+ * Alias for SmsConversationContact.schedule
+ * @param $params
+ *
+ * @return array
+ */
+function civicrm_api3_sms_conversation_contact_schedule($params) {
+  return civicrm_api3_sms_conversation_contact_create($params);
+}
+
+function _civicrm_api3_sms_conversation_contact_schedule_spec(&$spec) {
+  return _civicrm_api3_sms_conversation_contact_create_spec($spec);
 }
 
 /**
@@ -121,18 +139,21 @@ function _civicrm_api3_sms_conversation_contact_start_spec(&$spec) {
   );
 }
 
-function civicrm_api3_sms_conversation_contact_schedule($params) {
-  if (isset($params['contact_id'])) {
-    $contactId = $params['contact_id'];
-  }
-  $result = CRM_SmsConversation_BAO_Contact::scheduleConversations($contactId);
-  return civicrm_api3_create_success($result, $params,'SmsConversation','schedule');
+/**
+ * Get current conversation for contact
+ * @param $params
+ *
+ * @return array|bool
+ */
+function civicrm_api3_sms_conversation_contact_getcurrent($params) {
+  $result = CRM_SmsConversation_BAO_Contact::getCurrentConversation($params['contact_id']);
+  return civicrm_api3_create_success($result,$params,'SmsConversationContact','getcurrent');
 }
 
-function _civicrm_api3_sms_conversation_contact_schedule_spec(&$spec) {
+function _civicrm_api3_sms_conversation_contact_getcurrent_spec(&$spec) {
   $spec['contact_id'] = array(
+    'api.required' => 1,
     'title' => 'Contact ID',
-    'description' => 'If specified, conversations will be scheduled for that contact only',
     'api.aliases' => array('contact_id'),
   );
 }

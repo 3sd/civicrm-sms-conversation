@@ -7,14 +7,12 @@
  */
 class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
 
-  public function preProcess(){
+  public function preProcess() {
     $this->contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this);
     $contact = civicrm_api3('Contact', 'getsingle', ['id' => $this->contactId]);
     CRM_Utils_System::setTitle(ts('Start an SMS conversation with %1', [1 => $contact['display_name']]));
-
+    parent::preProcess();
   }
-
-
 
   public function buildQuickForm() {
 

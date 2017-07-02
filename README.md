@@ -3,4 +3,5 @@
 Conversation examples in examples.php
 
 ## API Functions
-To start a conversation: SmsConversation.start
+* To create a conversation: SmsConversationContact.schedule
+* To schedule existing conversations: Job.process_sms_conversations
