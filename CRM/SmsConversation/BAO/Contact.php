@@ -35,14 +35,13 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     // FIXME: There should not be more than one, if there is we are getting the oldest one.  This behaviour may need to change.
     $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'In Progress');
     $convContact = civicrm_api3('SmsConversationContact', 'get', [
-      'sequential' => 1,
       'contact_id' => $contactId,
       'status_id' => $inProgressId,
       'options' => ['limit' => 1, 'sort' => "id ASC"],
     ]);
 
     if (empty($convContact['is_error']) && !empty($convContact['count'])) {
-      return $convContact['values'][0];
+      return $convContact['values'];
     }
     else {
       return FALSE;

@@ -59,11 +59,9 @@ class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
     $params['conversation_id'] = $values['conversation_id'];
     $params['scheduled_date'] = CRM_Utils_Date::processDate($values['scheduled_date'], $values['scheduled_date_time']);
     $params['source_contact_id'] = $session->get('userID');
+    $params['process_now'] = TRUE; // Start the conversation immediately
     // Create new conversation for contact
-    $result = civicrm_api3('SmsConversationContact', 'create', $params);
-
     try {
-      // Start the conversation
       $status = civicrm_api3('SmsConversationContact', 'schedule', $params);
     }
     catch (Exception $e) {

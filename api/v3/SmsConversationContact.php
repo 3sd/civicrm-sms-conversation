@@ -64,7 +64,7 @@ function civicrm_api3_sms_conversation_contact_create($params) {
   }
   $result = _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Contact', $params);
   if(!empty($params['process_now'])){
-    civicrm_api3('Job', 'ProcessSmsConversations', $params);
+    civicrm_api3('Job', 'process_sms_conversations', $params);
   }
   return $result;
 }
