@@ -221,6 +221,11 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     $params['sequential'] = 1;
     $params['contact_id'] = $params['cid'];
 
+    $params['rowCount'] = $params['rp'];
+    if (!empty($params['sortBy'])) {
+      $params['sort'] = $params['sortBy'];
+    }
+
     $convList = civicrm_api3('SmsConversationContact', 'get', $params);
 
     $DT['data'] = array(); // Datatables requires the data element even if no data

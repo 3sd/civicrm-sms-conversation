@@ -221,6 +221,7 @@ function smsconversation_civicrm_tabs ( &$tabs, $contactID ) {
   $tabs[] = array(
     'title'  => 'SMS Conversations',
     'id'     => 'smsconversation',
+    'class' => 'livePage',
     'url'    => CRM_Utils_System::url('civicrm/contact/view/smsconversation', "reset=1&cid={$contactID}"),
     'weight' => 50,
     'count'  => CRM_SmsConversation_BAO_Contact::getConversationCount($contactID),

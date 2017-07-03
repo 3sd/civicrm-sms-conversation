@@ -13,3 +13,14 @@
     {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>
 </div>
+
+{literal}
+  <script type="text/javascript">
+      CRM.$(function($) {
+          // Changing relationships may affect related members and contributions. Ensure they are refreshed.
+          $('#crm-main-content-wrapper').on('crmPopupFormSuccess', function() {
+              CRM.tabHeader.resetTab('#tab_smsconversation',true);
+          });
+      });
+  </script>
+{/literal}
