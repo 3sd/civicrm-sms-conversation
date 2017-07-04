@@ -40,11 +40,6 @@ class CRM_SmsConversation_Processor {
         break;
       }
     }
-    if ($endConversation) {
-      // End the conversation
-      CRM_SmsConversation_BAO_Contact::endConversation($convContact['id']);
-      return FALSE;
-    }
 
     // Check each action to see if 1 or more match the answer.
     $validActions = array();
@@ -87,6 +82,14 @@ class CRM_SmsConversation_Processor {
         CRM_SmsConversation_BAO_Action::processAction($action, $this->sourceContactId, $this->conversationId, $this->sms);
       }
     }
+
+    if ($endConversation) {
+      // End the conversation
+      CRM_SmsConversation_BAO_Contact::endConversation($convContact['id']);
+      return FALSE;
+    }
+
+    return TRUE;
   }
 
   /**
