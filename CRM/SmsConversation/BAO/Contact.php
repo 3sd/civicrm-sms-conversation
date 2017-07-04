@@ -64,7 +64,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       'contact_id' => $contactId,
       'status_id' => $scheduledId,
       'options' => ['limit' => 1, 'sort' => "scheduled_date ASC,id ASC"],
-      'scheduled_date' => array('<' => "now"),
+      'scheduled_date' => array('<=' => "now"),
     ]);
 
     if (empty($convContact['is_error']) && !empty($convContact['count'])) {
