@@ -21,9 +21,8 @@
       <td>{$form.next_question_id.label}</td>
       <td>{$form.next_question_id.html}</td>
     </tr><tr>
-      <td>{$form.weight.label}</td>
-      <td>{$form.weight.html}
-        <div class="action-data-weight-help"><i class="crm-i fa-question-circle"></i> If you have multiple next questions which could match the one with the lowest (eg. 0) weight will be selected.</div></td>
+      <td>{$form.weight.label} {help id="weight" file="CRM/SmsConversation/Form/Weight.hlp"}</td>
+      <td>{$form.weight.html}</td>
     </tr>
 
   </table>

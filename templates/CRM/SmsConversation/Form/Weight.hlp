@@ -1,0 +1,4 @@
+{htxt id="weight"}
+<h1>Weight</h1>
+<p>Weight is useful when more than one 'Next question' matches a response. CiviCRM will choose the Next question with the lowest weight to continue to conversation.</p>
+{/htxt}
