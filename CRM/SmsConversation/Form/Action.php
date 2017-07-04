@@ -72,9 +72,13 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
         'select' => ['minimumInputLength' => 0]
       ], TRUE);
       // Add integer rule for question weighting
-      $this->add('text', 'weight', ts('Weight'));
-      $this->registerRule('weight', 'callback', 'integer', 'CRM_Utils_Rule');
-      $this->addRule('weight', ts('must be an integer'), 'integer');
+      $this->add('text', 'weight', ts('Weight'), null, true);
+      $this->registerRule('between1and9', 'regex', '/^[1-9]$/');
+
+      // Restricting it to a number between 0 and 9 meant that we can do a
+      // simple mysql order by action_data when retreiving the
+      $this->addRule('weight', ts('must be an number between 1 and 9'), 'between1and9');
+      // $this->addRule('weight', ts('must be an number between 0 and 9'), 'maxlength',1);
 
     }elseif($this->smsActionType['name'] == 'add_to_group'){
       $this->addEntityRef('action_data', ts('Add to group'), [
@@ -105,21 +109,36 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
   }
 
   public function setDefaultValues() {
-    if($this->smsActionType['name'] == 'question') {
-      CRM_SmsConversation_BAO_Action::processNextQuestionActionData($this->smsAction);
-    }
+
     if($this->action == CRM_Core_Action::UPDATE){
+      if($this->smsActionType['name'] == 'question') {
+        CRM_SmsConversation_BAO_Action::processNextQuestionActionData($this->smsAction);
+      }
       $defaults = $this->smsAction;
       $match = CRM_SmsConversation_Match::decipherPatternType($this->smsAction['answer_pattern']);
       $defaults['answer_pattern_type'] = $match['pattern_type'];
       $defaults['answer_pattern_raw'] = $match['pattern_raw'];
-      return $defaults;
+    }else{
+      $defaults = [];
+      if($this->smsActionType['name'] == 'question') {
+        $defaults['weight'] = 1;
+      }
     }
+    return $defaults;
+
   }
 
   public function postProcess() {
 
     $values = $this->exportValues();
+
+    $params['question_id'] = $this->questionId;
+    $params['action_type'] = $this->smsActionTypeId;
+
+    if($this->action == CRM_Core_Action::UPDATE){
+      $params['id'] = $this->smsActionId;
+    }
+
     switch($values['answer_pattern_type']){
       case 'anything':
         $params['answer_pattern'] = '/.*/';
@@ -151,19 +170,15 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
         $params['answer_pattern'] = $values['answer_pattern_raw'];
         break;
     }
-    $params['question_id'] = $this->questionId;
-    $params['action_type'] = $this->smsActionTypeId;
-    if (isset($values['question_id']) && isset($values['weight'])) {
-      // Save next question action data
-      if ($values['weight'] == '') { $values['weight'] = 0; } // '' is treated as valid int
-      $params['action_data'] = $values['weight'] .':' . $values['question_id'];
+
+    // If this is a next question, prepare action data
+    if($this->smsActionType['name'] == 'question') {
+      $params['action_data'] = $values['weight'] .':' . $values['next_question_id'];
     }
     else {
       $params['action_data'] = $values['action_data'];
     }
-    if($this->action == CRM_Core_Action::UPDATE){
-      $params['id'] = $this->smsActionId;
-    }
+
     $action = civicrm_api3('SmsConversationAction', 'create', $params);
     parent::postProcess();
   }
