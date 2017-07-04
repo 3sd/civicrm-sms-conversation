@@ -242,9 +242,8 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       $convContact['source_contact'] = "<a href='{$url}'>{$sourceContact['display_name']}</a>";
       // Format Date
       $convContact['date'] = CRM_Utils_Date::customFormat($convContact['scheduled_date']);
-      if (empty($convContact['current_question_id'])) {
-        $convContact['current_question_id'] = ' ';
-      }
+      // Format current question for display (show a shortened (to 30 chars) question text label)
+      $convContact['current_question_id'] = CRM_SmsConversation_BAO_Question::getShortQuestionLabel($convContact['current_question_id']);
       // Add links
       $links = self::actionLinks();
       // Get mask

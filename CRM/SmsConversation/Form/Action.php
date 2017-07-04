@@ -62,7 +62,7 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
     // The parameters of the match
     $this->add( 'text', 'answer_pattern_raw', ts('Match text'), ['size' => 40], TRUE);
     if($this->smsActionType['name'] == 'question'){
-      $this->addEntityRef('action_data', ts('Next question'), [
+      $this->addEntityRef('next_question_id', ts('Next question'), [
         'entity' => 'SmsConversationQuestion',
         'api' => [
           'params' => ['conversation_id' => $this->conversationId],
@@ -71,13 +71,18 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
         'placeholder' => ts('- select question -'),
         'select' => ['minimumInputLength' => 0]
       ], TRUE);
+      // Add integer rule for question weighting
+      $this->add('text', 'weight', ts('Weight'));
+      $this->registerRule('weight', 'callback', 'integer', 'CRM_Utils_Rule');
+      $this->addRule('weight', ts('must be an integer'), 'integer');
+
     }elseif($this->smsActionType['name'] == 'add_to_group'){
       $this->addEntityRef('action_data', ts('Add to group'), [
         'entity' => 'Group',
         'api' => [
           'label_field' => 'title',
           'value_field' => 'name'
-      ],
+        ],
         'placeholder' => ts('- select group -'),
         'select' => ['minimumInputLength' => 0]
       ], TRUE);
@@ -100,6 +105,9 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
   }
 
   public function setDefaultValues() {
+    if($this->smsActionType['name'] == 'question') {
+      CRM_SmsConversation_BAO_Action::processNextQuestionActionData($this->smsAction);
+    }
     if($this->action == CRM_Core_Action::UPDATE){
       $defaults = $this->smsAction;
       $match = CRM_SmsConversation_Match::decipherPatternType($this->smsAction['answer_pattern']);
@@ -145,7 +153,14 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
     }
     $params['question_id'] = $this->questionId;
     $params['action_type'] = $this->smsActionTypeId;
-    $params['action_data'] = $values['action_data'];
+    if (isset($values['question_id']) && isset($values['weight'])) {
+      // Save next question action data
+      if ($values['weight'] == '') { $values['weight'] = 0; } // '' is treated as valid int
+      $params['action_data'] = $values['weight'] .':' . $values['question_id'];
+    }
+    else {
+      $params['action_data'] = $values['action_data'];
+    }
     if($this->action == CRM_Core_Action::UPDATE){
       $params['id'] = $this->smsActionId;
     }

@@ -25,6 +25,12 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
 
     // Decorate the actions
     foreach($this->actions as $key => $action){
+      // Decipher action data for next question action and add to actions array
+      if($action['action_type'] == 1) {
+        CRM_SmsConversation_BAO_Action::processNextQuestionActionData($action);
+        $this->actions[$key] = $action;
+      }
+
       $match = CRM_SmsConversation_Match::decipherPatternType($action['answer_pattern']);
       $this->actions[$key]['friendly_answer_pattern'] = $match['human_friendly'];
     }
@@ -48,7 +54,7 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
     foreach($this->actions as $action){
       // Get the next question so we can order questions appropriatley
       if($action['action_type'] == 1){
-        $this->nextQuestionsMap[$action['question_id']][]=$action['action_data'];
+        $this->nextQuestionsMap[$action['question_id']][]=$action['next_question_id'];
       }
       // Get the group id so we can retreive the group title
       if($action['action_type'] == 2){

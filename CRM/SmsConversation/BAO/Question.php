@@ -43,6 +43,29 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
   }
 
   /**
+   * Format the question for display on tabs etc (we choose a max length 30)
+   * @param $questionId
+   *
+   * @return string
+   */
+  static function getShortQuestionLabel($questionId) {
+    $question = self::getQuestion($questionId);
+    if ($question) {
+      if (isset($question['text'])) {
+        if (strlen($question['text']) > 30) {
+          return substr($question['text'],0,30) . '..';
+        }
+        else {
+          return $question['text'];
+        }
+      }
+    }
+    else {
+      return ' ';
+    }
+  }
+
+  /**
    * Ask a question to contactId
    * @param $questionId
    * @param $contactId

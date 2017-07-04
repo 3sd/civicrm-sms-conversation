@@ -39,6 +39,26 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
   }
 
   /**
+   * Get weighting of next question action
+   *
+   * @param $action
+   */
+  static function processNextQuestionActionData(&$action) {
+    // weight is stored in action_data.
+    // eg. 0:2 ~= weight:question ID
+    $actionData = explode(':',$action['action_data']);
+    if (!$actionData || count($actionData) < 2) {
+      $action['weight'] = 0;
+      $action['next_question_id'] = $action['action_data'];
+      $action['action_data'] = $action['weight'] . ':' . $action['next_question_id'];
+    }
+    else {
+      $action['weight'] = (empty($actionData[0]) ? 0 : $actionData[0]);
+      $action['next_question_id'] = $actionData[1];
+    }
+  }
+
+  /**
    * Get all actions for question ID
    * @param $questionId
    *
@@ -101,7 +121,9 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     // Trigger the question
     $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
 
-    CRM_SmsConversation_BAO_Question::ask($action['action_data'], $contactId, $convContact);
+    self::processNextQuestionActionData($action);
+
+    CRM_SmsConversation_BAO_Question::ask($action['next_question_id'], $contactId, $convContact);
   }
 
   /**
