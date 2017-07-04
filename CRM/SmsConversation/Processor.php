@@ -53,10 +53,22 @@ class CRM_SmsConversation_Processor {
       return FALSE;
     }
     // Get an array of valid actions
+    $nextQuestionWeight = 9999; // Set to a very high value
     foreach ($convActions as $action) {
       $validAction = CRM_SmsConversation_BAO_Action::validAnswer($action, $this->sms);
       if ($validAction) {
-        $validActions[] = $validAction;
+        if ($validAction['action_type'] == 1) {
+          // Only allow one valid next question action, choose the one with lowest (numerical) weighting if there is more than one.
+          CRM_SmsConversation_BAO_Action::processNextQuestionActionData($validAction);
+          if ($validAction['weight'] < $nextQuestionWeight) {
+            $validActions[] = $validAction;
+            $nextQuestionWeight = $validAction['weight'];
+          }
+        }
+        else {
+          // Not a next question action, so add it as a valid action
+          $validActions[] = $validAction;
+        }
       }
     }
 

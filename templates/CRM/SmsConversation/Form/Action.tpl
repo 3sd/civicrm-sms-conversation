@@ -11,16 +11,21 @@
     <tr class="answer_pattern_raw">
       <td>{$form.answer_pattern_raw.label}</td>
       <td>{$form.answer_pattern_raw.html}<br /> <i>
-        <span class="answer-pattern-help answer-pattern-help-list">Help test for the pattern</span>
-        <span class="answer-pattern-help answer-pattern-help-list-exact">Seperate each term with a comma</span>
-        <span class="answer-pattern-help answer-pattern-help-list-contains">Seperate each term with a comma</span>
-        <span class="answer-pattern-help answer-pattern-help-regexp">Please enter a <a href="http://php.net/manual/en/book.pcre.php">regular expression</a></span>
-      </i></td>
+          <span class="answer-pattern-help answer-pattern-help-list">Help test for the pattern</span>
+          <span class="answer-pattern-help answer-pattern-help-list-exact">Seperate each term with a comma</span>
+          <span class="answer-pattern-help answer-pattern-help-list-contains">Seperate each term with a comma</span>
+          <span class="answer-pattern-help answer-pattern-help-regexp">Please enter a <a href="http://php.net/manual/en/book.pcre.php">regular expression</a></span>
+        </i></td>
     </tr>
-      <tr>
-      <td>{$form.action_data.label}</td>
-      <td>{$form.action_data.html}</td>
+    <tr>
+      <td>{$form.next_question_id.label}</td>
+      <td>{$form.next_question_id.html}</td>
+    </tr><tr>
+      <td>{$form.weight.label}</td>
+      <td>{$form.weight.html}
+        <div class="action-data-weight-help"><i class="crm-i fa-question-circle"></i> If you have multiple next questions which could match the one with the lowest (eg. 0) weight will be selected.</div></td>
     </tr>
+
   </table>
   <div class="crm-submit-buttons">
     {include file="CRM/common/formButtons.tpl" location="bottom"}

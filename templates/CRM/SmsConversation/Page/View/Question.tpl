@@ -1,1 +1,1 @@
-Go to question {$unorderedQuestions[$action.action_data].number}
+Go to question {$unorderedQuestions[$action.next_question_id].number} (Weight: {$action.weight})
