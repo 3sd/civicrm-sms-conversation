@@ -27,6 +27,7 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
     $this->smsActionType = civicrm_api3('OptionValue', 'getsingle', [ 'option_group_id' => 'sms_conversation_action_type', 'value' => $this->smsActionTypeId ]);
     $this->question = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $this->questionId]);
     $this->assign('question', $this->question);
+    $this->assign('smsActionType', $this->smsActionType);
 
     // Ensure that form rediection happens as one would expect
     $this->conversationId = $this->question['conversation_id'];
@@ -91,7 +92,11 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
         'select' => ['minimumInputLength' => 0]
       ], TRUE);
     }elseif($this->smsActionType['name'] == 'record_field'){
-      $this->add('select', 'action_data', ts('Record in field'), array_column(civicrm_api3('Contact', 'getfields', ['action' => 'get'])['values'], 'title', 'name'), TRUE, ['class' => 'crm-select2']);
+      $contactFields = array_column(civicrm_api3('Contact', 'getfields', ['action' => 'get'])['values'], 'title', 'name');
+      unset($contactFields['id']);
+      unset($contactFields['contact_type']);  
+      unset($contactFields['contact_sub_type']);
+      $this->add('select', 'action_data', ts('Record in field'), $contactFields, TRUE, ['class' => 'crm-select2']);
     }
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){

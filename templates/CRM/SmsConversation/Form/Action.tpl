@@ -17,13 +17,21 @@
           <span class="answer-pattern-help answer-pattern-help-regexp">Please enter a <a href="http://php.net/manual/en/book.pcre.php">regular expression</a></span>
         </i></td>
     </tr>
+    {if $smsActionType.name eq 'question'}
     <tr>
       <td>{$form.next_question_id.label}</td>
       <td>{$form.next_question_id.html}</td>
-    </tr><tr>
+    </tr>
+    <tr>
       <td>{$form.weight.label} {help id="weight" file="CRM/SmsConversation/Form/Weight.hlp"}</td>
       <td>{$form.weight.html}</td>
     </tr>
+    {else}
+    <tr>
+      <td>{$form.action_data.label}</td>
+      <td>{$form.action_data.html}</td>
+    </tr>
+    {/if}
 
   </table>
   <div class="crm-submit-buttons">
