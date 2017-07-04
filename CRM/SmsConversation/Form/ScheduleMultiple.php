@@ -54,7 +54,7 @@ class CRM_SmsConversation_Form_ScheduleMultiple extends CRM_Contact_Form_Task {
         ),
         array(
           'type' => 'submit',
-          'name' => ts('Send'),
+          'name' => ts('Schedule'),
           'isDefault' => TRUE,
         ),
       ));

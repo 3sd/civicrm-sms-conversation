@@ -35,7 +35,7 @@ class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
       ),
       array(
         'type' => 'submit',
-        'name' => ts('Send'),
+        'name' => ts('Schedule'),
         'isDefault' => TRUE,
       ),
     ));
