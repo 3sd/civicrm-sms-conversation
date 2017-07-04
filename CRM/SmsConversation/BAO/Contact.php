@@ -41,7 +41,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     ]);
 
     if (empty($convContact['is_error']) && !empty($convContact['count'])) {
-      return $convContact['values'];
+      return $convContact['values'][$convContact['id']];
     }
     else {
       return FALSE;
@@ -126,7 +126,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
 
     $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
     // Ask the question
-    if (CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, reset($convContact))) {
+    if (CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, $convContact)) {
       return $convContact['id'];
     }
     else {
