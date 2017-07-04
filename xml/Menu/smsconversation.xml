@@ -61,4 +61,10 @@
     <title>ViewConversation</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/civirule/form/action/smsconversation/schedule</path>
+    <page_callback>CRM_SmsConversation_CivirulesActions_Form_Schedule</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
 </menu>
