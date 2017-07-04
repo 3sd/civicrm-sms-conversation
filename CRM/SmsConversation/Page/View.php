@@ -21,7 +21,10 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
     $this->questions = civicrm_api3('SmsConversationQuestion', 'get', ['conversation_id' => $this->id])['values'];
 
     $questionIds = array_column($this->questions, 'id');
-    $this->actions = civicrm_api3('SmsConversationAction', 'get', [ 'question_id' => ['IN' => $questionIds], ])['values'];
+    $this->actions = civicrm_api3('SmsConversationAction', 'get', [
+      'question_id' => ['IN' => $questionIds],
+      'option.sort' => 'action_data ASC',
+    ])['values'];
 
     // Decorate the actions
     foreach($this->actions as $key => $action){
@@ -34,6 +37,7 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
       $match = CRM_SmsConversation_Match::decipherPatternType($action['answer_pattern']);
       $this->actions[$key]['friendly_answer_pattern'] = $match['human_friendly'];
     }
+
 
 
     // Decorate the questions...
