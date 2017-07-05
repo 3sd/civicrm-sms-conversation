@@ -50,6 +50,7 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
 
     $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'In Progress');
     $scheduledId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'Scheduled');
+    $completedId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'Completed');
 
     $convContact = $convContact['values'][0];
     $convRecord = json_decode($convContact['conversation_record'], TRUE);
@@ -71,24 +72,33 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
       $prevValid = $conv['v'];
     }
 
-    // Add next question
-    if (empty($convRecord) && ($convContact['status_id'] == $scheduledId)) {
-      // Not "In Progress" and no conversation history so the conversation hasn't started.
-      $conv = civicrm_api3('SmsConversation', 'getsingle', ['id' => $convContact['conversation_id']]);
-      $convQuestion = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $conv['start_question_id']]);
-      $conv['question'] = $convQuestion['text'];
-      $conv['v'] = TRUE;
-      $conv['vPrev'] = TRUE;
-      $conv['a'] = '<em style="color:grey">- Not sent yet -</em>';
-      $conversationRecord[] = $conv;
-    }
-    elseif (!empty($convContact['current_question_id'])) {
-      // Add next question to conversation detail view as we are awaiting a response (it's not stored in conversation record until we get a reply)
+    // Add next question to view as it's not stored in conversation record until a response is received.
+    // If the conversation is completed we have everything recorded so only display that.
+    // If there is no conversation record the conversation hasn't started (in state scheduled)
+    // If there is no current_question_id then we look for the start_question_id.  The conversation has started, but we don't have a reply yet.
+    if ((empty($convRecord) || !empty($convContact['current_question_id'])) && $convContact['status_id'] != $completedId)
+    {
+
+      $conv = array(); // Reset array so we don't use previous values
+      if (empty($convContact['current_question_id'])) {
+        $conversation = civicrm_api3('SmsConversation', 'getsingle', ['id' => $convContact['conversation_id']]);
+        $convContact['current_question_id'] = $conversation['start_question_id'];
+      }
+      if (empty($convContact['current_question_id'])) return;
       $convQuestion = civicrm_api3('SmsConversationQuestion', 'getsingle', ['id' => $convContact['current_question_id']]);
+
       $conv['question'] = $convQuestion['text'];
       $conv['v'] = TRUE;
       $conv['vPrev'] = TRUE;
-      $conv['a'] = '<em style="color:grey">- Sent -</em>';
+      if ($convContact['status_id'] == $scheduledId) {
+        $conv['a'] = '<em style="color:grey">- Not sent yet -</em>';
+      }
+      else {
+        $conv['a'] = '<em style="color:grey">- Sent -</em>';
+      }
+      if (isset(end($conversationRecord)['q'])) {
+        $conv['q'] = end($conversationRecord)['q']+1;
+      }
       $conversationRecord[] = $conv;
     }
 

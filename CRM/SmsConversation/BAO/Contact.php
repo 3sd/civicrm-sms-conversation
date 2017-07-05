@@ -228,6 +228,9 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
 
     $DT['data'] = array(); // Datatables requires the data element even if no data
 
+    $scheduledId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact','status_id', 'Scheduled');
+    $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact','status_id', 'In Progress');
+
     foreach ($convList['values'] as $convContact) {
       $conversation = civicrm_api3('SmsConversation', 'get', ['id' => $convContact['conversation_id']]);
       $convContact['conversation_name'] = $conversation['values'][$convContact['conversation_id']]['name'];
@@ -243,13 +246,16 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       // Format Date
       $convContact['date'] = CRM_Utils_Date::customFormat($convContact['scheduled_date']);
       // Format current question for display (show a shortened (to 30 chars) question text label)
-      $convContact['current_question_id'] = CRM_SmsConversation_BAO_Question::getShortQuestionLabel($convContact['current_question_id']);
+      if ($convContact['status_id'] == $inProgressId) {
+        $convContact['current_question_id'] = CRM_SmsConversation_BAO_Question::getShortQuestionLabel($convContact['current_question_id']);
+      }
+      else {
+        $convContact['current_question_id'] = ' ';
+      }
       // Add links
       $links = self::actionLinks();
       // Get mask
       $mask = CRM_Core_Action::VIEW;
-      $scheduledId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact','status_id', 'Scheduled');
-      $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact','status_id', 'In Progress');
       switch ($convContact['status_id']) {
         case $scheduledId:
           // We show delete if in scheduled state
