@@ -43,8 +43,7 @@ class CRM_SmsConversation_CivirulesActions_Schedule extends CRM_CivirulesActions
     $parameters['contact_id'] = $this->ac['contact_id'];
     $parameters['conversation_id'] = $action_params['conversation_id'];
     $parameters['process_now'] = true;
-    $session = CRM_Core_Session::singleton();
-    $parameters['source_contact_id'] = $session->get('userID');
+    $parameters['source_contact_id'] = $this->ac['contact_id']; // Set the source of the conversation to be the target contact of the triggering activity (this presumes we are being triggered by an activity)
     $parameters['source_record_id'] = true;
 
     return $parameters;
