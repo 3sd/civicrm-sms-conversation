@@ -7,9 +7,13 @@ eval(cv('php:boot --level=classloader', 'phpcode'));*/
 ini_set('memory_limit', '2G');
 ini_set('safe_mode', 0);
 define('CIVICRM_CONTAINER_CACHE', 'never');
-eval(cv('php:boot --level=full', 'phpcode'));
 
-require_once('tests/phpunit/smsconversation/CRM/SmsConversation/TestCase.php');
+$bootCode = cv('php:boot --level=classloader', 'phpcode');
+eval($bootCode);
+preg_match('/require_once\s*\'(.*)\'/', $bootCode, $matches);
+$loader = require(sprintf('%s/vendor/autoload.php', $matches[1]));
+
+require_once('tests/phpunit/CRM/SmsConversation/TestCase.php');
 
 
 /**

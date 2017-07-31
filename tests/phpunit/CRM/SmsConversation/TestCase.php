@@ -162,6 +162,48 @@ class CRM_SmsConversation_TestCase extends PHPUnit_Framework_TestCase {
   }
 
   /**
+   * This function exists to wrap api functions.
+   * so we can ensure they fail where expected & throw exceptions without litterering the test with checks
+   * @param string $entity
+   * @param string $action
+   * @param array $params
+   * @param string $expectedErrorMessage
+   *   Error.
+   * @param null $extraOutput
+   * @return array|int
+   */
+  public function callAPIFailure($entity, $action, $params, $expectedErrorMessage = NULL, $extraOutput = NULL) {
+    if (is_array($params)) {
+      $params += array(
+        'version' => $this->_apiversion,
+      );
+    }
+    $result = $this->civicrm_api($entity, $action, $params);
+    $this->assertAPIFailure($result, "We expected a failure for $entity $action but got a success", $expectedErrorMessage);
+    return $result;
+  }
+
+  /**
+   * Check that api returned 'is_error' => 1.
+   *
+   * @param array $apiResult
+   *   Api result.
+   * @param string $prefix
+   *   Extra test to add to message.
+   * @param null $expectedError
+   */
+  public function assertAPIFailure($apiResult, $prefix = '', $expectedError = NULL) {
+    if (!empty($prefix)) {
+      $prefix .= ': ';
+    }
+    if ($expectedError && !empty($apiResult['is_error'])) {
+      $this->assertEquals($expectedError, $apiResult['error_message'], 'api error message not as expected' . $prefix);
+    }
+    $this->assertEquals(1, $apiResult['is_error'], "api call should have failed but it succeeded " . $prefix . (print_r($apiResult, TRUE)));
+    $this->assertNotEmpty($apiResult['error_message']);
+  }
+
+  /**
    * A stub for the API interface. This can be overriden by subclasses to change how the API is called.
    *
    * @param $entity

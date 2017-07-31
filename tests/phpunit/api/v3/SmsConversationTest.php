@@ -82,14 +82,15 @@ class SmsConversationTest extends CRM_SmsConversation_TestCase implements Headle
     $this->callAPISuccess($this->_entity, 'create', $this->_params);
     $this->callAPISuccess($this->_entity, 'create', $this->_params);
     $result = $this->callAPISuccess($this->_entity, 'get', $this->_params);
+    $this->callAPIFailure($this->_entity, 'get', array('id' => 99));
     // We created 3 conversations above
     $this->assertEquals($result['count'], 2);
   }
 
   public function testDelete() {
-    $this->callAPISuccess($this->_entity, 'create', $this->_params);
-    $result = $this->callAPISuccess($this->_entity, 'delete', array('id' => 1));
+    $conversation = $this->callAPISuccess($this->_entity, 'create', $this->_params);
+    $result = $this->callAPISuccess($this->_entity, 'delete', array('id' => $conversation['id']));
     $this->assertEquals($result['count'], 1);
-    $this->callAPIFailure($this->_entity, 'get', array('id' => 1));
+    $this->callAPIFailure($this->_entity, 'get', array('id' => $conversation['id']));
   }
 }
