@@ -10,9 +10,10 @@ define('CIVICRM_CONTAINER_CACHE', 'never');
 
 $bootCode = cv('php:boot --level=classloader', 'phpcode');
 eval($bootCode);
-preg_match('/require_once\s*\'(.*)\'/', $bootCode, $matches);
-$loader = require(sprintf('%s/vendor/autoload.php', $matches[1]));
+//preg_match('/require_once\s*\'(.*)\'/', $bootCode, $matches);
+//$loader = require(sprintf('%s/vendor/autoload.php', $matches[1]));
 
+require_once('tests/phpunit/CiviTest/helpers/CiviUnitTestApiFunctions.php');
 require_once('tests/phpunit/CRM/SmsConversation/TestCase.php');
 
 
