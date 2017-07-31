@@ -26,14 +26,42 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     parent::tearDown();
   }
 
-  public function createTestConversation() {
-    return civicrm_api3('SmsConversation', 'create', array(
-      'name' => 'Example 1: What are you up to?',
-      'is_active' => 1,
-    ));
-  }
+  protected $_conversation1Params = array(
+    'name' => 'Example 1: What are you up to?',
+    'is_active' => 1,
+  );
+
+  protected $_question1Params = array(
+    'text' => "Are you working or in education? Please answer 'A' for education or 'B' for working.",
+    'text_invalid' => "Sorry I didn't understand, please reply 'A' for working or 'B' for education",
+    'timeout' => 0,
+  );
+
+  protected $_action1Params = array(
+    'answer_pattern' => "/working|education|a\s|b\s/i",
+    'action_type' => 3, // Record in a custom field
+    //'action_data' => "custom_".$uptoCustomField['id'], FIXME
+  );
 
   public function createTestConversation1() {
+    // Create conversation and assign id to params
+    $conversation = civicrm_api3('SmsConversation', 'create', $this->_conversation1Params);
+    $this->_conversation1Params['id'] = $conversation['id'];
+  }
+
+  public function createTestQuestion1() {
+    // Add question
+    $this->_question1Params['conversation_id'] = $this->_conversation1Params['id'];
+    $question = civicrm_api3('SmsConversationQuestion', 'create', $this->_question1Params);
+  }
+
+  public function createTestAction1() {
+    // Add action
+    $this->_action1Params['question_id'] = $this->_question1Params['id'];
+    $action = civicrm_api3('SmsConversationAction', 'create', $this->_action1Params);
+  }
+
+  public function createTestConversation_example1() {
     $conversation = civicrm_api3('SmsConversation', 'create', array(
       'name' => 'Example 1: What are you up to?',
       'is_active' => 1,

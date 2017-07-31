@@ -11,11 +11,9 @@ class SmsConversationQuestionTest extends CRM_SmsConversation_TestCase {
   public function setUp() {
     parent::setUp();
 
-    $conversation = $this->createTestConversation();
-    $this->_params = array(
-      'text' => 'Test question',
-      'conversation_id' => $conversation['id'],
-    );
+    $this->createTestConversation1();
+    $this->createTestQuestion1();
+    $this->_params = $this->_question1Params;
   }
 
   public function testCreateMandatoryMissing() {
