@@ -17,6 +17,8 @@ function _civicrm_api3_sms_conversation_create_spec(&$spec) {
     'api.required' => 0,
     'title' => 'ID of first question',
     'type' => CRM_Utils_Type::T_INT,
+    'FKClassName' => 'CRM_SmsConversation_BAO_Question',
+    'FKApiName' => 'SmsConversationQuestion',
   );
   $spec['name'] = array(
     'api.required' => 1,

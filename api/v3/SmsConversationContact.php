@@ -14,33 +14,37 @@ function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
     'title' => 'ID of conversation',
     'description' => 'FK to SmsConversation.id',
     'type' => CRM_Utils_Type::T_INT,
-    // FIXME: This should lookup FK to sms_conversation.id
+    'FKClassName' => 'CRM_SmsConversation_BAO_Conversation',
+    'FKApiName' => 'SmsConversation',
   );
   $spec['contact_id'] = array (
     'api.required' => 1,
     'title' => 'ID of contact',
     'description' => 'FK to civicrm_contact.id',
     'type' => CRM_Utils_Type::T_INT,
-    // FIXME: This should lookup FK to civicrm_contact.id
+    'FKClassName' => 'CRM_Contact_BAO_Contact',
+    'FKApiName' => 'Contact',
   );
   $spec['status_id'] = array (
     'title' => 'Conversation Status',
     'description' => 'From option group sms_conversation_status_type',
     'type' => CRM_Utils_Type::T_INT,
-    // FIXME: This should lookup option group to sms_conversation_status_type
+    'options' => CRM_SmsConversation_BAO_Conversation::buildOptions('status_type'),
   );
   $spec['current_question_id'] = array (
     'title' => 'ID of current question',
     'description' => 'FK to sms_conversation_question.id',
     'type' => CRM_Utils_Type::T_INT,
-    // FIXME: This should lookup FK to sms_conversation_question.id
+    'FKClassName' => 'CRM_SmsConversation_BAO_Question',
+    'FKApiName' => 'SmsConversationQuestion',
   );
   $spec['source_contact_id'] = array (
     'api.required' => 1,
     'title' => 'ID of contact that started conversation',
     'description' => 'FK to civicrm_contact.id',
     'type' => CRM_Utils_Type::T_INT,
-    // FIXME: This should lookup FK to civicrm_contact.id
+    'FKClassName' => 'CRM_Contact_BAO_Contact',
+    'FKApiName' => 'Contact',
   );
   $spec['scheduled_date'] = array (
     'title' => 'SMS Conversation Scheduled Date',

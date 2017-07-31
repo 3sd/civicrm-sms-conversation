@@ -181,7 +181,6 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    * @return bool
    */
   static function recordConversation($convContact, $convQuestion, $sms, $validAnswer) {
-    // TODO: Test this function, do we use serialize or something else?
     // Also record sms and validanswer
     $records = json_decode($convContact['conversation_record']);
     $records[] = [

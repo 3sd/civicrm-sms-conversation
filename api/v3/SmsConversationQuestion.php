@@ -26,6 +26,8 @@ function _civicrm_api3_sms_conversation_question_create_spec(&$spec) {
     'api.required' => 1,
     'title' => 'ID of Conversation',
     'type' => CRM_Utils_Type::T_INT,
+    'FKClassName' => 'CRM_SmsConversation_BAO_Conversation',
+    'FKApiName' => 'SmsConversation',
   );
 }
 

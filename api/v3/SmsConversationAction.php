@@ -13,13 +13,16 @@ function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
     'title' => 'Action ID',
     'description' => 'Action ID',
     'type' => CRM_Utils_Type::T_INT,
+    'FKClassName' => 'CRM_SmsConversation_BAO_Action',
+    'FKApiName' => 'SmsConversationAction',
   );
   $spec['question_id'] = array (
     'api.required' => 1,
     'title' => 'ID of question',
     'description' => 'FK to SmsConversationQuestion.id',
     'type' => CRM_Utils_Type::T_INT,
-    // FIXME: This should lookup FK to sms_conversation_question.id
+    'FKClassName' => 'CRM_SmsConversation_BAO_Question',
+    'FKApiName' => 'SmsConversationQuestion',
   );
   $spec['answer_pattern'] = array (
     'api.required' => 1,
@@ -32,7 +35,7 @@ function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
     'title' => 'Action Type',
     'description' => 'sms_conversation_action_type',
     'type' => CRM_Utils_Type::T_INT,
-    // FIXME: This should lookup optiongroup: sms_conversation_action_type
+    'options' => CRM_SmsConversation_BAO_Action::buildOptions('action_type'),
   );
   $spec['action_data'] = array (
     'api.required' => 1,
