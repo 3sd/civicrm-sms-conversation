@@ -22,6 +22,7 @@
 
   <field>
     <name>question_id</name>
+    <title>Question ID</title>
     <type>int unsigned</type>
     <comment>FK to sms_conversation_question.id</comment>
     <add>4.7</add>
@@ -52,7 +53,7 @@
     <comment>FK to sms_conversation_action_type option group</comment>
     <add>4.7</add>
     <pseudoconstant>
-      <optionGroupName>sms_conversation_status_type</optionGroupName>
+      <optionGroupName>sms_conversation_action_type</optionGroupName>
     </pseudoconstant>
   </field>
 

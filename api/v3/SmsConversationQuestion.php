@@ -9,26 +9,10 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_question_create_spec(&$spec) {
-  $spec['text'] = array(
-    'api.required' => 1,
-    'title' => 'Question Text'
-  );
-  $spec['timeout'] = array(
-    'title' => 'Timeout',
-    'description' => 'Optional (default 0)',
-  );
-  $spec['invalid_text'] = array (
-    'title' => 'Invalid Text',
-    'description' => 'If left blank no SMS will be sent on invalid and the conversation will end.',
-    'type' => CRM_Utils_Type::T_STRING,
-  );
-  $spec['conversation_id'] = array(
-    'api.required' => 1,
-    'title' => 'ID of Conversation',
-    'type' => CRM_Utils_Type::T_INT,
-    'FKClassName' => 'CRM_SmsConversation_BAO_Conversation',
-    'FKApiName' => 'SmsConversation',
-  );
+  $spec['text']['api.required'] = 1;
+  $spec['timeout']['api.required'] = 0;
+  $spec['invalid_text']['api.required'] = 0;
+  $spec['conversation_id']['api.required'] = 1;
 }
 
 /**

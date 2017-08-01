@@ -190,5 +190,4 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
     $addressFields = civicrm_api3('Address', 'getfields')['values'];
     return in_array($field, array_keys($addressFields));
   }
-
 }

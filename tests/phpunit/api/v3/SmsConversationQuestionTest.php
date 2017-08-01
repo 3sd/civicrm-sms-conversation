@@ -1,7 +1,7 @@
 <?php
 
 /**
- * FIXME - Add test description.
+ * Basic SmsConversationQuestion API tests
  * @group headless
  */
 class SmsConversationQuestionTest extends CRM_SmsConversation_TestCase {

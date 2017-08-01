@@ -9,40 +9,11 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
-  $spec['id'] = array (
-    'title' => 'Action ID',
-    'description' => 'Action ID',
-    'type' => CRM_Utils_Type::T_INT,
-    'FKClassName' => 'CRM_SmsConversation_BAO_Action',
-    'FKApiName' => 'SmsConversationAction',
-  );
-  $spec['question_id'] = array (
-    'api.required' => 1,
-    'title' => 'ID of question',
-    'description' => 'FK to SmsConversationQuestion.id',
-    'type' => CRM_Utils_Type::T_INT,
-    'FKClassName' => 'CRM_SmsConversation_BAO_Question',
-    'FKApiName' => 'SmsConversationQuestion',
-  );
-  $spec['answer_pattern'] = array (
-    'api.required' => 1,
-    'title' => 'Answer Pattern',
-    'description' => 'Regex or simple text',
-    'type' => CRM_Utils_Type::T_STRING,
-  );
-  $spec['action_type'] = array (
-    'api.required' => 1,
-    'title' => 'Action Type',
-    'description' => 'sms_conversation_action_type',
-    'type' => CRM_Utils_Type::T_INT,
-    'options' => CRM_SmsConversation_BAO_Action::buildOptions('action_type'),
-  );
-  $spec['action_data'] = array (
-    'api.required' => 1,
-    'title' => 'Action Data',
-    'description' => 'Depends on the action_type',
-    'type' => CRM_Utils_Type::T_STRING,
-  );
+  $spec['id']['api.required'] = 0;
+  $spec['question_id']['api.required'] = 1;
+  $spec['answer_pattern']['api.required'] = 1;
+  $spec['action_type']['api.required'] = 1;
+  $spec['action_data']['api.required'] = 1;
 }
 
 /**

@@ -122,6 +122,7 @@ class CRM_SmsConversation_DAO_Action extends CRM_Core_DAO {
         'question_id' => array(
           'name' => 'question_id',
           'type' => CRM_Utils_Type::T_INT,
+          'title' => 'Question ID',
           'description' => 'FK to sms_conversation_question.id',
           'table_name' => 'civicrm_sms_conversation_action',
           'entity' => 'Action',
@@ -154,8 +155,8 @@ class CRM_SmsConversation_DAO_Action extends CRM_Core_DAO {
           'bao' => 'CRM_SmsConversation_DAO_Action',
           'localizable' => 0,
           'pseudoconstant' => array(
-            'optionGroupName' => 'sms_conversation_status_type',
-            'optionEditPath' => 'civicrm/admin/options/sms_conversation_status_type',
+            'optionGroupName' => 'sms_conversation_action_type',
+            'optionEditPath' => 'civicrm/admin/options/sms_conversation_action_type',
           )
         ) ,
         'action_data' => array(

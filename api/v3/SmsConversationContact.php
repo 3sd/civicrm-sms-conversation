@@ -9,48 +9,12 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
-  $spec['conversation_id'] = array (
-    'api.required' => 1,
-    'title' => 'ID of conversation',
-    'description' => 'FK to SmsConversation.id',
-    'type' => CRM_Utils_Type::T_INT,
-    'FKClassName' => 'CRM_SmsConversation_BAO_Conversation',
-    'FKApiName' => 'SmsConversation',
-  );
-  $spec['contact_id'] = array (
-    'api.required' => 1,
-    'title' => 'ID of contact',
-    'description' => 'FK to civicrm_contact.id',
-    'type' => CRM_Utils_Type::T_INT,
-    'FKClassName' => 'CRM_Contact_BAO_Contact',
-    'FKApiName' => 'Contact',
-  );
-  $spec['status_id'] = array (
-    'title' => 'Conversation Status',
-    'description' => 'From option group sms_conversation_status_type',
-    'type' => CRM_Utils_Type::T_INT,
-    'options' => CRM_SmsConversation_BAO_Conversation::buildOptions('status_type'),
-  );
-  $spec['current_question_id'] = array (
-    'title' => 'ID of current question',
-    'description' => 'FK to sms_conversation_question.id',
-    'type' => CRM_Utils_Type::T_INT,
-    'FKClassName' => 'CRM_SmsConversation_BAO_Question',
-    'FKApiName' => 'SmsConversationQuestion',
-  );
-  $spec['source_contact_id'] = array (
-    'api.required' => 1,
-    'title' => 'ID of contact that started conversation',
-    'description' => 'FK to civicrm_contact.id',
-    'type' => CRM_Utils_Type::T_INT,
-    'FKClassName' => 'CRM_Contact_BAO_Contact',
-    'FKApiName' => 'Contact',
-  );
-  $spec['scheduled_date'] = array (
-    'title' => 'SMS Conversation Scheduled Date',
-    'description' => 'Date and time this SMS Conversation was scheduled.',
-    'type' => CRM_Utils_Type::T_TIMESTAMP,
-  );
+  $spec['conversation_id']['api.required'] = 1;
+  $spec['contact_id']['api.required'] = 1;
+  $spec['status_id']['api.required'] = 0;
+  $spec['current_question_id']['api.required'] = 0;
+  $spec['source_contact_id']['api.required'] = 1;
+  $spec['scheduled_date']['api.required'] = 0;
 }
 
 /**
@@ -132,15 +96,8 @@ function civicrm_api3_sms_conversation_contact_start($params) {
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_contact_start_spec(&$spec) {
-  $spec['contact_id'] = array(
-    'api.required' => 1,
-    'title' => 'Contact ID',
-    'api.aliases' => array('contact_id'),
-  );
-  $spec['id'] = array(
-    'api.required' => 0,
-    'title' => 'Conversation Contact Id',
-  );
+  $spec['contact_id']['api.required'] = 1;
+  $spec['id']['api.required'] = 0;
 }
 
 /**
@@ -155,9 +112,5 @@ function civicrm_api3_sms_conversation_contact_getcurrent($params) {
 }
 
 function _civicrm_api3_sms_conversation_contact_getcurrent_spec(&$spec) {
-  $spec['contact_id'] = array(
-    'api.required' => 1,
-    'title' => 'Contact ID',
-    'api.aliases' => array('contact_id'),
-  );
+  $spec['contact_id']['api.required'] = 1;
 }

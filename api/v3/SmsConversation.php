@@ -9,22 +9,11 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_create_spec(&$spec) {
-  $spec['is_active'] = array(
-    'title' => 'Enabled?',
-    'type' => CRM_Utils_Type::T_BOOLEAN,
-  );
-  $spec['start_question_id'] = array(
-    'api.required' => 0,
-    'title' => 'ID of first question',
-    'type' => CRM_Utils_Type::T_INT,
-    'FKClassName' => 'CRM_SmsConversation_BAO_Question',
-    'FKApiName' => 'SmsConversationQuestion',
-  );
-  $spec['name'] = array(
-    'api.required' => 1,
-    'title' => 'Name of Conversation',
-    'type' => CRM_Utils_Type::T_STRING,
-  );
+  $spec['is_active']['api.required'] = 0;
+  $spec['start_question_id']['api.required'] = 0;
+  $spec['start_question_id']['FKClassName'] = 'CRM_SmsConversation_BAO_Question';
+  $spec['start_question_id']['FKApiName'] = 'SmsConversationQuestion';
+  $spec['name']['api.required'] = 1;
 }
 
 /**
@@ -69,10 +58,7 @@ function civicrm_api3_sms_conversation_get($params) {
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_sms_conversation_get_spec(&$spec) {
-  $spec['id'] = array(
-    'title' => 'Conversation ID',
-    'type' => CRM_Utils_Type::T_INT,
-  );
+  $spec['id']['api.required'] = 0;
 }
 
 function civicrm_api3_sms_conversation_example1($params) {

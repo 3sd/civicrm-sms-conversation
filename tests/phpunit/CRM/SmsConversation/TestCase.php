@@ -40,7 +40,6 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
   protected $_action1Params = array(
     'answer_pattern' => "/working|education|a\s|b\s/i",
     'action_type' => 3, // Record in a custom field
-    //'action_data' => "custom_".$uptoCustomField['id'], FIXME
   );
 
   public function createTestConversation1() {
