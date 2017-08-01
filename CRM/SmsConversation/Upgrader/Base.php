@@ -45,7 +45,7 @@ class CRM_SmsConversation_Upgrader_Base {
     if (!self::$instance) {
       // FIXME auto-generate
       self::$instance = new CRM_SmsConversation_Upgrader(
-        'civicrm.sms.conversations',
+        'civicrm.sms.conversation',
         realpath(__DIR__ . '/../../../')
       );
     }

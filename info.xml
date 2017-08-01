@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<extension key="civicrm.sms.conversations" type="module">
+<extension key="civicrm.sms.conversation" type="module">
   <file>smsconversation</file>
-  <name>SMS Conversations</name>
+  <name>SMS Conversation</name>
   <description>Sms Conversation support for CiviCRM</description>
   <license>AGPL-3.0</license>
   <maintainer>
@@ -13,7 +13,7 @@
     <email>mjw@mjwconsult.co.uk</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">https://github.com/3sd/civicrm-sms-conversations</url>
+    <url desc="Main Extension Page">https://github.com/3sd/civicrm-sms-conversation</url>
     <url desc="Support">http://thirdsectordesign.org/</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>

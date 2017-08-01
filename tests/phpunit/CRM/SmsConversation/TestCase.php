@@ -14,7 +14,7 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     // Civi\Test has many helpers, like install(), uninstall(), sql(), and sqlFile().
     // See: https://github.com/civicrm/org.civicrm.testapalooza/blob/master/civi-test.md
     return \Civi\Test::headless()
-      ->install(array('org.civicoop.civirules','civicrm.sms.conversations'))
+      ->install(array('org.civicoop.civirules','civicrm.sms.conversation'))
       ->apply();
   }
 
