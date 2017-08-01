@@ -26,7 +26,7 @@ public function preProcess(){
 
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){
-      CRM_Utils_System::setTitle(ts('Add an SMS conversation'));
+      CRM_Utils_System::setTitle(ts('Create an SMS conversation'));
       $this->add( 'text', 'start_question_text', ts('First question'), ['size' => 40], TRUE);
       $this->addButtons([
         array('type' => 'cancel', 'name' => 'Cancel'),
