@@ -25,6 +25,14 @@ function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_contact_create($params) {
+  if (!array_key_exists('id', $params)) {
+    civicrm_api3_verify_mandatory($params, NULL, array(
+      'conversation_id',
+      'contact_id',
+      'source_contact_id',
+    ));
+  }
+
   $statusId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'Scheduled');
   // Force status to "Scheduled" if not specified.
   if (!isset($params['status_id'])) {
@@ -70,7 +78,13 @@ function civicrm_api3_sms_conversation_contact_delete($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_contact_get($params) {
-  return _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Contact', $params);
+  $result = _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Contact', $params);
+  // Return an error if we specified an id and it wasn't found
+  if (!empty($params['id']) && $result['count'] == 0) {
+    $result['is_error'] = 1;
+    $result['error_message'] = 'id '.$params['id'].' not found';
+  }
+  return $result;
 }
 
 /**

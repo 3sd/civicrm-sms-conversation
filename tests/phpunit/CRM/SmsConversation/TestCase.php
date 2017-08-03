@@ -52,12 +52,47 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     // Add question
     $this->_question1Params['conversation_id'] = $this->_conversation1Params['id'];
     $question = civicrm_api3('SmsConversationQuestion', 'create', $this->_question1Params);
+    $this->_question1Params['id'] = $question['id'];
   }
 
   public function createTestAction1() {
     // Add action
+    $uptoCustomField = civicrm_api3('CustomField', 'get', array(
+      'name' => "what_are_you_up_to",
+    ));
     $this->_action1Params['question_id'] = $this->_question1Params['id'];
+    $this->_action1Params['action_data'] = "custom_".$uptoCustomField['id'];
     $action = civicrm_api3('SmsConversationAction', 'create', $this->_action1Params);
+    $this->_action1Params['id'] = $action['id'];
+  }
+
+  public function apiTestGet() {
+    $params = $this->_params;
+    unset($params['id']);
+    // Create two new entities
+    $this->callAPISuccess($this->_entity, 'create', $params);
+    $this->callAPISuccess($this->_entity, 'create', $params);
+    $result = $this->callAPISuccess($this->_entity, 'get', array());
+    // Check that get fails when id not found
+    $this->callAPIFailure($this->_entity, 'get', array('id' => 999));
+    // We created 2 entities above and one during setup
+    $this->assertEquals($result['count'], 3);
+  }
+
+  public function apiTestDeleteMandatoryMissing() {
+    // Make sure delete fails when we don't specify any parameters
+    $this->callAPIFailure($this->_entity, 'delete', array());
+  }
+
+
+  public function apiTestDelete() {
+    // Create an entity, then delete it
+    $entity = $this->callAPISuccess($this->_entity, 'create', $this->_params);
+    $result = $this->callAPISuccess($this->_entity, 'delete', array('id' => $entity['id']));
+    $this->assertEquals($result['count'], 1);
+    // Try and get the now deleted entity
+    $result2 = $this->callAPIFailure($this->_entity, 'get', array('id' => $entity['id']));
+    $this->assertEquals($result2['is_error'], 1);
   }
 
   public function createTestConversation_example1() {

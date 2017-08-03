@@ -11,6 +11,8 @@ class SmsConversationTest extends CRM_SmsConversation_TestCase {
   public function setUp() {
     parent::setUp();
 
+    $this->createTestConversation1();
+
     $this->_params = array(
       'name' => 'Test SMS Conversation',
     );
@@ -55,18 +57,14 @@ class SmsConversationTest extends CRM_SmsConversation_TestCase {
   }
 
   public function testGet() {
-    $this->callAPISuccess($this->_entity, 'create', $this->_params);
-    $this->callAPISuccess($this->_entity, 'create', $this->_params);
-    $result = $this->callAPISuccess($this->_entity, 'get', $this->_params);
-    $this->callAPIFailure($this->_entity, 'get', array('id' => 99));
-    // We created 3 conversations above
-    $this->assertEquals($result['count'], 2);
+    $this->apiTestGet();
+  }
+
+  public function testDeleteMandatoryMissing() {
+    $this->apiTestDeleteMandatoryMissing();
   }
 
   public function testDelete() {
-    $conversation = $this->callAPISuccess($this->_entity, 'create', $this->_params);
-    $result = $this->callAPISuccess($this->_entity, 'delete', array('id' => $conversation['id']));
-    $this->assertEquals($result['count'], 1);
-    $this->callAPIFailure($this->_entity, 'get', array('id' => $conversation['id']));
+    $this->apiTestDelete();
   }
 }

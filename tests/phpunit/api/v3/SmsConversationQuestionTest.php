@@ -17,9 +17,10 @@ class SmsConversationQuestionTest extends CRM_SmsConversation_TestCase {
   }
 
   public function testCreateMandatoryMissing() {
-    $params = $this->_params['conversation_id'];
-    unset($this->_params['conversation_id']);
-    $this->callAPIFailure($this->_entity, 'create', $this->_params);
+    $params = $this->_params;
+    unset($params['conversation_id']);
+    unset($params['id']);
+    $this->callAPIFailure($this->_entity, 'create', $params);
     $this->_params = $params;
   }
 
@@ -56,20 +57,15 @@ class SmsConversationQuestionTest extends CRM_SmsConversation_TestCase {
     $this->callAPISuccess($this->_entity, 'create', $params); // FIXME: This passes but fails in API explorer! We want it to pass...
   }
 
-
   public function testGet() {
-    $this->callAPISuccess($this->_entity, 'create', $this->_params);
-    $this->callAPISuccess($this->_entity, 'create', $this->_params);
-    $result = $this->callAPISuccess($this->_entity, 'get', $this->_params);
-    $this->callAPIFailure($this->_entity, 'get', array('id' => 99)); //FIXME: Does not fail when id not found!
-    // We created 2 questions above
-    $this->assertEquals($result['count'], 2);
+    $this->apiTestGet();
+  }
+
+  public function testDeleteMandatoryMissing() {
+    $this->apiTestDeleteMandatoryMissing();
   }
 
   public function testDelete() {
-    $question = $this->callAPISuccess($this->_entity, 'create', $this->_params);
-    $result = $this->callAPISuccess($this->_entity, 'delete', array('id' => $question['id']));
-    $this->assertEquals($result['count'], 1);
-    $this->callAPIFailure($this->_entity, 'get', array('id' => $question['id'])); //FIXME: Does not fail when id not found!
+    $this->apiTestDelete();
   }
 }

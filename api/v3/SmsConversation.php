@@ -24,6 +24,11 @@ function _civicrm_api3_sms_conversation_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_create($params) {
+  if (!array_key_exists('id', $params)) {
+    civicrm_api3_verify_mandatory($params, NULL, array(
+      'name',
+    ));
+  }
   return _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Conversation', $params);
 }
 
@@ -46,7 +51,13 @@ function civicrm_api3_sms_conversation_delete($params) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_conversation_get($params) {
-  return _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Conversation', $params);
+  $result = _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Conversation', $params);
+  // Return an error if we specified an id and it wasn't found
+  if (!empty($params['id']) && $result['count'] == 0) {
+    $result['is_error'] = 1;
+    $result['error_message'] = 'id '.$params['id'].' not found';
+  }
+  return $result;
 }
 
 /**
