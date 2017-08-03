@@ -76,6 +76,7 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     $this->_question1Params['conversation_id'] = $this->_conversation1Params['id'];
     $question = civicrm_api3('SmsConversationQuestion', 'create', $this->_question1Params);
     $this->_question1Params['id'] = $question['id'];
+    $this->_conversation1Params['start_question_id'] = $question['id'];
   }
 
   public function createTestAction1() {
@@ -129,6 +130,7 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
       'contact_id' => $result['values'][$result['id']]['contact_id'],
       'conversation_id' => $result['values'][$result['id']]['conversation_id'],
       'source_contact_id' => $result['values'][$result['id']]['source_contact_id'],
+      'id' => $result['id'],
     );
   }
 

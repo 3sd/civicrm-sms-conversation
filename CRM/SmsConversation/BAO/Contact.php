@@ -118,6 +118,9 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     if (!$conversation['is_active']) {
       return FALSE;
     }
+    if (empty($conversation['start_question_id'])) {
+      throw new CRM_Core_Exception('No start_question_id for conversation id ' . $conversation['id']);
+    }
 
     // Get the question
     $question = CRM_SmsConversation_BAO_Question::getQuestion($conversation['start_question_id']);

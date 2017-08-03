@@ -63,16 +63,6 @@ class SmsConversationContactTest extends CRM_SmsConversation_TestCase {
     $this->apiTestDelete();
   }
 
-  // TODO: This API also needs to test the following additional functions
-  // start, schedule, getcurrent
-  public function testStart() {
-
-  }
-
-  public function testSchedule() {
-
-  }
-
   /* sms_conversation_status_type
  * Scheduled = 1
  * In Progress = 2
@@ -85,7 +75,7 @@ class SmsConversationContactTest extends CRM_SmsConversation_TestCase {
     $params = $this->_params;
     unset($params['id']);
     // Create a new action with all mandatory params
-    $params['status_id'] = 1; //
+    $params['status_id'] = 1;
     $this->convContactScheduled = $this->callAPISuccess($this->_entity, 'create', $params);
     $params['status_id'] = 2;
     $this->convContactInProgress = $this->callAPISuccess($this->_entity, 'create', $params);
@@ -108,5 +98,61 @@ class SmsConversationContactTest extends CRM_SmsConversation_TestCase {
     $params['contact_id'] = $this->_testContactParams['id'];
     $result = $this->callAPISuccess($this->_entity, 'getcurrent', $params);
     $this->assertEquals($result['values'][$result['id']]['id'], $this->convContactInProgress['id']);
+  }
+
+  // TODO: This API also needs to test the following additional functions
+  // start, schedule, getcurrent
+  /**
+   * Given a contact_id and optional convContact id, start the conversation (mark it In Progress)
+   */
+  public function testStartAlreadyInProgress() {
+    $params = $this->_params;
+    unset($params['id']);
+    // Create two contact conversations (one scheduled, one in progress)
+    $params['status_id'] = 1;
+    $this->convContactScheduled = $this->callAPISuccess($this->_entity, 'create', $params);
+    $params['status_id'] = 2;
+    $this->convContactInProgress = $this->callAPISuccess($this->_entity, 'create', $params);
+    $startParams['contact_id'] = $this->_testContactParams['id'];
+    $this->callAPIFailure($this->_entity, 'start', $startParams);
+    // Now try specifying conversation contact id.
+    $startParams['id'] = $this->convContactScheduled['id'];
+    $this->callAPIFailure($this->_entity, 'start', $startParams);
+  }
+
+  /**
+   * Given a contact_id and optional convContact id, start the conversation (mark it In Progress)
+   */
+  public function testStart() {
+    $params = $this->_params;
+    unset($params['id']);
+    // Create two contact conversations (one scheduled, one in progress)
+    // We need two scheduled dates so we can create two contact conversations
+    $date = new DateTime();
+    $now = $date->format('Y-m-d H:i:s');
+    $date->add(DateInterval::createFromDateString("-1 days"));
+    $yesterday = $date->format('Y-m-d H:i:s');
+
+    $params['status_id'] = 1;
+    $params['scheduled_date'] = $yesterday;
+    $this->convContactScheduled1 = $this->callAPISuccess($this->_entity, 'create', $params);
+    $params['status_id'] = 1;
+    $params['scheduled_date'] = $now;
+    $this->convContactScheduled2 = $this->callAPISuccess($this->_entity, 'create', $params);
+    $startParams['contact_id'] = $this->_testContactParams['id'];
+    // This should start $this->convContactScheduled1 as it's the oldest (it should fail because we have no start_question_id defined for conversation
+    $result = $this->callAPIFailure($this->_entity, 'start', $startParams);
+    // Link question to conversation
+    $this->_conversation1Params['start_question_id'] = $this->_question1Params['id'];
+    $this->callAPISuccess('SmsConversation', 'create', $this->_conversation1Params);
+    // Now we should pass
+    print('here');
+    print_r($startParams);
+    $result = $this->callAPISuccess($this->_entity, 'start', $startParams);
+    $this->assertEquals($result['values'][$result['id']]['id'], $this->convContactScheduled1['id']);
+  }
+
+  public function testSchedule() {
+
   }
 }
