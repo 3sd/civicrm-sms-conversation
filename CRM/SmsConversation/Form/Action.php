@@ -48,7 +48,7 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
 
   public function buildQuickForm() {
 
-    CRM_Core_Resources::singleton()->addScriptFile('civicrm.sms.conversations', 'templates/CRM/SmsConversation/Form/Action.js');
+    CRM_Core_Resources::singleton()->addScriptFile('civicrm.sms.conversation', 'templates/CRM/SmsConversation/Form/Action.js');
 
     // The type of pattern matching
     $this->add('select', 'answer_pattern_type', ts('Match'), [
@@ -94,7 +94,7 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
     }elseif($this->smsActionType['name'] == 'record_field'){
       $contactFields = array_column(civicrm_api3('Contact', 'getfields', ['action' => 'get'])['values'], 'title', 'name');
       unset($contactFields['id']);
-      unset($contactFields['contact_type']);  
+      unset($contactFields['contact_type']);
       unset($contactFields['contact_sub_type']);
       $this->add('select', 'action_data', ts('Record in field'), $contactFields, TRUE, ['class' => 'crm-select2']);
     }

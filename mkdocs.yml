@@ -1,0 +1,22 @@
+site_name: SMS Conversation
+repo_url: https://github.com/3sd/civicrm-sms-conversation
+theme: material
+
+pages:
+- Introduction: index.md
+- Installation: installation.md
+- Create conversations: create-conversations.md
+- Start and monitor conversations: start-and-monitor-conversations.md
+- Troubleshooting: troubleshooting.md
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - def_list
+  - codehilite
+  - toc(permalink=true)
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tilde
+  - pymdownx.betterem
+  - pymdownx.mark

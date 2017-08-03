@@ -190,7 +190,7 @@ function _smsconversation_civix_civicrm_managed(&$entities) {
     $es = include $file;
     foreach ($es as $e) {
       if (empty($e['module'])) {
-        $e['module'] = 'civicrm.sms.conversations';
+        $e['module'] = 'civicrm.sms.conversation';
       }
       $entities[] = $e;
       if (empty($e['params']['version'])) {
@@ -222,7 +222,7 @@ function _smsconversation_civix_civicrm_caseTypes(&$caseTypes) {
       // throw new CRM_Core_Exception($errorMessage);
     }
     $caseTypes[$name] = array(
-      'module' => 'civicrm.sms.conversations',
+      'module' => 'civicrm.sms.conversation',
       'name' => $name,
       'file' => $file,
     );
@@ -248,7 +248,7 @@ function _smsconversation_civix_civicrm_angularModules(&$angularModules) {
     $name = preg_replace(':\.ang\.php$:', '', basename($file));
     $module = include $file;
     if (empty($module['ext'])) {
-      $module['ext'] = 'civicrm.sms.conversations';
+      $module['ext'] = 'civicrm.sms.conversation';
     }
     $angularModules[$name] = $module;
   }
