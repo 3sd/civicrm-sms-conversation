@@ -8,9 +8,6 @@ class SmsConversationContactTest extends CRM_SmsConversation_TestCase {
   protected $_entity = 'SmsConversationContact';
   protected $_params;
 
-  // TODO: This API also needs to test the following additional functions
-  // start, schedule, getcurrent
-
   public function setUp() {
     parent::setUp();
 
@@ -64,5 +61,52 @@ class SmsConversationContactTest extends CRM_SmsConversation_TestCase {
 
   public function testDelete() {
     $this->apiTestDelete();
+  }
+
+  // TODO: This API also needs to test the following additional functions
+  // start, schedule, getcurrent
+  public function testStart() {
+
+  }
+
+  public function testSchedule() {
+
+  }
+
+  /* sms_conversation_status_type
+ * Scheduled = 1
+ * In Progress = 2
+ * Failed = 3
+ * Cancelled = 4
+ * Completed = 5
+ */
+
+  public function createConversations() {
+    $params = $this->_params;
+    unset($params['id']);
+    // Create a new action with all mandatory params
+    $params['status_id'] = 1; //
+    $this->convContactScheduled = $this->callAPISuccess($this->_entity, 'create', $params);
+    $params['status_id'] = 2;
+    $this->convContactInProgress = $this->callAPISuccess($this->_entity, 'create', $params);
+    $params['status_id'] = 3;
+    $this->convContactFailed = $this->callAPISuccess($this->_entity, 'create', $params);
+    $params['status_id'] = 4;
+    $this->convContactCancelled = $this->callAPISuccess($this->_entity, 'create', $params);
+    $params['status_id'] = 5;
+    $this->convContactCompleted = $this->callAPISuccess($this->_entity, 'create', $params);
+  }
+
+  public function testGetCurrentMandatoryMissing() {
+    // contact_id is mandatory
+    $this->callAPIFailure($this->_entity, 'create', array());
+  }
+
+  public function testGetCurrent() {
+    $this->createConversations();
+    // Make sure we return the conversation that is "In Progress"
+    $params['contact_id'] = $this->_testContactParams['id'];
+    $result = $this->callAPISuccess($this->_entity, 'getcurrent', $params);
+    $this->assertEquals($result['values'][$result['id']]['id'], $this->convContactInProgress['id']);
   }
 }
