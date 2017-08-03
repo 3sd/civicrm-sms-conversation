@@ -146,8 +146,6 @@ class SmsConversationContactTest extends CRM_SmsConversation_TestCase {
     $this->_conversation1Params['start_question_id'] = $this->_question1Params['id'];
     $this->callAPISuccess('SmsConversation', 'create', $this->_conversation1Params);
     // Now we should pass
-    print('here');
-    print_r($startParams);
     $result = $this->callAPISuccess($this->_entity, 'start', $startParams);
     $this->assertEquals($result['values'][$result['id']]['id'], $this->convContactScheduled1['id']);
   }

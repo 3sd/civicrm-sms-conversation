@@ -67,6 +67,7 @@ function civicrm_api3_contact_sms($params) {
   }
   if(isset($params['text'])){
     $activityParams['sms_text_message']=$params['text'];
+    $activityParams['activity_subject']='SMS Conversation';
   }else{
     return civicrm_api3_create_error('You should include text');
   }

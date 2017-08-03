@@ -14,11 +14,25 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     // Civi\Test has many helpers, like install(), uninstall(), sql(), and sqlFile().
     // See: https://github.com/civicrm/org.civicrm.testapalooza/blob/master/civi-test.md
     return \Civi\Test::headless()
-      ->install(array('org.civicoop.civirules','civicrm.sms.conversation'))
+      ->install(array('org.civicoop.civirules','io.3sd.dummysms','civicrm.sms.conversation'))
       ->apply();
   }
 
   public function setUp() {
+    // Install SMS provider
+    $smsProvider = civicrm_api3('SmsProvider', 'create', array(
+      'sequential' => 1,
+      'name' => "DummySMS",
+      'title' => "dummy",
+      'username' => "dummy",
+      'password' => "dummy",
+      'api_type' => 0,
+      'api_url' => 0,
+      'api_params' => 0,
+      'is_active' => 1,
+      'is_default' => 1,
+    ));
+
     parent::setUp();
   }
 

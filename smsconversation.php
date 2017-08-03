@@ -144,7 +144,7 @@ function smsconversation_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) 
 
 function smsconversation_civicrm_post( $op, $objectName, $objectId, &$objectRef ){
   //try and return as quickly as possible
-  if($objectName=='Activity' && $objectRef->activity_type_id == CRM_Core_OptionGroup::getValue('activity_type', 'Inbound SMS', 'name')){
+  if($objectName=='Activity' && $objectRef->activity_type_id == CRM_Core_PseudoConstant::getKey('CRM_Activity_BAO_Activity', 'activity_type_id', 'Inbound SMS')) {
     // process inbound SMS
     $activity = civicrm_api('Activity', 'getsingle', array('version'=>'3','id' => $objectId));
     $p = new CRM_SmsConversation_Processor($activity);
