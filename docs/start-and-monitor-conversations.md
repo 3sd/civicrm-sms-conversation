@@ -16,7 +16,7 @@ Clicking on view will show you the questions and answers received for the conver
 
 If you choose to start a conversation 'straight away' via the search action, the conversation will only actually start when the SMS conversation scheduled job runs.
 
-Only one conversation can be run at any one time. If you request that a new conversation is started with a contact that already has a conversation in progress, the new conversation will only start once the current conversation finishes.
+Only conversation can be run per contact at any one time. If you request that a new conversation is started with a contact that already has a conversation in progress, the new conversation will only start once the current conversation finishes.
 
 # Contact initiated conversations
 
