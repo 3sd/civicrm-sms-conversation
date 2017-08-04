@@ -5,7 +5,7 @@ use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
 
 abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
-//abstract class CRM_SmsConversation_TestCase extends CiviUnitTestCase {
+  //abstract class CRM_SmsConversation_TestCase extends CiviUnitTestCase {
   use CiviUnitTestApiFunctions;
 
   protected $_apiversion = 3;
@@ -14,11 +14,25 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     // Civi\Test has many helpers, like install(), uninstall(), sql(), and sqlFile().
     // See: https://github.com/civicrm/org.civicrm.testapalooza/blob/master/civi-test.md
     return \Civi\Test::headless()
-      ->install(array('org.civicoop.civirules','civicrm.sms.conversation'))
+      ->install(array('org.civicoop.civirules','io.3sd.dummysms','civicrm.sms.conversation'))
       ->apply();
   }
 
   public function setUp() {
+    // Install SMS provider
+    $smsProvider = civicrm_api3('SmsProvider', 'create', array(
+      'sequential' => 1,
+      'name' => "DummySMS",
+      'title' => "dummy",
+      'username' => "dummy",
+      'password' => "dummy",
+      'api_type' => 0,
+      'api_url' => 0,
+      'api_params' => 0,
+      'is_active' => 1,
+      'is_default' => 1,
+    ));
+
     parent::setUp();
   }
 
@@ -42,6 +56,29 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     'action_type' => 3, // Record in a custom field
   );
 
+  protected $_contact1Params = array(
+    // Mandatory
+    //'conversation_id'] =>
+    //'contact_id']
+    //'source_contact_id']
+    // Optional
+    //'status_id']['api.required'] = 0;
+    //'current_question_id']['api.required'] = 0;
+    //'scheduled_date']['api.required'] = 0;
+  );
+
+  protected $_testContactParams = array(
+    'contact_type' => "Individual",
+    'first_name' => "Bob",
+    'last_name' => "McEdwards",
+  );
+
+  protected $_testSourceContactParams = array(
+    'contact_type' => "Individual",
+    'first_name' => "Ed",
+    'last_name' => "McEdwards",
+  );
+
   public function createTestConversation1() {
     // Create conversation and assign id to params
     $conversation = civicrm_api3('SmsConversation', 'create', $this->_conversation1Params);
@@ -53,6 +90,7 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     $this->_question1Params['conversation_id'] = $this->_conversation1Params['id'];
     $question = civicrm_api3('SmsConversationQuestion', 'create', $this->_question1Params);
     $this->_question1Params['id'] = $question['id'];
+    $this->_conversation1Params['start_question_id'] = $question['id'];
   }
 
   public function createTestAction1() {
@@ -64,6 +102,50 @@ abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase 
     $this->_action1Params['action_data'] = "custom_".$uptoCustomField['id'];
     $action = civicrm_api3('SmsConversationAction', 'create', $this->_action1Params);
     $this->_action1Params['id'] = $action['id'];
+  }
+
+  public function createTestContact() {
+    $result = civicrm_api3('Contact', 'create', $this->_testContactParams);
+    $this->_testContactParams['id'] = $result['id'];
+  }
+
+  public function createTestSourceContact() {
+    $result = civicrm_api3('Contact', 'create', $this->_testSourceContactParams);
+    $this->_testSourceContactParams['id'] = $result['id'];
+  }
+
+  public function createTestPhoneMobile() {
+    $result = civicrm_api3('Phone', 'create', array(
+      'contact_id' => $this->_testContactParams['id'],
+      'phone' => "01234",
+      'phone_type_id' => "Mobile",
+    ));
+    $this->_testContactParams['mobile_id'] = $result['id'];
+  }
+
+  public function createTestPhoneFixed() {
+    $result = civicrm_api3('Phone', 'create', array(
+      'contact_id' => $this->_testContactParams['id'],
+      'phone' => "56789",
+      'phone_type_id' => "Phone",
+    ));
+    $this->_testContactParams['phone_id'] = $result['id'];
+  }
+
+  public function createTestContact1() {
+    $this->createTestContact();
+    $this->createTestSourceContact();
+    $result = civicrm_api3('SmsConversationContact', 'create', array(
+      'contact_id' => $this->_testContactParams['id'],
+      'conversation_id' => $this->_conversation1Params['id'],
+      'source_contact_id' => $this->_testSourceContactParams['id'],
+    ));
+    $this->_contact1Params = array(
+      'contact_id' => $result['values'][$result['id']]['contact_id'],
+      'conversation_id' => $result['values'][$result['id']]['conversation_id'],
+      'source_contact_id' => $result['values'][$result['id']]['source_contact_id'],
+      'id' => $result['id'],
+    );
   }
 
   public function apiTestGet() {

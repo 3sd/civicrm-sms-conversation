@@ -49,8 +49,12 @@ function civicrm_api3_contact_sms($params) {
   }else{
     return civicrm_api3_create_error('You should include either a contact_id or group_id in your params');
   }
+
   // use the default SMS provider
   $providers=CRM_SMS_BAO_Provider::getProviders(NULL, array('is_default' => 1));
+  if (empty($providers)) {
+    throw new CRM_Core_Exception('No SMS providers found - Cannot send SMS. Please enable at least one!');
+  }
   $provider = $providers[0];
   $provider['provider_id'] = $provider['id'];
 
@@ -63,6 +67,7 @@ function civicrm_api3_contact_sms($params) {
   }
   if(isset($params['text'])){
     $activityParams['sms_text_message']=$params['text'];
+    $activityParams['activity_subject']='SMS Conversation';
   }else{
     return civicrm_api3_create_error('You should include text');
   }
