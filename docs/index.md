@@ -2,7 +2,7 @@
 
 SMS conversation allows you to automate SMS conversations with contacts in CiviCRM.
 
-*So what is an SMS conversation?* Have you ever been asked to evaluate a recent experience with Customer Services via SMS?
+Have you ever been asked to evaluate a recent experience with Customer Services via SMS?
 
 *Them:*
 > "Please rate how satisfied you were with our service on a scale of 1 to 5.
@@ -15,10 +15,7 @@ SMS conversation allows you to automate SMS conversations with contacts in CiviC
 *Them:*
 > "Great - thanks for letting us know. Did we manage to resolve your problem? [please ansswer 'yes' or 'no']".
 
-and so on.
-
-Of course customer service evaluation is only one example. You can use SMS conversation for any number of things, from surveys on what is important to your contacts, or in any other situation where you want to collect structured information via SMS.
-
+Of course customer service evaluation is only one example simple example. The conversations can be longer and more complex if you like and be used in any number of situations.
 
 ## Features
 
