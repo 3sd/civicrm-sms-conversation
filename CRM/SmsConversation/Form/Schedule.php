@@ -68,7 +68,16 @@ class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
       $status = $e->getMessage();
     }
     CRM_Core_Session::setStatus($status);
-    parent::postProcess();
+    //parent::postProcess();
+
+    if ($this->contactId) {
+      $this->ajaxResponse['updateTabs']['#tab_activity'] = CRM_Contact_BAO_Contact::getCountComponent('activity', $this->contactId);
+    }
+
+    $session = CRM_Core_Session::singleton();
+    $session->replaceUserContext(CRM_Utils_System::url('civicrm/contact/view',
+      "reset=1&cid={$this->contactId}&selectedChild=activity"
+    ));
   }
 
 }
