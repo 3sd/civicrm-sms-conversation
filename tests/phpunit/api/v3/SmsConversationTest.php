@@ -4,7 +4,7 @@
  * Basic SmsConversation API Tests
  * @group headless
  */
-class SmsConversationTest extends CRM_SmsConversation_TestCase {
+class api_v3_SmsConversationTest extends CRM_SmsConversation_TestCase {
   protected $_entity = 'SmsConversation';
   protected $_params;
 

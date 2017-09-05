@@ -130,7 +130,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     $convContact = CRM_SmsConversation_BAO_Contact::getCurrentConversation($contactId);
     // Ask the question
     if (CRM_SmsConversation_BAO_Question::ask($question['id'], $contactId, $convContact)) {
-      return $convContact['id'];
+      return $convContact;
     }
     else {
       return FALSE;
@@ -356,9 +356,9 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
         $convContactScheduled = self::getNextScheduledConversation($cid);
         if ($convContactScheduled) {
           // Start the conversation
-          $contactId = self::startConversation($cid, $convContactScheduled['id']);
-          if ($contactId) {
-            $result[$contactId] = $contactId;
+          $convContactStarted = self::startConversation($cid, $convContactScheduled['id']);
+          if ($convContactStarted) {
+            $result[$convContactStarted['id']] = $convContactStarted;
           }
         }
       }

@@ -4,7 +4,7 @@
  * Basic SmsConversationAction API Tests
  * @group headless
  */
-class SmsConversationContactTest extends CRM_SmsConversation_TestCase {
+class api_v3_SmsConversationContactTest extends CRM_SmsConversation_TestCase {
   protected $_entity = 'SmsConversationContact';
   protected $_params;
 
@@ -147,10 +147,11 @@ class SmsConversationContactTest extends CRM_SmsConversation_TestCase {
     $this->callAPISuccess('SmsConversation', 'create', $this->_conversation1Params);
     // Now we should pass
     $result = $this->callAPISuccess($this->_entity, 'start', $startParams);
+    print_r($result);
     $this->assertEquals($result['values'][$result['id']]['id'], $this->convContactScheduled1['id']);
   }
 
   public function testSchedule() {
-
+    // This is an alias for SmsConversationContact.create which we already tested
   }
 }

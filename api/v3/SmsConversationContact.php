@@ -102,7 +102,8 @@ function civicrm_api3_sms_conversation_contact_get($params) {
 function civicrm_api3_sms_conversation_contact_start($params) {
   $result = CRM_SmsConversation_BAO_Contact::startConversation($params['contact_id'], !empty($params['id']) ? $params['id'] : NULL);
   if ($result) {
-    return civicrm_api3_create_success($result,$params,'SmsConversationContact','start');
+    $values[$result['id']] = $result;
+    return civicrm_api3_create_success($values,$params,'SmsConversationContact','start');
   }
 }
 
