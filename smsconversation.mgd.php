@@ -14,7 +14,7 @@ return array(
       'description' => 'Schedule conversations for contacts where conversations are in "Scheduled" state.',
       'run_frequency' => 'Hourly',
       'api_entity' => 'Job',
-      'api_action' => 'ProcessSmsConversations',
+      'api_action' => 'process_sms_conversations',
       'parameters' => '',
     ),
   ),
