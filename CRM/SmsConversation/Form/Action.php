@@ -48,7 +48,7 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
 
   public function buildQuickForm() {
 
-    CRM_Core_Resources::singleton()->addScriptFile('civicrm.sms.conversation', 'templates/CRM/SmsConversation/Form/Action.js');
+    CRM_Core_Resources::singleton()->addScriptFile('civicrm-sms-conversation', 'templates/CRM/SmsConversation/Form/Action.js');
 
     // The type of pattern matching
     $this->add('select', 'answer_pattern_type', ts('Match'), [
