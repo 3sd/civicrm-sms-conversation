@@ -8,7 +8,7 @@ class CRM_SmsConversation_Processor {
       return FALSE;
     }
     $this->sourceContactId = $activity['source_contact_id'];
-    $this->sms = $activity['details'];
+    $this->sms = trim($activity['details']);
   }
 
   /**
