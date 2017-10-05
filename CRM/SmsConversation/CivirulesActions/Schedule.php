@@ -99,7 +99,7 @@ class CRM_SmsConversation_CivirulesActions_Schedule extends CRM_CivirulesActions
   protected function executeApiAction($entity, $action, $parameters) {
 
     $currentConversation = civicrm_api3('SmsConversationContact', 'getcurrent', array('contact_id' => $this->ac['contact_id']));
-    if (!empty($currentConversation['count'])) {
+    if (isset($currentConversation['count']) && $currentConversation['count']) {
       return;
     }
     parent::executeApiAction($entity, $action, $parameters);

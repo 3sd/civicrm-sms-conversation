@@ -128,8 +128,13 @@ function _civicrm_api3_sms_conversation_contact_start_spec(&$spec) {
  */
 function civicrm_api3_sms_conversation_contact_getcurrent($params) {
   $result = CRM_SmsConversation_BAO_Contact::getCurrentConversation($params['contact_id']);
-  $values[$result['id']] = $result;
-  return civicrm_api3_create_success($values,$params,'SmsConversationContact','getcurrent');
+  if($result){
+    $values[$result['id']] = $result;
+    return civicrm_api3_create_success($values,$params,'SmsConversationContact','getcurrent');
+  }else{
+    return civicrm_api3_create_success(null);
+  }
+
 }
 
 function _civicrm_api3_sms_conversation_contact_getcurrent_spec(&$spec) {
