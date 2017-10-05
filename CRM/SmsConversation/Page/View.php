@@ -23,7 +23,7 @@ class CRM_SmsConversation_Page_View extends CRM_Core_Page {
     $questionIds = array_column($this->questions, 'id');
     $this->actions = civicrm_api3('SmsConversationAction', 'get', [
       'question_id' => ['IN' => $questionIds],
-      'option.sort' => 'action_data ASC',
+      'option.sort' => 'action_type DESC, action_data ASC',
     ])['values'];
 
     // Decorate the actions
