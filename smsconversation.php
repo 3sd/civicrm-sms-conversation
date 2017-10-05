@@ -8,7 +8,28 @@ require_once 'smsconversation.civix.php';
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_config
  */
 function smsconversation_civicrm_config(&$config) {
+  if (isset(Civi::$statics[__FUNCTION__])) {
+    return;
+  }
+  Civi::$statics[__FUNCTION__] = 1;
+  Civi::dispatcher()->addListener('hook_civicrm_post', 'smsconversation_process_inbound',1000);
+
   _smsconversation_civix_civicrm_config($config);
+}
+
+function smsconversation_process_inbound($event){
+  if($event->entity=='Activity' && $event->object->activity_type_id == CRM_Core_PseudoConstant::getKey('CRM_Activity_BAO_Activity', 'activity_type_id', 'Inbound SMS')) {
+    var_dump('process inbound');
+    $activity = civicrm_api('Activity', 'getsingle', array('version'=>'3','id' => $event->id));
+    $p = new CRM_SmsConversation_Processor($activity);
+    if ($p) {
+      $p->inbound();
+    }
+  }
+    // var_dump($event->object->activity_type_id);
+    // var_dump($event->id);
+    // $r = new ReflectionObject($event);
+    // var_dump($r->getProperties());
 }
 
 /**
@@ -142,17 +163,6 @@ function smsconversation_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) 
   _smsconversation_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
-function smsconversation_civicrm_post( $op, $objectName, $objectId, &$objectRef ){
-  //try and return as quickly as possible
-  if($objectName=='Activity' && $objectRef->activity_type_id == CRM_Core_PseudoConstant::getKey('CRM_Activity_BAO_Activity', 'activity_type_id', 'Inbound SMS')) {
-    // process inbound SMS
-    $activity = civicrm_api('Activity', 'getsingle', array('version'=>'3','id' => $objectId));
-    $p = new CRM_SmsConversation_Processor($activity);
-    if ($p) {
-      $p->inbound();
-    }
-  }
-}
 
 /**
  * Implements hook_civicrm_entityTypes.
