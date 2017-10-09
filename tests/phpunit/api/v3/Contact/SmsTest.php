@@ -1,6 +1,4 @@
 <?php
-<?php
-
 /**
  * Basic Contact.sms API Tests
  * @group headless
