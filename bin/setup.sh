@@ -31,11 +31,34 @@ cd $CIVIROOT/xml
 php GenCode.php
 # (There may be extra arguments to pass into GenCode.php; not sure)
 
+# Create extension DAO directory
+if [ ! -d "$EXTROOT/CRM/$SCHEMADIR/DAO/" ]; then
+  mkdir -p "$EXTROOT/CRM/$SCHEMADIR/DAO/"
+fi
+# Copy generated DAO files to extension DAO directory
 cp -f $CIVIROOT/CRM/$SCHEMADIR/DAO/* $EXTROOT/CRM/$SCHEMADIR/DAO/
 mv $CIVIROOT/xml/schema/Schema.xml.backup $CIVIROOT/xml/schema/Schema.xml
 
-read -p "Copy the DROP TABLE query from civicrm.sql into auto_install.sql and auto_uninstall.sql."
-read -p "Copy the CREATE TABLE query from civicrm.sql into auto_install.sql."
+# Create empty sql files if they don't already exist
+if [ ! -f "$EXTROOT/sql/auto_install.sql" ]; then
+  touch "$EXTROOT/sql/auto_install.sql"
+fi
+if [ ! -f "$EXTROOT/sql/auto_uninstall.sql" ]; then
+  touch "$EXTROOT/sql/auto_uninstall.sql"
+fi
+
+# FIXME: Automatically copy SQL from civicrm.sql to auto_*.sql
+
+echo
+echo "Copy the DROP TABLE query from $CIVIROOT/sql/civicrm.sql into:"
+echo "$EXTROOT/sql/auto_install.sql"
+echo "$EXTROOT/sql/auto_uninstall.sql"
+read -p " - Press Enter when Done - "
+
+echo
+echo "Copy the CREATE TABLE query from $CIVIROOT/sql/civicrm.sql into:"
+echo "$EXTROOT/sql/auto_install.sql"
+read -p " - Press Enter when Done - "
 
 ## Cleanup
 unlink $CIVIROOT/xml/schema/$SCHEMADIR
@@ -50,4 +73,3 @@ cd $EXTROOT
 
 # Make sure sql files are picked up
 civix generate:upgrader
-
