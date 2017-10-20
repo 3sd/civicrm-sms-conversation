@@ -8,18 +8,18 @@ To send and receive SMS you will need to set up an SMS gateway with a third part
 
 Availablity of two way SMS services varies considerably depending on the country you are in.  If you are having trouble finding a two way SMS provider in your country consider using the [Telerivet extension](https://github.com/nditech/org.ndi.sms.telerivet), which enables you to turn any Android or IOS phone into an SMS gateway.
 
-See https://docs.civicrm.org/user/en/stable/sms-text-messaging/what-is-sms/ for more details
+See [What is SMS](https://docs.civicrm.org/user/en/stable/sms-text-messaging/what-is-sms/) for more details
 
 CiviRules is required to install SMS conversation. Ensure that you have CiviRules enabled before installing the extension.
 
 
-See https://docs.civicrm.org/user/en/stable/introduction/extensions for more information on installing extensions.
+See [extension documentation](https://docs.civicrm.org/user/en/stable/introduction/extensions) for more information on installing extensions.
 
 ## Download
 
 Until SMS conversation becomes approved for automated download, you need to manually download it and extract it to your extensions directory.
 
-You can find the latest stable release here: https://github.com/3sd/civicrm-sms-conversation/releases.
+You can find the latest stable release here: [https://github.com/3sd/civicrm-sms-conversation/releases](https://github.com/3sd/civicrm-sms-conversation/releases).
 
 ## Install
 
