@@ -2,19 +2,23 @@
 
 SMS conversation is a **CiviCRM extension** that allows you to automate SMS conversations with contacts in [CiviCRM](https://civicrm.org).
 
+You may also be interested in https://civicrm.org/extensions/chatbot.
+
 ## Requirements
+
+CiviCRM 4.7
 
 ## Installation
 
-## Getting started
+1. Download a release from https://github.com/3sd/civicrm-recalculate-recipients/releases to your extensions directory
+2. Browse to **Administer > System Settings > Extensions**
+3. Find **SMS Conversation** and click **Install**
+
+Note: for help on installing extensions, consult the [extensions chapter of the CiviCRM system administrator guide](https://docs.civicrm.org/sysadmin/en/latest/customize/extensions).
 
 ## Documentation
 
 See https://docs.civicrm.org/sms-conversation/ for full documentation.
-
-## Developers
-
-### Tests
 
 ## Credits
 
