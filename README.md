@@ -10,7 +10,7 @@ CiviCRM 4.7
 
 ## Installation
 
-1. Download a release from https://github.com/3sd/civicrm-recalculate-recipients/releases to your extensions directory
+1. Download a release from https://github.com/3sd/civicrm-sms-conversation/releases to your extensions directory
 2. Browse to **Administer > System Settings > Extensions**
 3. Find **SMS Conversation** and click **Install**
 
