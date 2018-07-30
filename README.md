@@ -6,7 +6,7 @@ You may also be interested in https://civicrm.org/extensions/chatbot.
 
 ## Requirements
 
-CiviCRM 4.7
+CiviCRM 4.7.19+
 
 ## Installation
 
