@@ -16,9 +16,13 @@ CiviCRM 4.7.19+
 
 Note: for help on installing extensions, consult the [extensions chapter of the CiviCRM system administrator guide](https://docs.civicrm.org/sysadmin/en/latest/customize/extensions).
 
-## Documentation
+## Getting started
 
 See https://docs.civicrm.org/sms-conversation/ for full documentation.
+
+## Help
+
+If you have any questions regarding this extension that are not answered in this README or in [the documentation](https://docs.civicrm.org/sms-conversation/), please check post a question on http://civicrm.stackexchange.com or contact info@thirdsectordesign.org.
 
 ## Credits
 
