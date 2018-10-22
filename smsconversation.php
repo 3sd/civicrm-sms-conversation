@@ -19,7 +19,6 @@ function smsconversation_civicrm_config(&$config) {
 
 function smsconversation_process_inbound($event){
   if($event->entity=='Activity' && $event->object->activity_type_id == CRM_Core_PseudoConstant::getKey('CRM_Activity_BAO_Activity', 'activity_type_id', 'Inbound SMS')) {
-    var_dump('process inbound');
     $activity = civicrm_api('Activity', 'getsingle', array('version'=>'3','id' => $event->id));
     $p = new CRM_SmsConversation_Processor($activity);
     if ($p) {
