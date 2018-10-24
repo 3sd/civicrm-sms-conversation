@@ -55,7 +55,7 @@ function civicrm_api3_contact_sms($params) {
   if (empty($providers)) {
     throw new CRM_Core_Exception('No SMS providers found - Cannot send SMS. Please enable at least one!');
   }
-  $provider = $providers[0];
+  $provider = current($providers);
   $provider['provider_id'] = $provider['id'];
 
   //this should be set somehow when not set (or maybe we need to change the underlying BAO to not require it?)
