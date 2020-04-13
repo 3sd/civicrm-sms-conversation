@@ -1,6 +1,7 @@
 site_name: SMS Conversation
 repo_url: https://github.com/3sd/civicrm-sms-conversation
-theme: material
+theme: 
+  name: material
 
 nav:
 - Introduction: index.md
