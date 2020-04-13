@@ -2,7 +2,7 @@ site_name: SMS Conversation
 repo_url: https://github.com/3sd/civicrm-sms-conversation
 theme: material
 
-pages:
+nav:
 - Introduction: index.md
 - Installation: installation.md
 - Create conversations: create-conversations.md
@@ -14,7 +14,8 @@ markdown_extensions:
   - admonition
   - def_list
   - codehilite
-  - toc(permalink=true)
+  - toc:
+      permalink: true
   - pymdownx.superfences
   - pymdownx.inlinehilite
   - pymdownx.tilde
