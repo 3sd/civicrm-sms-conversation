@@ -37,3 +37,10 @@ Contributions to this repository are very welcome. Feel free to submit a pull re
 ## License
 
 This extension is licensed under [AGPL-3.0](LICENSE.txt).
+
+## Troubleshooting
+
+### Webhook errors
+
+- This might be mostly related to question configuration. Please check if you have configured 'Invalid Text'.
+- Check if you have correctly configured 'Match' and 'Match Text' for the answer.
