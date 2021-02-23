@@ -14,8 +14,18 @@
         <a href="{crmURL p='civicrm/sms/conversation/confirmdelete' q="entity=SmsConversationQuestion&id=`$question.id`"}" title="delete question"><i class="crm-i fa-trash"></i></a>
         </p>
         {if $question.text_invalid}
-        <p><i>Invalid text: "{$question.text_invalid}"</i></p>
+          <p><i>Invalid text: "{$question.text_invalid}"</i></p>
+        {elseif $question.actions}
+          {assign var="showValidTextWarning" value=true}
+          {foreach from=$question.actions item=action}
+            {if $action.friendly_answer_pattern eq 'Anything'}
+              {assign var="showValidTextWarning" value=false}
+            {/if}
+          {/foreach}
+          {if $showValidTextWarning}
+            <p class='error'><i>Warning: Please configure Invalid text or an action to match anything.</i></p>
           {/if}
+        {/if}
       </td>
       <td>
         {if $question.actions}
