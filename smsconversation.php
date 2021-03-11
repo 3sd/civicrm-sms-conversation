@@ -225,16 +225,18 @@ function smsconversation_civicrm_searchTasks( $objectName, &$tasks ){
  * @param $tabs
  * @param $contactID
  */
-function smsconversation_civicrm_tabs ( &$tabs, $contactID ) {
+function smsconversation_civicrm_tabset ( $tabsetName, &$tabs, $context) {
   // ADD the sms conversation tab as a separate tab
-  $tabs[] = array(
-    'title'  => 'SMS Conversations',
-    'id'     => 'smsconversation',
-    'class' => 'livePage',
-    'url'    => CRM_Utils_System::url('civicrm/contact/view/smsconversation', "reset=1&cid={$contactID}"),
-    'weight' => 50,
-    'count'  => CRM_SmsConversation_BAO_Contact::getConversationCount($contactID),
-  );
+  if ($tabsetName == 'civicrm/contact/view' && !empty($context['contact_id'])) {
+    $tabs[] = [
+      'title'  => 'SMS Conversations',
+      'id'     => 'smsconversation',
+      'class' => 'livePage',
+      'url'    => CRM_Utils_System::url('civicrm/contact/view/smsconversation', "reset=1&cid={$context['contact_id']}"),
+      'weight' => 50,
+      'count'  => CRM_SmsConversation_BAO_Contact::getConversationCount($context['contact_id']),
+    ];
+  }
 }
 
 function smsconversation_civicrm_navigationMenu(&$menus){
