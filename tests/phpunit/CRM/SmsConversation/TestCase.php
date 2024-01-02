@@ -4,7 +4,7 @@ use Civi\Test\HeadlessInterface;
 use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
 
-abstract class CRM_SmsConversation_TestCase extends \PHPUnit_Framework_TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
+abstract class CRM_SmsConversation_TestCase extends \CivixPhar\PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
   //abstract class CRM_SmsConversation_TestCase extends CiviUnitTestCase {
   use CiviUnitTestApiFunctions;
 
