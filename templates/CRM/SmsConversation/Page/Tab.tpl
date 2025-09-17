@@ -25,7 +25,7 @@
 *}
 <div id="sms-conversations-tab" class="view-content">
 <div class="action-link">
-  <a accesskey="N" href='{crmURL p="civicrm/sms/conversation/schedule" q="cid=`$contactId`"}' class="button medium-popup"><span><i class="crm-i fa-comment"></i> Schedule Conversation</span></a>
+  <a accesskey="N" href='{crmURL p="civicrm/sms/conversation/schedule" q="cid=`$contactId`"}' class="button medium-popup"><span><i class="crm-i fa-comment" role="img" aria-hidden="true"></i> Schedule Conversation</span></a>
 </div>
 
 <table class="crm-smsconversation-selector crm-ajax-table" data-order='[[2,"desc"]]'>
