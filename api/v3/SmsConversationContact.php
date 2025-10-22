@@ -22,7 +22,7 @@ function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_sms_conversation_contact_create($params) {
   if (!array_key_exists('id', $params)) {
@@ -69,7 +69,7 @@ function _civicrm_api3_sms_conversation_contact_schedule_spec(&$spec) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_sms_conversation_contact_delete($params) {
   return _civicrm_api3_basic_delete('CRM_SmsConversation_BAO_Contact', $params);
@@ -80,7 +80,7 @@ function civicrm_api3_sms_conversation_contact_delete($params) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_sms_conversation_contact_get($params) {
   $result = _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Contact', $params);
@@ -97,7 +97,7 @@ function civicrm_api3_sms_conversation_contact_get($params) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_sms_conversation_contact_start($params) {
   $result = CRM_SmsConversation_BAO_Contact::startConversation($params['contact_id'], !empty($params['id']) ? $params['id'] : NULL);

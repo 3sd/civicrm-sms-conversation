@@ -21,7 +21,7 @@ function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_sms_conversation_action_create($params) {
   if (!array_key_exists('id', $params)) {
@@ -40,7 +40,7 @@ function civicrm_api3_sms_conversation_action_create($params) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_sms_conversation_action_delete($params) {
   return _civicrm_api3_basic_delete('CRM_SmsConversation_BAO_Action', $params);
@@ -51,7 +51,7 @@ function civicrm_api3_sms_conversation_action_delete($params) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_sms_conversation_action_get($params) {
   $result = _civicrm_api3_basic_get('CRM_SmsConversation_BAO_Action', $params);
