@@ -36,7 +36,7 @@ public function preProcess(){
 
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){
-      CRM_Utils_System::setTitle(ts("Create a question for '{$this->conversation['name']}'"));
+      CRM_Utils_System::setTitle(ts("Create a question for '%1'", [1 => $this->conversation['name']]));
       $this->addButtons([
         array('type' => 'cancel', 'name' => 'Cancel'),
         array('type' => 'submit', 'name' => 'Create', 'isDefault' => TRUE)
