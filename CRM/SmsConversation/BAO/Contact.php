@@ -189,7 +189,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     $records[] = [
       'q' => $convQuestion['id'],
       'a' => $sms,
-      'v' => (boolean) $validAnswer
+      'v' => (bool) $validAnswer
     ];
 
     $convContact['conversation_record'] = json_encode($records);
