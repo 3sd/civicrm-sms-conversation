@@ -19,7 +19,7 @@ function smsconversation_civicrm_config(&$config) {
 
 function smsconversation_process_inbound($event){
   if($event->entity=='Activity' && $event->object->activity_type_id == CRM_Core_PseudoConstant::getKey('CRM_Activity_BAO_Activity', 'activity_type_id', 'Inbound SMS')) {
-    $activity = civicrm_api('Activity', 'getsingle', array('version'=>'3','id' => $event->id));
+    $activity = civicrm_api('Activity', 'getsingle', ['version'=>'3','id' => $event->id]);
     $p = new CRM_SmsConversation_Processor($activity);
     if ($p) {
       $p->inbound();
@@ -48,23 +48,23 @@ function smsconversation_civicrm_install() {
 function smsconversation_civicrm_uninstall() {
 
   // Delete action_type option group
-  $result = civicrm_api3('OptionGroup', 'get', array(
+  $result = civicrm_api3('OptionGroup', 'get', [
     'name' => "sms_conversation_action_type",
-  ));
+  ]);
   if (!empty($result['id'])) {
-    $result = civicrm_api3('OptionGroup', 'delete', array(
+    $result = civicrm_api3('OptionGroup', 'delete', [
       'id' => $result['id'],
-    ));
+    ]);
   }
 
   // Delete status_type option group
-  $result = civicrm_api3('OptionGroup', 'get', array(
+  $result = civicrm_api3('OptionGroup', 'get', [
     'name' => "sms_conversation_status_type",
-  ));
+  ]);
   if (!empty($result['id'])) {
-    $result = civicrm_api3('OptionGroup', 'delete', array(
+    $result = civicrm_api3('OptionGroup', 'delete', [
       'id' => $result['id'],
-    ));
+    ]);
   }
 }
 
@@ -84,26 +84,26 @@ function smsconversation_civicrm_enable() {
  *   Registered entity types.
  */
 function smsconversation_civicrm_entityTypes(&$entityTypes) {
-  $entityTypes['CRM_SmsConversation_DAO_Action'] = array (
+  $entityTypes['CRM_SmsConversation_DAO_Action'] = [
     'name' => 'SmsConversationAction',
     'class' => 'CRM_SmsConversation_DAO_Action',
     'table' => 'civicrm_sms_conversation_action',
-  );
-  $entityTypes['CRM_SmsConversation_DAO_Contact'] = array (
+  ];
+  $entityTypes['CRM_SmsConversation_DAO_Contact'] = [
     'name' => 'SmsConversationContact',
     'class' => 'CRM_SmsConversation_DAO_Contact',
     'table' => 'civicrm_sms_conversation_contact',
-  );
-  $entityTypes['CRM_SmsConversation_DAO_Conversation'] = array (
+  ];
+  $entityTypes['CRM_SmsConversation_DAO_Conversation'] = [
     'name' => 'SmsConversationConversation',
     'class' => 'CRM_SmsConversation_DAO_Conversation',
     'table' => 'civicrm_sms_conversation',
-  );
-  $entityTypes['CRM_SmsConversation_DAO_Question'] = array (
+  ];
+  $entityTypes['CRM_SmsConversation_DAO_Question'] = [
     'name' => 'SmsConversationQuestion',
     'class' => 'CRM_SmsConversation_DAO_Question',
     'table' => 'civicrm_sms_conversation_question',
-  );
+  ];
 }
 
 function smsconversation_civicrm_summaryActions(&$actions, $contactId){
@@ -160,7 +160,7 @@ function smsconversation_civicrm_navigationMenu(&$menus){
     if($menu['attributes']['name'] == 'Mailings'){
       $nextId = max(array_keys($menu['child']));
       $menu['child'][$nextId]=[
-        'attributes' => array(
+        'attributes' => [
           'label'      => 'SMS Conversations',
           'name'       => 'SMS Conversations',
           'url'        => 'civicrm/sms/conversations',
@@ -170,7 +170,7 @@ function smsconversation_civicrm_navigationMenu(&$menus){
           'separator'  => TRUE,
           'parentID'   => $menu['attributes']['navID'],
           'active'     => 1
-        ),
+        ],
       ];
     }
   }

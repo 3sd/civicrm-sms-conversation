@@ -101,13 +101,13 @@ class CRM_SmsConversation_Form_Action extends CRM_Core_Form {
     // when adding a conversation, we ask for the text of the first question
     if($this->action == CRM_Core_Action::ADD){
       $this->addButtons([
-        array('type' => 'cancel', 'name' => 'Cancel'),
-        array('type' => 'submit', 'name' => 'Create', 'isDefault' => TRUE)
+        ['type' => 'cancel', 'name' => 'Cancel'],
+        ['type' => 'submit', 'name' => 'Create', 'isDefault' => TRUE]
       ]);
     }elseif($this->action == CRM_Core_Action::UPDATE){
       $this->addButtons([
-        array('type' => 'cancel', 'name' => 'Cancel'),
-        array('type' => 'submit', 'name' => 'Update', 'isDefault' => TRUE)
+        ['type' => 'cancel', 'name' => 'Cancel'],
+        ['type' => 'submit', 'name' => 'Update', 'isDefault' => TRUE]
       ]);
     }
     parent::buildQuickForm();

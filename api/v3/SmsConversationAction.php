@@ -25,12 +25,12 @@ function _civicrm_api3_sms_conversation_action_create_spec(&$spec) {
  */
 function civicrm_api3_sms_conversation_action_create($params) {
   if (!array_key_exists('id', $params)) {
-    civicrm_api3_verify_mandatory($params, NULL, array(
+    civicrm_api3_verify_mandatory($params, NULL, [
       'question_id',
       'answer_pattern',
       'action_type',
       'action_data'
-    ));
+    ]);
   }
   return _civicrm_api3_basic_create('CRM_SmsConversation_BAO_Action', $params);
 }

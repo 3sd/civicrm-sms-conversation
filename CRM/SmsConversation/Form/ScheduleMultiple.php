@@ -46,18 +46,18 @@ class CRM_SmsConversation_Form_ScheduleMultiple extends CRM_Contact_Form_Task {
 
     //TODO If there are no valid mobiles, set a status message and do not add submit button
     if($this->_contactWithMobileIds){
-      $this->addButtons(array(
-        array(
+      $this->addButtons([
+        [
           'type' => 'cancel',
           'name' => ts('Cancel'),
           'isDefault' => TRUE,
-        ),
-        array(
+        ],
+        [
           'type' => 'submit',
           'name' => ts('Schedule'),
           'isDefault' => TRUE,
-        ),
-      ));
+        ],
+      ]);
     }else{
       $session = CRM_Core_Session::singleton();
       CRM_Core_Session::setStatus('No selected contacts had valid mobile phones.');

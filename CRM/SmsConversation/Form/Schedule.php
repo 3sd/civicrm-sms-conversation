@@ -27,18 +27,18 @@ class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
     // Choose a time for this
     $this->addDateTime('scheduled_date', ts('Send at'), TRUE);
 
-    $this->addButtons(array(
-      array(
+    $this->addButtons([
+      [
         'type' => 'cancel',
         'name' => ts('Cancel'),
         'isDefault' => TRUE,
-      ),
-      array(
+      ],
+      [
         'type' => 'submit',
         'name' => ts('Schedule'),
         'isDefault' => TRUE,
-      ),
-    ));
+      ],
+    ]);
 
     // export form elements
     parent::buildQuickForm();

@@ -22,9 +22,9 @@ class CRM_SmsConversation_CivirulesActions_Form_Schedule extends CRM_CivirulesAc
       'placeholder' => ts('- Select conversation -'),
       'select' => ['minimumInputLength' => 0]
     ], TRUE);
-    $this->addButtons(array(
-      array('type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,),
-      array('type' => 'cancel', 'name' => ts('Cancel'))));
+    $this->addButtons([
+      ['type' => 'next', 'name' => ts('Save'), 'isDefault' => TRUE,],
+      ['type' => 'cancel', 'name' => ts('Cancel')]]);
   }
 
   /**

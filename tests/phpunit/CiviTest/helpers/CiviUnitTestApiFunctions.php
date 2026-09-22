@@ -52,7 +52,7 @@ trait CiviUnitTestApiFunctions {
    * @param $id
    */
   public function assertAPIDeleted($entity, $id) {
-    $this->callAPISuccess($entity, 'getcount', array('id' => $id), 0);
+    $this->callAPISuccess($entity, 'getcount', ['id' => $id], 0);
   }
 
   /**
@@ -64,8 +64,8 @@ trait CiviUnitTestApiFunctions {
    * @param string $prefix
    *   Extra test to add to message.
    */
-  public function assertAPIArrayComparison($result, $expected, $valuesToExclude = array(), $prefix = '') {
-    $valuesToExclude = array_merge($valuesToExclude, array('debug', 'xdebug', 'sequential'));
+  public function assertAPIArrayComparison($result, $expected, $valuesToExclude = [], $prefix = '') {
+    $valuesToExclude = array_merge($valuesToExclude, ['debug', 'xdebug', 'sequential']);
     foreach ($valuesToExclude as $value) {
       if (isset($result[$value])) {
         unset($result[$value]);
@@ -107,10 +107,10 @@ trait CiviUnitTestApiFunctions {
    */
   public function createExternalAPI() {
     global $civicrm_root;
-    $defaultParams = array(
+    $defaultParams = [
       'version' => $this->_apiversion,
       'debug' => 1,
-    );
+    ];
 
     $calls = new \Civi\API\ExternalBatch($defaultParams);
 
@@ -137,10 +137,10 @@ trait CiviUnitTestApiFunctions {
    * @return array|int
    */
   public function callAPISuccess($entity, $action, $params, $checkAgainst = NULL) {
-    $params = array_merge(array(
+    $params = array_merge([
       'version' => $this->_apiversion,
       'debug' => 1,
-    ),
+    ],
       $params
     );
     switch (strtolower($action)) {
@@ -177,10 +177,10 @@ trait CiviUnitTestApiFunctions {
    * @return array|int
    */
   public function callAPISuccessGetValue($entity, $params, $type = NULL) {
-    $params += array(
+    $params += [
       'version' => $this->_apiversion,
       'debug' => 1,
-    );
+    ];
     $result = $this->civicrm_api($entity, 'getvalue', $params);
     if ($type) {
       if ($type == 'integer') {
@@ -213,10 +213,10 @@ trait CiviUnitTestApiFunctions {
    * @return array|int
    */
   public function callAPISuccessGetSingle($entity, $params, $checkAgainst = NULL) {
-    $params += array(
+    $params += [
       'version' => $this->_apiversion,
       'debug' => 1,
-    );
+    ];
     $result = $this->civicrm_api($entity, 'getsingle', $params);
     if (!is_array($result) || !empty($result['is_error']) || isset($result['values'])) {
       throw new Exception('Invalid getsingle result' . print_r($result, TRUE));
@@ -239,10 +239,10 @@ trait CiviUnitTestApiFunctions {
    * @return array|int
    */
   public function callAPISuccessGetCount($entity, $params, $count = NULL) {
-    $params += array(
+    $params += [
       'version' => $this->_apiversion,
       'debug' => 1,
-    );
+    ];
     $result = $this->civicrm_api($entity, 'getcount', $params);
     if (!is_int($result) || !empty($result['is_error']) || isset($result['values'])) {
       throw new Exception('Invalid getcount result : ' . print_r($result, TRUE) . " type :" . gettype($result));
@@ -289,9 +289,9 @@ trait CiviUnitTestApiFunctions {
    */
   public function callAPIFailure($entity, $action, $params, $expectedErrorMessage = NULL, $extraOutput = NULL) {
     if (is_array($params)) {
-      $params += array(
+      $params += [
         'version' => $this->_apiversion,
-      );
+      ];
     }
     $result = $this->civicrm_api($entity, $action, $params);
     $this->assertAPIFailure($result, "We expected a failure for $entity $action but got a success", $expectedErrorMessage);

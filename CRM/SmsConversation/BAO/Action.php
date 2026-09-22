@@ -66,9 +66,9 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
    */
   static function getAction($questionId) {
     // Contact is having a conversation, get the possible actions for the question
-    $convActions = civicrm_api3('SmsConversationAction', 'get', array(
+    $convActions = civicrm_api3('SmsConversationAction', 'get', [
         'question_id' => $questionId,
-      )
+      ]
     );
 
     if (!empty($convActions['is_error']) || !isset($convActions['values'])) {
@@ -132,10 +132,10 @@ class CRM_SmsConversation_BAO_Action extends CRM_SmsConversation_DAO_Action {
    * @param $contactId
    */
   static function actionAddContactToGroup($action, $contactId) {
-    $groupResult = civicrm_api3('GroupContact', 'create', array(
+    $groupResult = civicrm_api3('GroupContact', 'create', [
       'group_id' => $action['action_data'],
       'contact_id' => $contactId,
-    ));
+    ]);
     if (empty($groupResult['is_error'])) {
       return FALSE;
     }

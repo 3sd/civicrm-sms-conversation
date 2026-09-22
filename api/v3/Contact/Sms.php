@@ -26,7 +26,7 @@ function civicrm_api3_contact_sms($params) {
 
   //for some reason, CRM_Activity_BAO_Activity::sendSMS wants $contactDetails AND $contactIds. I'm pretty sure it could work out the contact IDs from $contactDetails, but lets not worry about that.
   if(isset($params['contact_id'])){
-    $contactsResult = civicrm_api('Contact', 'get', array('version'=>3, 'id' => $params['contact_id']));
+    $contactsResult = civicrm_api('Contact', 'get', ['version'=>3, 'id' => $params['contact_id']]);
 
     if(!$contactsResult['count']){
       return civicrm_api3_create_error('Please specify at least one contact.');
@@ -38,12 +38,12 @@ function civicrm_api3_contact_sms($params) {
       $contactIds[]=$contact['contact_id'];
     }
   }elseif(isset($params['group_id'])){
-    $groupContactsResult = civicrm_api('GroupContact', 'get', array('version'=>3, 'group_id' => $params['group_id'], 'option.limit' => 1000000)); // This will break if you try and SMS more than one million people :)
+    $groupContactsResult = civicrm_api('GroupContact', 'get', ['version'=>3, 'group_id' => $params['group_id'], 'option.limit' => 1000000]); // This will break if you try and SMS more than one million people :)
     $contactDetails = $groupContactsResult['values'];
     //idea is that this contact will take a contact ID and a text message and then send an SMS
 
     foreach($contactDetails as $key => $contact){
-      $contactDetails[$key] = civicrm_api('Contact', 'getsingle', array('version'=>3, 'id' => $contact['contact_id']));
+      $contactDetails[$key] = civicrm_api('Contact', 'getsingle', ['version'=>3, 'id' => $contact['contact_id']]);
       $contactIds[]=$contact['contact_id'];
     }
   }else{
@@ -51,7 +51,7 @@ function civicrm_api3_contact_sms($params) {
   }
 
   // use the default SMS provider
-  $providers=CRM_SMS_BAO_Provider::getProviders(NULL, array('is_default' => 1));
+  $providers=CRM_SMS_BAO_Provider::getProviders(NULL, ['is_default' => 1]);
   if (empty($providers)) {
     throw new CRM_Core_Exception('No SMS providers found - Cannot send SMS. Please enable at least one!');
   }
@@ -73,7 +73,7 @@ function civicrm_api3_contact_sms($params) {
   }
 
   $sms = CRM_Activity_BAO_Activity::sendSMS($contactDetails, $activityParams, $provider, $contactIds, $userID);
-  $created_activity = civicrm_api('Activity', 'get', array('version' => 3, 'id' => $sms[1], 'debug' => 1));
+  $created_activity = civicrm_api('Activity', 'get', ['version' => 3, 'id' => $sms[1], 'debug' => 1]);
   if(!$created_activity['count']){
     return civicrm_api3_create_success();
   }
@@ -90,13 +90,13 @@ function civicrm_api3_contact_sms($params) {
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_contact_sms_spec(&$spec) {
-  $spec['contact_id'] = array(
+  $spec['contact_id'] = [
     'title' => 'Contact ID',
     'api.required' => 1,
-  );
-  $spec['text'] = array(
+  ];
+  $spec['text'] = [
     'title' => "Text body of SMS",
     'api.required' => 1,
     'type' => CRM_Utils_Type::T_STRING,
-  );
+  ];
 }

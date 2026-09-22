@@ -129,8 +129,8 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
    */
   static function &fields() {
     if (!isset(Civi::$statics[__CLASS__]['fields'])) {
-      Civi::$statics[__CLASS__]['fields'] = array(
-        'id' => array(
+      Civi::$statics[__CLASS__]['fields'] = [
+        'id' => [
           'name' => 'id',
           'type' => CRM_Utils_Type::T_INT,
           'description' => 'Unique SmsConversationContact ID',
@@ -139,8 +139,8 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
           'entity' => 'Contact',
           'bao' => 'CRM_SmsConversation_DAO_Contact',
           'localizable' => 0,
-        ) ,
-        'contact_id' => array(
+        ] ,
+        'contact_id' => [
           'name' => 'contact_id',
           'type' => CRM_Utils_Type::T_INT,
           'description' => 'FK to civicrm_contact',
@@ -150,8 +150,8 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
           'bao' => 'CRM_SmsConversation_DAO_Contact',
           'localizable' => 0,
           'FKClassName' => 'CRM_Contact_DAO_Contact',
-        ) ,
-        'conversation_id' => array(
+        ] ,
+        'conversation_id' => [
           'name' => 'conversation_id',
           'type' => CRM_Utils_Type::T_INT,
           'description' => 'FK to SmsConversation ID',
@@ -161,8 +161,8 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
           'bao' => 'CRM_SmsConversation_DAO_Contact',
           'localizable' => 0,
           'FKClassName' => 'CRM_SmsConversation_DAO_Conversation',
-        ) ,
-        'status_id' => array(
+        ] ,
+        'status_id' => [
           'name' => 'status_id',
           'type' => CRM_Utils_Type::T_INT,
           'description' => 'Conversation Status ID',
@@ -171,12 +171,12 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
           'entity' => 'Contact',
           'bao' => 'CRM_SmsConversation_DAO_Contact',
           'localizable' => 0,
-          'pseudoconstant' => array(
+          'pseudoconstant' => [
             'optionGroupName' => 'sms_conversation_status_type',
             'optionEditPath' => 'civicrm/admin/options/sms_conversation_status_type',
-          )
-        ) ,
-        'current_question_id' => array(
+          ]
+        ] ,
+        'current_question_id' => [
           'name' => 'current_question_id',
           'type' => CRM_Utils_Type::T_INT,
           'description' => 'FK to sms_conversation_question.id',
@@ -185,8 +185,8 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
           'bao' => 'CRM_SmsConversation_DAO_Contact',
           'localizable' => 0,
           'FKClassName' => 'CRM_SmsConversation_DAO_Question',
-        ) ,
-        'source_contact_id' => array(
+        ] ,
+        'source_contact_id' => [
           'name' => 'source_contact_id',
           'type' => CRM_Utils_Type::T_INT,
           'description' => 'Id of contact that started the conversation',
@@ -195,8 +195,8 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
           'bao' => 'CRM_SmsConversation_DAO_Contact',
           'localizable' => 0,
           'FKClassName' => 'CRM_Contact_DAO_Contact',
-        ) ,
-        'conversation_record' => array(
+        ] ,
+        'conversation_record' => [
           'name' => 'conversation_record',
           'type' => CRM_Utils_Type::T_LONGTEXT,
           'title' => ts('Record of conversation') ,
@@ -205,11 +205,11 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
           'entity' => 'Contact',
           'bao' => 'CRM_SmsConversation_DAO_Contact',
           'localizable' => 0,
-          'html' => array(
+          'html' => [
             'type' => 'Text',
-          ) ,
-        ) ,
-        'scheduled_date' => array(
+          ] ,
+        ] ,
+        'scheduled_date' => [
           'name' => 'scheduled_date',
           'type' => CRM_Utils_Type::T_TIMESTAMP,
           'title' => ts('SMS Conversation Scheduled Date') ,
@@ -220,12 +220,12 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
           'entity' => 'Contact',
           'bao' => 'CRM_SmsConversation_DAO_Contact',
           'localizable' => 0,
-          'html' => array(
+          'html' => [
             'type' => 'Select Date',
             'formatType' => 'activityDateTime',
-          ) ,
-        ) ,
-      );
+          ] ,
+        ] ,
+      ];
       CRM_Core_DAO_AllCoreTables::invoke(__CLASS__, 'fields_callback', Civi::$statics[__CLASS__]['fields']);
     }
     return Civi::$statics[__CLASS__]['fields'];
@@ -266,7 +266,7 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
    * @return array
    */
   static function &import($prefix = false) {
-    $r = CRM_Core_DAO_AllCoreTables::getImports(__CLASS__, 'sms_conversation_contact', $prefix, array());
+    $r = CRM_Core_DAO_AllCoreTables::getImports(__CLASS__, 'sms_conversation_contact', $prefix, []);
     return $r;
   }
   /**
@@ -277,14 +277,14 @@ class CRM_SmsConversation_DAO_Contact extends CRM_Core_DAO {
    * @return array
    */
   static function &export($prefix = false) {
-    $r = CRM_Core_DAO_AllCoreTables::getExports(__CLASS__, 'sms_conversation_contact', $prefix, array());
+    $r = CRM_Core_DAO_AllCoreTables::getExports(__CLASS__, 'sms_conversation_contact', $prefix, []);
     return $r;
   }
   /**
    * Returns the list of indices
    */
   public static function indices($localize = TRUE) {
-    $indices = array();
+    $indices = [];
     return ($localize && !empty($indices)) ? CRM_Core_DAO_AllCoreTables::multilingualize(__CLASS__, $indices) : $indices;
   }
 }

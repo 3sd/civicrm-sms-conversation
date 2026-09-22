@@ -9,9 +9,9 @@ function civicrm_api3_job_process_sms_conversations($params) {
 }
 
 function _civicrm_api3_job_process_sms_conversations_spec(&$spec) {
-  $spec['contact_id'] = array(
+  $spec['contact_id'] = [
     'title' => 'Contact ID',
     'description' => 'If specified, conversations will be scheduled for that contact only',
-    'api.aliases' => array('contact_id'),
-  );
+    'api.aliases' => ['contact_id'],
+  ];
 }
