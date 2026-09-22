@@ -13,9 +13,9 @@ class api_v3_SmsConversationTest extends CRM_SmsConversation_TestCase {
 
     $this->createTestConversation1();
 
-    $this->_params = array(
+    $this->_params = [
       'name' => 'Test SMS Conversation',
-    );
+    ];
   }
 
   public function tearDown() {

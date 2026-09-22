@@ -38,14 +38,14 @@ public function preProcess(){
     if($this->action == CRM_Core_Action::ADD){
       CRM_Utils_System::setTitle(ts("Create a question for '{$this->conversation['name']}'"));
       $this->addButtons([
-        array('type' => 'cancel', 'name' => 'Cancel'),
-        array('type' => 'submit', 'name' => 'Create', 'isDefault' => TRUE)
+        ['type' => 'cancel', 'name' => 'Cancel'],
+        ['type' => 'submit', 'name' => 'Create', 'isDefault' => TRUE]
       ]);
     }elseif($this->action == CRM_Core_Action::UPDATE){
       CRM_Utils_System::setTitle(ts('Update an SMS conversation question'));
       $this->addButtons([
-        array('type' => 'cancel', 'name' => 'Cancel'),
-        array('type' => 'submit', 'name' => 'Update', 'isDefault' => TRUE)
+        ['type' => 'cancel', 'name' => 'Cancel'],
+        ['type' => 'submit', 'name' => 'Update', 'isDefault' => TRUE]
       ]);
     }
     parent::buildQuickForm();

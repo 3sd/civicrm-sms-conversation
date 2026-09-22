@@ -42,7 +42,7 @@ class CRM_SmsConversation_Processor {
     }
 
     // Check each action to see if 1 or more match the answer.
-    $validActions = array();
+    $validActions = [];
     // If we have no actions, we shouldn't be here.  The conversation should have ended when the last SMS was sent
     if (!isset($convActions) || count($convActions) == 0) {
       return FALSE;
@@ -100,11 +100,11 @@ class CRM_SmsConversation_Processor {
    * @return bool
    */
   static function sendSMS($contactId, $text, $sourceContactId = NULL) {
-    $result = civicrm_api3('Contact', 'sms', array(
+    $result = civicrm_api3('Contact', 'sms', [
       'contact_id' => $contactId,
       'source_contact_id' => $sourceContactId,
       'text' => $text,
-    ));
+    ]);
 
     if (!empty($result['is_error'])) {
       return FALSE;

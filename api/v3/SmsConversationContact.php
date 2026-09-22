@@ -26,11 +26,11 @@ function _civicrm_api3_sms_conversation_contact_create_spec(&$spec) {
  */
 function civicrm_api3_sms_conversation_contact_create($params) {
   if (!array_key_exists('id', $params)) {
-    civicrm_api3_verify_mandatory($params, NULL, array(
+    civicrm_api3_verify_mandatory($params, NULL, [
       'conversation_id',
       'contact_id',
       'source_contact_id',
-    ));
+    ]);
   }
 
   $statusId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact', 'status_id', 'Scheduled');

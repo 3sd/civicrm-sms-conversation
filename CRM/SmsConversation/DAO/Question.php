@@ -108,8 +108,8 @@ class CRM_SmsConversation_DAO_Question extends CRM_Core_DAO {
    */
   static function &fields() {
     if (!isset(Civi::$statics[__CLASS__]['fields'])) {
-      Civi::$statics[__CLASS__]['fields'] = array(
-        'id' => array(
+      Civi::$statics[__CLASS__]['fields'] = [
+        'id' => [
           'name' => 'id',
           'type' => CRM_Utils_Type::T_INT,
           'description' => 'Unique SmsConversationQuestion ID',
@@ -118,8 +118,8 @@ class CRM_SmsConversation_DAO_Question extends CRM_Core_DAO {
           'entity' => 'Question',
           'bao' => 'CRM_SmsConversation_DAO_Question',
           'localizable' => 0,
-        ) ,
-        'text' => array(
+        ] ,
+        'text' => [
           'name' => 'text',
           'type' => CRM_Utils_Type::T_LONGTEXT,
           'title' => ts('Question Text') ,
@@ -128,11 +128,11 @@ class CRM_SmsConversation_DAO_Question extends CRM_Core_DAO {
           'entity' => 'Question',
           'bao' => 'CRM_SmsConversation_DAO_Question',
           'localizable' => 0,
-          'html' => array(
+          'html' => [
             'type' => 'Text',
-          ) ,
-        ) ,
-        'timeout' => array(
+          ] ,
+        ] ,
+        'timeout' => [
           'name' => 'timeout',
           'type' => CRM_Utils_Type::T_INT,
           'title' => ts('Timeout') ,
@@ -141,8 +141,8 @@ class CRM_SmsConversation_DAO_Question extends CRM_Core_DAO {
           'entity' => 'Question',
           'bao' => 'CRM_SmsConversation_DAO_Question',
           'localizable' => 0,
-        ) ,
-        'text_invalid' => array(
+        ] ,
+        'text_invalid' => [
           'name' => 'text_invalid',
           'type' => CRM_Utils_Type::T_LONGTEXT,
           'title' => ts('Question Text when answer invalid') ,
@@ -151,11 +151,11 @@ class CRM_SmsConversation_DAO_Question extends CRM_Core_DAO {
           'entity' => 'Question',
           'bao' => 'CRM_SmsConversation_DAO_Question',
           'localizable' => 0,
-          'html' => array(
+          'html' => [
             'type' => 'Text',
-          ) ,
-        ) ,
-        'conversation_id' => array(
+          ] ,
+        ] ,
+        'conversation_id' => [
           'name' => 'conversation_id',
           'type' => CRM_Utils_Type::T_INT,
           'description' => 'FK to sms_conversation.id',
@@ -164,8 +164,8 @@ class CRM_SmsConversation_DAO_Question extends CRM_Core_DAO {
           'bao' => 'CRM_SmsConversation_DAO_Question',
           'localizable' => 0,
           'FKClassName' => 'CRM_SmsConversation_DAO_Conversation',
-        ) ,
-      );
+        ] ,
+      ];
       CRM_Core_DAO_AllCoreTables::invoke(__CLASS__, 'fields_callback', Civi::$statics[__CLASS__]['fields']);
     }
     return Civi::$statics[__CLASS__]['fields'];
@@ -206,7 +206,7 @@ class CRM_SmsConversation_DAO_Question extends CRM_Core_DAO {
    * @return array
    */
   static function &import($prefix = false) {
-    $r = CRM_Core_DAO_AllCoreTables::getImports(__CLASS__, 'sms_conversation_question', $prefix, array());
+    $r = CRM_Core_DAO_AllCoreTables::getImports(__CLASS__, 'sms_conversation_question', $prefix, []);
     return $r;
   }
   /**
@@ -217,14 +217,14 @@ class CRM_SmsConversation_DAO_Question extends CRM_Core_DAO {
    * @return array
    */
   static function &export($prefix = false) {
-    $r = CRM_Core_DAO_AllCoreTables::getExports(__CLASS__, 'sms_conversation_question', $prefix, array());
+    $r = CRM_Core_DAO_AllCoreTables::getExports(__CLASS__, 'sms_conversation_question', $prefix, []);
     return $r;
   }
   /**
    * Returns the list of indices
    */
   public static function indices($localize = TRUE) {
-    $indices = array();
+    $indices = [];
     return ($localize && !empty($indices)) ? CRM_Core_DAO_AllCoreTables::multilingualize(__CLASS__, $indices) : $indices;
   }
 }

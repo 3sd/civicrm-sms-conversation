@@ -45,8 +45,8 @@ class CRM_SmsConversation_Form_ConfirmDelete extends CRM_Core_Form {
   public function buildQuickForm() {
 
     $this->addButtons([
-      array('type' => 'cancel', 'name' => 'Cancel'),
-      array('type' => 'submit', 'name' => 'Delete', 'isDefault' => TRUE)
+      ['type' => 'cancel', 'name' => 'Cancel'],
+      ['type' => 'submit', 'name' => 'Delete', 'isDefault' => TRUE]
     ]);
     parent::buildQuickForm();
   }

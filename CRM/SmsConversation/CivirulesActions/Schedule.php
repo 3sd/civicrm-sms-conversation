@@ -73,7 +73,7 @@ class CRM_SmsConversation_CivirulesActions_Schedule extends CRM_CivirulesActions
     $return = '';
     $params = $this->getActionParameters();
     $conversation = civicrm_api3('SmsConversation', 'Getsingle', ['id' => $params['conversation_id']]);
-    $return .= ts("Conversation: %1", array(1 => $conversation['name']));
+    $return .= ts("Conversation: %1", [1 => $conversation['name']]);
 
     return $return;
   }
@@ -98,7 +98,7 @@ class CRM_SmsConversation_CivirulesActions_Schedule extends CRM_CivirulesActions
 
   protected function executeApiAction($entity, $action, $parameters) {
 
-    $currentConversation = civicrm_api3('SmsConversationContact', 'getcurrent', array('contact_id' => $this->ac['contact_id']));
+    $currentConversation = civicrm_api3('SmsConversationContact', 'getcurrent', ['contact_id' => $this->ac['contact_id']]);
     if (isset($currentConversation['count']) && $currentConversation['count']) {
       return;
     }

@@ -64,7 +64,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       'contact_id' => $contactId,
       'status_id' => $scheduledId,
       'options' => ['limit' => 1, 'sort' => "scheduled_date ASC,id ASC"],
-      'scheduled_date' => array('<=' => "now"),
+      'scheduled_date' => ['<=' => "now"],
     ]);
 
     if (empty($convContact['is_error']) && !empty($convContact['count'])) {
@@ -228,7 +228,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
 
     $convList = civicrm_api3('SmsConversationContact', 'get', $params);
 
-    $DT['data'] = array(); // Datatables requires the data element even if no data
+    $DT['data'] = []; // Datatables requires the data element even if no data
 
     $scheduledId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact','status_id', 'Scheduled');
     $inProgressId = CRM_Core_PseudoConstant::getKey('CRM_SmsConversation_BAO_Contact','status_id', 'In Progress');
@@ -239,10 +239,10 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       // Format status
       $convContact['status'] = CRM_Core_PseudoConstant::getLabel('CRM_SmsConversation_BAO_Contact', 'status_id', $convContact['status_id']);
       // Format name
-      $sourceContact = civicrm_api3('Contact', 'getsingle', array(
-        'return' => array("display_name"),
+      $sourceContact = civicrm_api3('Contact', 'getsingle', [
+        'return' => ["display_name"],
         'id' => $convContact['source_contact_id'],
-      ));
+      ]);
       $url = CRM_Utils_System::url('civicrm/contact/view', 'reset=1&cid='.$convContact['source_contact_id']);
       $convContact['source_contact'] = "<a href='{$url}'>{$sourceContact['display_name']}</a>";
       // Format Date
@@ -270,10 +270,10 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
       }
       $convContact['links'] = CRM_Core_Action::formLink($links,
         $mask,
-        array(
+        [
           'cid' => $params['cid'],
           'conversation' => $convContact['id'],
-        ),
+        ],
         ts('more')
       );
       $DT['data'][] = $convContact;
@@ -284,29 +284,29 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
   }
 
   static function actionLinks() {
-    $links = array(
-      CRM_Core_Action::VIEW => array(
+    $links = [
+      CRM_Core_Action::VIEW => [
         'name' => ts('View'),
         'url' => 'civicrm/contact/view/smsconversation/detail',
         'qs' => 'reset=1&action=view&cid=%%cid%%&conversation=%%conversation%%',
         'title' => ts('View Conversation'),
         'class' => 'crm-popup',
-      ),
-      CRM_Core_Action::DELETE => array(
+      ],
+      CRM_Core_Action::DELETE => [
         'name' => ts('Delete'),
         'url' => 'civicrm/contact/view/smsconversation/detail',
         'qs' => 'reset=1&action=delete&cid=%%cid%%&conversation=%%conversation%%',
         'title' => ts('Delete Conversation'),
         'class' => 'crm-popup',
-      ),
-      CRM_Core_Action::UPDATE => array(
+      ],
+      CRM_Core_Action::UPDATE => [
         'name' => ts('Cancel'),
         'url' => 'civicrm/contact/view/smsconversation/detail',
         'qs' => 'reset=1&action=update&cid=%%cid%%&conversation=%%conversation%%',
         'title' => ts('Cancel Conversation'),
         'class' => 'crm-popup',
-      ),
-    );
+      ],
+    ];
     return $links;
   }
 
@@ -314,12 +314,12 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    * Get all contact Ids that have conversations
    */
   static function getAllContactIds() {
-    $params = array(
-      'options' => array('limit' => 0),
-      'return' => array("contact_id"),
-    );
+    $params = [
+      'options' => ['limit' => 0],
+      'return' => ["contact_id"],
+    ];
 
-    $contactIds = array();
+    $contactIds = [];
     $convContact = civicrm_api3('SmsConversationContact', 'get', $params);
     if (empty($convContact['is_error'])) {
       foreach ($convContact['values'] as $key => $conv) {
@@ -335,9 +335,9 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
    * @param null $contactId
    */
   static function scheduleConversations($contactId = NULL) {
-    $params = array(
+    $params = [
       'status_id' => "In Progress",
-    );
+    ];
     if (!empty($contactId)) {
       $contactIds[$contactId] = $contactId;
     }
@@ -346,7 +346,7 @@ class CRM_SmsConversation_BAO_Contact extends CRM_SmsConversation_DAO_Contact {
     }
 
     // Loop through each contact and start a conversation if one is waiting
-    $result = array();
+    $result = [];
     foreach ($contactIds as $cid => $value) {
       $params['contact_id'] = $cid;
       $convContact = civicrm_api3('SmsConversationContact', 'get', $params);

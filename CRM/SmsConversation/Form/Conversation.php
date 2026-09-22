@@ -29,8 +29,8 @@ public function preProcess(){
       CRM_Utils_System::setTitle(ts('Create an SMS conversation'));
       $this->add( 'text', 'start_question_text', ts('First question'), ['size' => 40], TRUE);
       $this->addButtons([
-        array('type' => 'cancel', 'name' => 'Cancel'),
-        array('type' => 'submit', 'name' => 'Add', 'isDefault' => TRUE)
+        ['type' => 'cancel', 'name' => 'Cancel'],
+        ['type' => 'submit', 'name' => 'Add', 'isDefault' => TRUE]
       ]);
     }elseif($this->action == CRM_Core_Action::UPDATE){
       $session = CRM_Core_Session::singleton();
@@ -46,8 +46,8 @@ public function preProcess(){
         'select' => ['minimumInputLength' => 0]
       ], TRUE);
       $this->addButtons([
-        array('type' => 'cancel', 'name' => 'Cancel'),
-        array('type' => 'submit', 'name' => 'Update', 'isDefault' => TRUE)
+        ['type' => 'cancel', 'name' => 'Cancel'],
+        ['type' => 'submit', 'name' => 'Update', 'isDefault' => TRUE]
       ]);
     }
     parent::buildQuickForm();

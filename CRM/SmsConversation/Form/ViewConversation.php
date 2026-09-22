@@ -17,34 +17,34 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
 
     if ($this->action == CRM_Core_Action::DELETE) {
       CRM_Utils_System::setTitle('Delete Conversation');
-      $this->addButtons(array(
-        array(
+      $this->addButtons([
+        [
           'type' => 'cancel',
           'name' => ts('Cancel'),
           'isDefault' => TRUE,
-        ),
-        array(
+        ],
+        [
           'type' => 'submit',
           'name' => ts('Delete'),
           'isDefault' => FALSE,
-        ),
-      ));
+        ],
+      ]);
       return;
     }
     elseif ($this->action == CRM_Core_Action::UPDATE) {
       CRM_Utils_System::setTitle('Cancel Conversation');
-      $this->addButtons(array(
-        array(
+      $this->addButtons([
+        [
           'type' => 'cancel',
           'name' => ts('No'),
           'isDefault' => TRUE,
-        ),
-        array(
+        ],
+        [
           'type' => 'submit',
           'name' => ts('Yes'),
           'isDefault' => FALSE,
-        ),
-      ));
+        ],
+      ]);
       return;
     }
 
@@ -55,7 +55,7 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
     $convContact = $convContact['values'][0];
     $convRecord = json_decode($convContact['conversation_record'], TRUE);
 
-    $conversationRecord = array();
+    $conversationRecord = [];
     $prevValid = TRUE;
 
     // Add each conversation record
@@ -79,7 +79,7 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
     if ((empty($convRecord) || !empty($convContact['current_question_id'])) && $convContact['status_id'] != $completedId)
     {
 
-      $conv = array(); // Reset array so we don't use previous values
+      $conv = []; // Reset array so we don't use previous values
       if (empty($convContact['current_question_id'])) {
         $conversation = civicrm_api3('SmsConversation', 'getsingle', ['id' => $convContact['conversation_id']]);
         $convContact['current_question_id'] = $conversation['start_question_id'];
@@ -103,13 +103,13 @@ class CRM_SmsConversation_Form_ViewConversation extends CRM_Core_Form {
     }
 
     $this->assign('conversationRecord', $conversationRecord);
-    $this->addButtons(array(
-      array(
+    $this->addButtons([
+      [
         'type' => 'cancel',
         'name' => ts('Close'),
         'isDefault' => TRUE,
-      ),
-    ));
+      ],
+    ]);
     CRM_Utils_System::setTitle('Sms Conversation '.$this->conversation);
 
     parent::buildQuickForm();

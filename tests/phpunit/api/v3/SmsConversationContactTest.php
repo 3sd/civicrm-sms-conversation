@@ -89,7 +89,7 @@ class api_v3_SmsConversationContactTest extends CRM_SmsConversation_TestCase {
 
   public function testGetCurrentMandatoryMissing() {
     // contact_id is mandatory
-    $this->callAPIFailure($this->_entity, 'create', array());
+    $this->callAPIFailure($this->_entity, 'create', []);
   }
 
   public function testGetCurrent() {

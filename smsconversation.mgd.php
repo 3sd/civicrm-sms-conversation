@@ -4,11 +4,11 @@
  * database as appropriate. For more details, see "hook_civicrm_managed" at:
  * http://wiki.civicrm.org/confluence/display/CRMDOC/Hook+Reference
  */
-return array(
-  0 => array (
+return [
+  0 => [
     'name' => 'Cron:Job.ProcessSmsConversations',
     'entity' => 'Job',
-    'params' => array (
+    'params' => [
       'version' => 3,
       'name' => 'Schedule SMS Conversations',
       'description' => 'Schedule conversations for contacts where conversations are in "Scheduled" state.',
@@ -16,6 +16,6 @@ return array(
       'api_entity' => 'Job',
       'api_action' => 'process_sms_conversations',
       'parameters' => '',
-    ),
-  ),
-);
+    ],
+  ],
+];

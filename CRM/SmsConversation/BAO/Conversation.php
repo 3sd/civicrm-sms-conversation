@@ -29,9 +29,9 @@ class CRM_SmsConversation_BAO_Conversation extends CRM_SmsConversation_DAO_Conve
    * @return array|bool
    */
   static function getConversation($conversationId) {
-    $conversation = civicrm_api3('SmsConversation', 'get', array(
+    $conversation = civicrm_api3('SmsConversation', 'get', [
       'id' => $conversationId,
-    ));
+    ]);
     if (empty($conversation['is_error'])) {
       return $conversation['values'][$conversationId];
     }
