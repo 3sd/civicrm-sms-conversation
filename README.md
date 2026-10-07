@@ -1,5 +1,7 @@
 # SMS conversation
 
+NOTE: THIS EXTENSION IS NO LONGER SUPPORTED. PLEASE GET IN CONTACT IF THIS MAKES YOU SAD.
+
 SMS conversation is a **CiviCRM extension** that allows you to automate SMS conversations with contacts in [CiviCRM](https://civicrm.org).
 
 You may also be interested in https://civicrm.org/extensions/chatbot.
